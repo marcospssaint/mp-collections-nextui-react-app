@@ -6,9 +6,10 @@
   "homepage": "https://marcospaulo19.github.io/mp-collections-nextui-react-app/",
   "type": "module",
   "scripts": {
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d dist",
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "deploy": "gh-pages -d build"
+    "build": "vite build"
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.6",
