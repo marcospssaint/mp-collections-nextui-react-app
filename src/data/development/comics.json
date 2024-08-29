@@ -1,0 +1,36 @@
+[
+    {
+        "id": 1,
+        "title": "5 Por Infinito",
+        "publisher": "Pipoca & Nanquim",
+        "year": 2018,
+        "language": "Portugues",
+        "genre": "Fantasy, Sci-Fi",
+        "authors": "<>Esteban Maroto\n\n*Esteban Maroto",
+        "synopsis": "Antecedendo obras como Star Wars e 2001: Uma Odisseia no Espaço, com o clima sci-fi dos anos 60 de seriados como Star Trek e Perdidos no Espaço, Cinco por Infinito é um dos quadrinhos de ficção científica mais aclamados da história. Lançado originalmente há mais de cinquenta anos, em 1967, agora o maior clássico do espanhol Esteban Maroto finalmente pode ser conferido em sua edição definitiva, que compila os vinte volumes originais da série, textos do autor, biografia e um capítulo extra totalmente inédito. Nesta grandiosa saga de 532 páginas, acompanhe a jornada de cinco heróis terráqueos, os Exploradores do Espaço, à serviço do ser conhecido apenas como Infinito, o único sobrevivente de uma raça alienígena, que tem como missão solucionar problemas pelo cosmo, perpetuar o conhecimento de diferentes culturas e buscar a paz universal.",
+        "volume": 1,
+        "originalTitle": "5 por Infinito",
+        "countries": "Spain",
+        "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1708816596/data-imagens/comics/0-9/5_Por_Infinito_-_Esteban_Maroto.jpg\"",
+        "read": "NOTR",
+        "owned": true,
+        "collection": false
+    },
+    {
+        "id": 2,
+        "title": "A Arte de Charlie Chan Hock Chye",
+        "publisher": "Pipoca & Nanquim",
+        "year": 2018,
+        "language": "Portugues",
+        "genre": "Drama",
+        "authors": "<>Sonny Liew\n\n*Sonny Liew",
+        "synopsis": "Conheça Charlie Chan Hock Chye. Atualmente com 70 e poucos anos, Chan vem fazendo quadrinhos em Singapura desde 1954, quando ainda era um garoto de 16 anos. Conforme ele relembra sua carreira de mais de cinco décadas, vemos suas histórias se desdobrando em uma deslumbrante variedade de estilos e formatos; o desenvolvimento delas ecoa a evolução do panorama político e social de sua terra natal e do próprio meio das histórias em quadrinhos. Com A Arte de Charlie Chan Hock Chye, Sonny Liew une com sua versátil arte uma miríade de gêneros em um trabalho impressionantemente engenhoso e engajado, no qual a linha entre verdade e imaginação às vezes é nebulosa, mas cuja história é sempre empolgante, levando-nos para dentro de uma jornada única, engraçada e instigante da vida de um artista e da história de sua nação.",
+        "volume": 1,
+        "originalTitle": "The Art of Charlie Chan Hock Chye",
+        "countries": "Singapore",
+        "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1709562569/data-imagens/comics/A/A_Arte_De_Charlie_Chan_Hock_Chye.png\"",
+        "read": "NOTR",
+        "owned": true,
+        "collection": false
+    }
+]

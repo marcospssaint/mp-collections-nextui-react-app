@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "... E o Vento Levou",
+        "originalTitle": "Gone with the Wind",
+        "year": 1939,
+        "genre": "Drama, Romance, War",
+        "cast": "<<>>Victor Fleming, George Cukor, Sam Wood\n\n*Clark Gable, Vivien Leigh, Thomas Mitchell",
+        "countries": "USA",
+        "synopsis": "Durante a Guerra Civil Americana, quando fortunas e famílias foram destruídas, um cínico aventureiro e uma determinada jovem, que foi duramente atingida pela guerra, se envolvem numa relação de amor e ódio.",
+        "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1688660563/data-imagens/movies/0-9/..._E_o_Vento_Levou.jpg\"",
+        "flagWatched": false,
+        "owned": false,
+        "watched": "NOTW"
+    }
+]

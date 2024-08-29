@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "title": "B'T X",
+        "originalTitle": "B'T X",
+        "year": 1996,
+        "season": 1,
+        "episodes": 25,
+        "genre": "Adventure, Sci-Fi",
+        "synopsis": "(B'T X)\nTeppei vai visitar seu irmão mais velho, Kotaro Takamiya, durante uma conferência científica após treinar com uma mulher misteriosa chamada Karen nos últimos 11 anos. No entanto, seus planos para uma reunião de família pararam quando uma mulher chamada Aramis mata todos na conferência para sequestrar Kotaro. Teppei no caminho para salvar seu irmão encontra um cavalo mecânico quebrado chamado B't X que revive graças ao sangue de Teppei e agora é seu ajudante para salvar seu irmão do misterioso Império Machine.",
+        "type": "TV Show",
+        "notes": "Demographic: Shounen",
+        "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1689508243/data-imagens/animes/B/Btx.jpg\"",
+        "watched": "NOTW",
+        "owned": true
+    },
+    {
+        "id": 2,
+        "title": "B'T X",
+        "originalTitle": "B'T X Neo",
+        "year": 1997,
+        "season": 2,
+        "episodes": "0 | 14",
+        "synopsis": "(B'T X Neo)\r\nContinuação da jornada de Teppei com B't X para resgatar seu irmão Kotaro Takamiya do Império das Máquinas. A série OAV começa na série de TV a partir do ponto em que Hokuto salva Teppei e B't X com sucesso e torna B't X muito mais poderoso do que antes.",
+        "type": "OVA",
+        "watched": "NOTW",
+        "owned": false
+    }
+]

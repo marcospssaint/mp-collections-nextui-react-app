@@ -1,35 +1,51 @@
 {
   "name": "mp-collections-nextui-react-app",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "description": "App for my collections with React and NextUi.",
   "homepage": "https://marcospaulo19.github.io/mp-collections-nextui-react-app/",
   "type": "module",
   "scripts": {
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d dist",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "tsc && vite build"
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.6",
     "@react-stately/data": "^3.11.6",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.3.19",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.25.1"
   },
   "devDependencies": {
+    "@rollup/plugin-replace": "^5.0.7",
+    "@types/node": "^22.5.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.14",
+    "gh-pages": "^5.0.0",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.4.7",
-    "gh-pages": "^5.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

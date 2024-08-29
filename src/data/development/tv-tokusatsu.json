@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "title": "A Guerra dos Monstros",
+        "originalTitle": "Kaijū Daisensō / Godzilla vs. Monster Zero",
+        "subtitle": "7º Godzilla - The Showa-Era (1954-75)",
+        "year": 1965,
+        "genre": "Action, Adventure, Sci-Fi",
+        "synopsis": "Estranhas ondas de rádio são transmitidas para a Terra do Planeta X, perto de Júpiter. Após contato com os estrangeiros, a Terra se compromete a ajudar o povo do Planeta X com um problema de monstro. Em breve, os alienígenas se voltam contra a Terra e lançam um ataque que inclui Godzilla, Rodan e Ghidorah combinados.",
+        "type": "Movie",
+        "notes": "7º Godzilla - The Showa-Era (1954-75)",
+        "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1694365471/data-imagens/tv-tokusatsu/A/A_Guerra_dos_Monstros.jpg\"",
+        "watched": "NOTW",
+        "owned": true
+    },
+    {
+        "id": 2,
+        "title": "A Vingança de Godzilla",
+        "originalTitle": "Godzilla Revenge",
+        "subtitle": "11º Godzilla - The Showa-Era (1954-75)",
+        "year": 1969,
+        "genre": "Adventure, Family, Fantasy",
+        "synopsis": "Ichiro é um garoto solitário crescendo na movimentada Tóquio que é empurrado ao redor pelo valentão local, Gabara. Para escapar de seus problemas, Ichiro imagina que ele é um monstro e amigo de Minilla, filho de Godzilla, vivendo em Monster Island. Em seus devaneios, ele vê Godzilla combater outros monstros e logo percebe que Godzilla é intimidado também. Ichiro começa a desenvolver a coragem de enfrentar o valentão Gabara.",
+        "type": "Movie",
+        "notes": "11º Godzilla - The Showa-Era (1954-75)",
+        "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1694365471/data-imagens/tv-tokusatsu/A/A_Vinganca_de_Godzilla.jpg\"",
+        "watched": "NOTW",
+        "owned": true
+    }
+]

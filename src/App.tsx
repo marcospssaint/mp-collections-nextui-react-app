@@ -1,8 +1,8 @@
 import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, NextUIProvider } from "@nextui-org/react";
 import { SearchIcon } from "./component/icons/SearchIcon";
 
-import './App.css'
 import React from "react";
+import './App.css';
 import { MidiaPage } from "./component/pages/MidiaPage";
 
 function App() {
@@ -26,9 +26,9 @@ function App() {
 
                         <NavbarContent justify="end">
                             <NavbarItem>
-                                <Button 
-                                    isIconOnly 
-                                    disableAnimation={false} 
+                                <Button
+                                    isIconOnly
+                                    disableAnimation={false}
                                     variant="light"
                                     radius="full"
                                     aria-label="Like"
@@ -41,10 +41,7 @@ function App() {
                         </NavbarContent>
                     </Navbar>
                     <div className="px-0">
-                        
-                        <MidiaPage 
-                            expandSearch={expandSearch}
-                            setExpandSearch={setExpandSearch} />
+                        <MidiaPage expandSearch={expandSearch} setExpandSearch={setExpandSearch} />
                     </div>
                 </div>
             </div>

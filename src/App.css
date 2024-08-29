@@ -1,3 +1,26 @@
+body {
+    background-color: #FAFAFA;
+}
+
+/* Login.tsx */
+
+.m-8 {
+    margin: 2rem; /* 32px */
+}
+
+.w-72 {
+    width: 18rem; /* 288px */
+}
+
+.site-form-input {
+    height: 40px !important;
+}
+
+.login-form-button {
+    width: 100%;
+    height: 40px;
+}
+
 /* App.tsx */
 .text-3xl {
     font-size: 1.875rem;
@@ -13,8 +36,8 @@
     height: 150px;
 }
 
-.top-\[64px\] {
-    top: 64px;
+.top-\[0px\] {
+    top: 0px;
 }
 
 .text-2xl {

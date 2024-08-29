@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "title": "(Des)encanto",
+        "originalTitle": "Disenchantment",
+        "year": 2018,
+        "season": 1,
+        "episodes": "0 | 20",
+        "genre": "Animation, Action, Adventure",
+        "type": "TV Show",
+        "countries": "USA",
+        "synopsis": "Esta série de animação de Matt Groenign acompanha as malucas aventuras de uma princesa boa de copo em um reino medieval repleto de criaturas míticas.",
+        "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1693422363/data-imagens/tv-shows/0-9/Des_encanto.jpg\"",
+        "watched": "NOTW",
+        "owned": false
+    },
+    {
+        "id": 2,
+        "title": "(Des)encanto",
+        "year": 2021,
+        "season": 2,
+        "episodes": "0 | 20",
+        "type": "TV Show",
+        "watched": "NOTW",
+        "owned": false
+    },
+    {
+        "id": 3,
+        "title": "(Des)encanto",
+        "year": 2023,
+        "season": 3,
+        "episodes": "0 | 10",
+        "type": "TV Show",
+        "watched": "NOTW",
+        "owned": false
+    }
+]

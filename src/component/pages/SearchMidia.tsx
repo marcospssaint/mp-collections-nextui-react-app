@@ -47,7 +47,7 @@ export const SearchMidia = ({
 
     return (
         <div
-            className={`flex w-[250px] transition-[margin-left] ease-in-out duration-500 fixed top-[64px] bottom-0 right-0 z-40 ${expandSearch ? " m-0" : " hidden"}`}>
+            className={`flex w-[250px] transition-[margin-left] ease-in-out duration-500 fixed top-[0px] bottom-0 right-0 z-40 ${expandSearch ? " m-0" : " hidden"}`}>
             <div className="grid justify-items-end">
                 <Card>
                     <CardHeader className="flex items-center justify-between px-4">
