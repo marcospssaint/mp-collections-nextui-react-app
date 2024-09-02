@@ -1,7 +1,8 @@
-import { Accordion, AccordionItem, Badge, Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, cn, Input, ScrollShadow, Switch } from "@nextui-org/react";
+import { Accordion, AccordionItem, Badge, Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, cn, Input, ScrollShadow, Switch, User } from "@nextui-org/react";
 import { MinusIcon } from "../icons/MinusIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 import { SearchIcon } from "../icons/SearchIcon";
+import { linkFlags } from "../../utils/utils";
 
 interface SearchMidiaProps {
     expandSearch: boolean;
@@ -94,7 +95,7 @@ export const SearchMidia = ({
                                 }}
                                 indicator={({ isOpen }) => (isOpen ? <MinusIcon /> :
                                     <Badge color="default" placement="top-left" content={selectedGenres.length} shape="circle">
-                                        <PlusIcon className="fill-current" />
+                                        <PlusIcon />
                                     </Badge>
                                 )}
                                 disableIndicatorAnimation={true}>
@@ -114,7 +115,7 @@ export const SearchMidia = ({
                                 classNames={{
                                     title: "text-default-500"
                                 }}
-                                indicator={({ isOpen }) => (isOpen ? <MinusIcon /> :
+                                indicator={({ isOpen }) => (isOpen ? <MinusIcon  className="fill-current" /> :
                                     <Badge color="default" placement="top-left" content={selectedCountries.length} shape="circle">
                                         <PlusIcon className="fill-current" />
                                     </Badge>
@@ -141,10 +142,10 @@ export const SearchMidia = ({
                                                     value={c}
                                                 >
                                                     <div className="w-full flex">
-                                                        {/* <User
+                                                        <User
                                                             avatarProps={{ size: "sm", src: linkFlags(c) }}
                                                             name={c}
-                                                        /> */}
+                                                        />
                                                     </div>
                                                 </Checkbox>
                                             ))

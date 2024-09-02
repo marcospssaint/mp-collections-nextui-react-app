@@ -10,6 +10,6 @@ export const PlusIcon = ({ ...otherProps }: IconSvgProps) => (
         width="1em"
         {...otherProps}
     >
-        <path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z" />
+        <path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z" fill="currentColor" />
     </svg>
 )

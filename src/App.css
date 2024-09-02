@@ -5,11 +5,13 @@ body {
 /* Login.tsx */
 
 .m-8 {
-    margin: 2rem; /* 32px */
+    margin: 2rem;
+    /* 32px */
 }
 
 .w-72 {
-    width: 18rem; /* 288px */
+    width: 18rem;
+    /* 288px */
 }
 
 .site-form-input {
@@ -95,4 +97,123 @@ body {
 
 .gap-6 {
     gap: 1.5rem;
+}
+
+/** TableMidia.tsx **/
+.capitalize {
+    text-transform: capitalize;
+}
+
+/** ModalMidia.tsx **/
+@media screen and (min-width: 200px) {
+    .sm-app\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sm-app\:col-span-3 {
+        grid-column: span 3 / span 3;
+    }
+
+    .sm-app\:hidden {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    .sm-app\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .sm-app\:col-span-3 {
+        grid-column: span 3 / span 3;
+    }
+
+}
+
+@media screen and (min-width: 700px) {
+    .ml-app\:grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .sm-app\:col-span-3 {
+        grid-column: span 3 / span 3;
+    }
+
+}
+
+@media screen and (min-width: 900px) {
+    .lg-app\:grid-cols-6 {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .col-span-1 {
+        grid-column: span 1 / span 1;
+    }
+
+    .col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+}
+
+@media screen and (min-width: 1370px) {
+    .xl-app\:grid-cols-10 {
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+    }
+
+    .col-span-1 {
+        grid-column: span 1 / span 1;
+    }
+
+    .col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+}
+
+@media screen and (min-width: 2300px) {
+    .\xl-app\:grid-cols-12 {
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .col-span-1 {
+        grid-column: span 1 / span 1;
+    }
+
+    .col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+}
+
+.col-span-3 {
+    grid-column: span 3 / span 3;
+}
+
+.grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.image-card-col {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.h-\[260px\] {
+    height: 260px;
+}
+
+.h-\[298px\] {
+    height: 298px;
+}
+
+.whitespace-pre-wrap {
+    white-space: pre-wrap;
 }

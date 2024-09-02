@@ -16,7 +16,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     async function login(userData: object) {
         const response = (await api.post(userData));
-        console.log('response ', response)
         if (response.data.status === 200) {
             setUsername(response.data.username);
         } else {

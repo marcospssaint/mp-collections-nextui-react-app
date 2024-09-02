@@ -22,7 +22,6 @@ export const Login = () => {
         login({
             name: username,
         }).then(() => {
-            console.log('oi home')
             navigate('/home', { replace: true });
         }).catch(() => {
             setError('username', { type: 'invalid', message: 'Username invalid!' });

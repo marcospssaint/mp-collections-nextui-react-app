@@ -105,22 +105,35 @@ export const getFlagCountries = (countries: string) => {
 
 export const linkFlags = (country: string) => {
     var flag = 'https://flagcdn.com/';
-        if (country === 'USA')
-            flag += 'us.svg';
-        if (country === 'UK')
-            flag += 'gb.svg';
-        if (country === 'Italy')
-            flag += 'it.svg';
-        if (country === 'France')
-            flag += 'fr.svg';
-        if (country === 'Australia')
-            flag += 'au.svg';
-        if (country === 'Brazil')
-            flag += 'br.svg';
-        if (country === 'Switzerland')
-            flag += 'ch.svg';
-        if (country === 'Spain')
-            flag += 'es.svg';
+
+    switch(country) {
+        case 'Argentina': flag += 'ar.svg'; break;
+        case 'Australia': flag += 'au.svg'; break;
+        case 'Brazil': flag += 'br.svg'; break;
+        case 'Belgium': flag += 'be.svg'; break;
+        case 'Canada': flag += 'ca.svg'; break;
+        case 'China': flag += 'cn.svg'; break;
+        case 'Colombia': flag += 'co.svg'; break;
+        case 'Czech Republic': flag += 'cz.svg'; break;
+        case 'Greece': flag += 'gr.svg'; break;
+        case 'Hong Kong': flag += 'hk.svg'; break;
+        case 'India': flag += 'in.svg'; break;
+        case 'Italy': flag += 'it.svg'; break;
+        case 'Ireland': flag += 'ie.svg'; break;
+        case 'Israel': flag += 'il.svg'; break;
+        case 'Japan': flag += 'jp.svg'; break;
+        case 'Mexico': flag += 'mx.svg'; break;
+        case 'Taiwan': flag += 'tw.svg'; break;
+        case 'Netherlands': flag += 'nl.svg'; break;
+        case 'Philippines': flag += 'ph.svg'; break;
+        case 'USA': flag += 'us.svg'; break;
+        case 'UK': flag += 'gb.svg'; break;
+        case 'South Africa': flag += 'za.svg'; break;
+        case 'France': flag += 'fr.svg'; break;
+        case 'Switzerland': flag += 'ch.svg'; break;
+        case 'Singapore': flag += 'sg.svg'; break;
+        case 'Spain': flag += 'es.svg'; break;
+    }
     return flag;
 }
 
@@ -128,20 +141,22 @@ export const iconFlagLanguage = (language: string | undefined) => {
     if (language !== undefined) {
         let imageFlag;
         switch (language) {
-            case 'Argentina': imageFlag = ''; break;
-            case 'Belgian': imageFlag = ''; break;
+            case 'Argentina': imageFlag = 'ar.svg'; break;
+            case 'Belgian': imageFlag = 'be.svg'; break;
             case 'Portugues-pt': imageFlag = 'pt.svg'; break;
             case 'Portugues': imageFlag = 'br.svg'; break;
-            case 'Chinese': imageFlag = ''; break;
+            case 'Chinese':
+            case 'Mandarin':
+                imageFlag = 'cn.svg'; break;
             case 'French': imageFlag = 'fr.svg'; break;
-            case 'Germany': imageFlag = ''; break;
+            case 'Germany': imageFlag = 'de.svg'; break;
             case 'Italian': imageFlag = 'it.svg'; break;
-            case 'Japanese': imageFlag = ''; break;
-            case 'Philippines': imageFlag = ''; break;
-            case 'Singapore': imageFlag = ''; break;
-            case 'South Korea': imageFlag = ''; break;
+            case 'Japanese': imageFlag = 'jp.svg'; break;
+            case 'Philippines': imageFlag = 'ph.svg'; break;
+            case 'Singapore': imageFlag = 'sg.svg'; break;
+            case 'South Korea': imageFlag = 'kr.svg'; break;
             case 'Spanish': imageFlag = 'es.svg'; break;
-            case 'Switzerland': imageFlag = ''; break;
+            case 'Switzerland': imageFlag = 'ch.svg'; break;
             case 'English': imageFlag = 'gb.svg'; break;
             default: imageFlag = '';
         }

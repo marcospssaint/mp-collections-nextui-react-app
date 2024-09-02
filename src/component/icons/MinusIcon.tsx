@@ -10,6 +10,6 @@ export const MinusIcon = ({ ...otherProps }: IconSvgProps) => (
         width="1em"
         {...otherProps}
     >
-        <path d="M0 12v1h23v-1h-23z" />
+        <path d="M0 12v1h23v-1h-23z" fill="currentColor" />
     </svg>
 )

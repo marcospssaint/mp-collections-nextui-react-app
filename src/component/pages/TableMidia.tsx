@@ -1,8 +1,10 @@
-import type { Selection, SortDescriptor } from "@nextui-org/react";
+import type { Selection } from "@nextui-org/react";
 import { Avatar, Button, Chip, ChipProps, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@nextui-org/react";
 import React, { useEffect } from "react";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY } from "../../utils/constantes";
 import { capitalize, getFlagCountries, imageModified } from "../../utils/utils";
 import { ChevronDownIcon } from "../icons/ChevronDownIcon";
+import { IMidia, status, statusByMidia } from "../../data/midia";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
     W: "success",
@@ -14,19 +16,19 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 const sortBy = [
     {
-        key: 1,
+        key: DROPD_SORTBY_DT_DESC_KEY,
         label: "Release Date Descending",
     },
     {
-        key: 2,
+        key: DROPD_SORTBY_DT_ASC_KEY,
         label: "Release Date Ascending",
     },
     {
-        key: 3,
+        key: DROPD_SORTBY_TL_AZ_KEY,
         label: "Title (A-Z)",
     },
     {
-        key: 4,
+        key: DROPD_SORTBY_TL_ZA_KEY,
         label: "Title (Z-A)",
     },
 ];
@@ -35,11 +37,13 @@ interface TableMidiaProps {
     filteredItems: any[],
     initialColumns: any,
     columns: any[],
+    selectedSortByKeys: Selection;
+    setSelectedSortByKeys: React.Dispatch<React.SetStateAction<Selection>>;
     rowsPerPage: number,
     setRowsPerPage: React.Dispatch<React.SetStateAction<number>>,
     page: number,
     setPage: React.Dispatch<React.SetStateAction<number>>,
-    setMidiaSelected: any,
+    setMidiaSelected: React.Dispatch<React.SetStateAction<IMidia>>,
     onOpen: any
 }
 
@@ -47,6 +51,8 @@ export const TableMidia = ({
     filteredItems,
     initialColumns = [],
     columns,
+    selectedSortByKeys,
+    setSelectedSortByKeys,
     rowsPerPage,
     setRowsPerPage,
     page,
@@ -57,10 +63,6 @@ export const TableMidia = ({
     type Midia = typeof filteredItems[0];
 
     const [visibleColumns, setVisibleColumns] = React.useState<Selection>(initialColumns);
-
-    const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-        column: "title",
-    });
 
     useEffect(() => {
         setVisibleColumns(visibleColumns);
@@ -76,16 +78,6 @@ export const TableMidia = ({
 
         return filteredItems.slice(start, end);
     }, [page, filteredItems, rowsPerPage]);
-
-    const sortedItems = React.useMemo(() => {
-        return [...items].sort((a: Midia, b: Midia) => {
-            const first = a[sortDescriptor.column as keyof Midia] as number;
-            const second = b[sortDescriptor.column as keyof Midia] as number;
-            const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-            return sortDescriptor.direction === "descending" ? -cmp : cmp;
-        });
-    }, [sortDescriptor, items]);
 
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -122,11 +114,10 @@ export const TableMidia = ({
                 return (
                     <Chip
                         className="capitalize border-none gap-1 text-default-600"
-                        //color={statusColorMap[statusByMidia(midia)]}
+                        color={statusColorMap[statusByMidia(midia)]}
                         size="sm"
-                        variant="dot"
-                    >
-                        {/* {status(midia)} */}
+                        variant="dot">
+                        {status(midia)}
                     </Chip>
                 );
             default:
@@ -147,31 +138,36 @@ export const TableMidia = ({
                                 Sort by
                             </Button>
                         </DropdownTrigger>
-                        <DropdownMenu
+                        <DropdownMenu 
                             disallowEmptySelection
                             aria-label="Sort by"
                             closeOnSelect={false}
+                            selectedKeys={selectedSortByKeys}
                             selectionMode="single"
+                            onSelectionChange={setSelectedSortByKeys}
                             items={sortBy}>
                             {(item) => (
-                                <DropdownItem key={item.key}>
-                                    {item.label}
-                                </DropdownItem>
+                            <DropdownItem
+                                key={item.key}
+                                color={item.key === "delete" ? "danger" : "default"}
+                                className={item.key === "delete" ? "text-danger" : ""}
+                            >
+                                {item.label}
+                            </DropdownItem>
                             )}
                         </DropdownMenu>
                         {/* <DropdownMenu
                             disallowEmptySelection
                             aria-label="Sort by"
                             closeOnSelect={false}
-                            //selectedKeys={visibleColumns}
+                            selectedKeys={selectedSortByKeys}
                             selectionMode="single"
-                        //onSelectionChange={setVisibleColumns}
-                        >
-                            <DropdownItem>Release Date Descending</DropdownItem>
-                            <DropdownItem>Release Date Ascending</DropdownItem>
-                            <DropdownItem>Title (A-Z)</DropdownItem>
-                            <DropdownItem>Title (Z-A)</DropdownItem>
-                        </DropdownMenu>*/}
+                            onSelectionChange={setSelectedSortByKeys}>
+                            <DropdownItem key={DROPD_SORTBY_DT_DESC_KEY}>Release Date Descending</DropdownItem>
+                            <DropdownItem key={DROPD_SORTBY_DT_ASC_KEY}>Release Date Ascending</DropdownItem>
+                            <DropdownItem key={DROPD_SORTBY_TL_AZ_KEY}>Title (A-Z)</DropdownItem>
+                            <DropdownItem key={DROPD_SORTBY_TL_ZA_KEY}>Title (Z-A)</DropdownItem>
+                        </DropdownMenu> */}
                     </Dropdown>
                     <Dropdown>
                         <DropdownTrigger>
@@ -187,7 +183,7 @@ export const TableMidia = ({
                             aria-label="Table Columns"
                             closeOnSelect={false}
                             selectedKeys={visibleColumns}
-                            selectionMode="multiple"
+                            selectionMode="single"
                             onSelectionChange={setVisibleColumns}
                         >
                             {columns.map((column) => (
@@ -278,22 +274,23 @@ export const TableMidia = ({
                     setMidiaSelected(filteredItems.filter((m: any) => m.id + '' === key)[0])
                     onOpen();
                 }}
-                sortDescriptor={sortDescriptor}
+                //sortDescriptor={sortDescriptor}
                 topContent={topContent}
                 topContentPlacement="outside"
-                onSortChange={setSortDescriptor}
+                //onSortChange={setSortDescriptor}
                 selectionMode="single">
                 <TableHeader columns={headerColumns}>
                     {(column) => (
                         <TableColumn
                             key={column.uid}
                             align={column.uid === "actions" ? "center" : "start"}
-                            allowsSorting={column.sortable}>
+                            //allowsSorting={column.sortable}
+                            >
                             {column.name}
                         </TableColumn>
                     )}
                 </TableHeader>
-                <TableBody emptyContent={"No data found"} items={sortedItems}>
+                <TableBody emptyContent={"No data found"} items={items}>
                     {(item) => (
                         <TableRow key={item.id}>
                             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

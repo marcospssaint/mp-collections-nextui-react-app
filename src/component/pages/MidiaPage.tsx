@@ -1,7 +1,7 @@
-import { Chip, Tab, Tabs } from "@nextui-org/react";
-import React, { useEffect } from "react";
-import { TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE } from "../../utils/constantes";
-import { isFilterMultipleSelect, isFilterSearch, isNotNullArray, isNotNullStr } from "../../utils/utils";
+import { Chip, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import React, { useCallback, useEffect } from "react";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE } from "../../utils/constantes";
+import { createByType, isFilterMultipleSelect, isFilterSearch, isNotNullArray, isNotNullStr } from "../../utils/utils";
 import { AnimeIcon } from "../icons/AnimeIcon";
 import { ComicIcon } from "../icons/ComicIcon";
 import { MangaIcon } from "../icons/MangaIcon";
@@ -11,7 +11,12 @@ import { TVIcon } from "../icons/TvIcon";
 import { SearchMidia } from "./SearchMidia";
 
 import { Key } from '@react-types/shared';
+import { useAuth } from "../../contexts/auth";
+import { loadMidia } from "../../data/midia";
 import { TableMidia } from "./TableMidia";
+
+import type { Selection } from "@nextui-org/react";
+import { ModalMidia } from "./ModalMidia";
 
 interface MidiaPageProps {
     expandSearch: boolean;
@@ -23,6 +28,7 @@ export const MidiaPage = ({
     setExpandSearch,
 }: MidiaPageProps) => {
 
+    const { username } = useAuth();
     const [selected, setSelected] = React.useState<Key>(TAB_MOVIES_KEY);
     const [valueSearch, setValueSearch] = React.useState('');
     const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
@@ -31,17 +37,47 @@ export const MidiaPage = ({
 
     const hasSearchFilter = isNotNullStr(valueSearch);
 
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [midiaSelected, setMidiaSelected] = React.useState<any>();
+
+    const [selectedSortByKeys, setSelectedSortByKeys] = React.useState<Selection>(new Set([DROPD_SORTBY_TL_AZ_KEY]));
     const [rowsPerPage, setRowsPerPage] = React.useState(3);
     const [page, setPage] = React.useState(1);
 
     const [initialColumns, setInitialColumns] = React.useState<any[]>([]);
     const [columns, setColumns] = React.useState<any[]>([]);
 
+    const [moviesLoaded, setMoviesLoaded] = React.useState<any[]>([]);
+    const [tvShowLoaded, setTvShowLoaded] = React.useState<any[]>([]);
+    const [tvTokuLoaded, setTvTokuLoaded] = React.useState<any[]>([]);
+    const [animesLoaded, setAnimesLoaded] = React.useState<any[]>([]);
+    const [comicsLoaded, setComicsLoaded] = React.useState<any[]>([]);
+    const [mangasLoaded, setMangasLoaded] = React.useState<any[]>([]);
+
+    const handleLoad = useCallback(async () => {
+        setMoviesLoaded(await loadMidia(TAB_MOVIES_KEY, username));
+        setTvShowLoaded(await loadMidia(TAB_TV_KEY, username));
+        setTvTokuLoaded(await loadMidia(TAB_TV_TOKU_KEY, username));
+        setAnimesLoaded(await loadMidia(TAB_ANIMES_KEY, username));
+        setComicsLoaded(await loadMidia(TAB_COMICS_KEY, username));
+        setMangasLoaded(await loadMidia(TAB_MANGAS_KEY, username));
+    }, [username]);
+
     useEffect(() => {
+        /* setMidiaKVArray([]);
+        setSelectedAlphabets([]);
+        setSelectedGenres([]);
+        setCountries([]);
+        setLoading(true); */
+
         setExpandSearch(false);
-    }, [])
+        setPage(1);
+
+        handleLoad();
+    }, [handleLoad]);
 
     const data = React.useMemo(() => {
+        var midiaLoaded = [];
         const initialVisibleDefault = ["title", "year", "originalTitle",];
         const columnsDefault = [
             { name: "ID", uid: "id", sortable: true },
@@ -54,33 +90,68 @@ export const MidiaPage = ({
         if (selected === TAB_MOVIES_KEY) {
             setInitialColumns([...initialVisibleDefault, "status"]);
             setColumns([...columnsDefault, { name: "STATUS", uid: "status" }]);
-
+            midiaLoaded = moviesLoaded;
         } else if (selected === TAB_TV_KEY) {
-
+            setInitialColumns(["title", "season", "year", "status"]);
+            setColumns([
+                { name: "ID", uid: "id", sortable: true },
+                { name: "TITLE", uid: "title", sortable: true },
+                { name: "SEASON", uid: "season" },
+                { name: "YEAR", uid: "year", sortable: true },
+                { name: "STATUS", uid: "status" },
+                { name: "COUNTRIES", uid: "countries" },
+            ]);
+            midiaLoaded = tvShowLoaded;
         } else if (selected === TAB_TV_TOKU_KEY) {
-
+            setInitialColumns(["title", "season", "year", "type", "status"]);
+            setColumns([
+                { name: "ID", uid: "id", sortable: true },
+                { name: "TITLE", uid: "title", sortable: true },
+                { name: "SEASON", uid: "season" },
+                { name: "YEAR", uid: "year", sortable: true },
+                { name: "TYPE", uid: "type" },
+                { name: "STATUS", uid: "status" },
+                { name: "COUNTRIES", uid: "countries" },
+            ]);
+            midiaLoaded = tvTokuLoaded
         } else if (selected === TAB_ANIMES_KEY) {
-
+            setInitialColumns(["title", "season", "year", "type", "status"]);
+            setColumns([
+                { name: "ID", uid: "id", sortable: true },
+                { name: "TITLE", uid: "title", sortable: true },
+                { name: "SEASON", uid: "season" },
+                { name: "YEAR", uid: "year", sortable: true },
+                { name: "TYPE", uid: "type", sortable: true },
+                { name: "STATUS", uid: "status" },
+                { name: "COUNTRIES", uid: "countries" },
+            ]);
+            midiaLoaded = animesLoaded;
         } else if (selected === TAB_COMICS_KEY) {
-
+            setInitialColumns([...initialVisibleDefault, "phase", "status"]);
+            setColumns([...columnsDefault, 
+                { name: "PHASE", uid: "phase", sortable: true },
+                { name: "STATUS", uid: "status" }
+            ]);
+            midiaLoaded = comicsLoaded;
         } else if (selected === TAB_MANGAS_KEY) {
-
+            setInitialColumns([...initialVisibleDefault, "phase", "status"]);
+            setColumns([...columnsDefault, 
+                { name: "PHASE", uid: "phase", sortable: true },
+                { name: "STATUS", uid: "status" }
+            ]);
+            midiaLoaded = mangasLoaded;
         }
-        return [{
-            "id": 1,
-            "title": "... E o Vento Levou",
-            "originalTitle": "Gone with the Wind",
-            "year": 1939,
-            "genre": "Drama, Romance, War",
-            "cast": "<<>>Victor Fleming, George Cukor, Sam Wood\n\n*Clark Gable, Vivien Leigh, Thomas Mitchell",
-            "countries": "USA",
-            "synopsis": "Durante a Guerra Civil Americana, quando fortunas e famílias foram destruídas, um cínico aventureiro e uma determinada jovem, que foi duramente atingida pela guerra, se envolvem numa relação de amor e ódio.",
-            "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1688660563/data-imagens/movies/0-9/..._E_o_Vento_Levou.jpg\"",
-            "flagWatched": false,
-            "owned": false,
-            "watched": "NOTW"
-        }];
-    }, [selected]);
+
+        return midiaLoaded;
+    }, [selected, moviesLoaded, tvShowLoaded, tvTokuLoaded, animesLoaded, comicsLoaded, mangasLoaded]);
+
+    const genres = React.useMemo(() => {
+        return createByType(data, TYPE_F_GENRE);
+    }, [data]);
+
+    const countries = React.useMemo(() => {
+        return createByType(data, TYPE_F_COUNTRIES);
+    }, [data]);
 
     const wasResearch = () => {
         return hasSearchFilter
@@ -89,7 +160,19 @@ export const MidiaPage = ({
     }
 
     const filteredItems = React.useMemo(() => {
-        let filtered = [...data];
+        const sortByKey = Array.from(selectedSortByKeys).join(", ");
+
+        let filtered = [...data].sort((a, b) => {
+            if (DROPD_SORTBY_DT_DESC_KEY === sortByKey) {
+                return b?.year - a?.year;
+            } else if (DROPD_SORTBY_DT_ASC_KEY === sortByKey) {
+                return a?.year - b?.year;
+            } else if (DROPD_SORTBY_TL_ZA_KEY === sortByKey) {
+                return b.title?.localeCompare(a?.title)
+            }
+
+            return a.title?.localeCompare(b?.title)
+        });
 
         setRowsPerPage(hasSearchFilter ? 100 : rowsPerPage);
         setPage(1);
@@ -109,18 +192,24 @@ export const MidiaPage = ({
                 return isFilterSingleSelect(isSelectedOwner, m, TYPE_F_OWNED);
             }) */
             : filtered;
-    }, [data, valueSearch, selectedGenres, selectedCountries, isSelectedOwner, rowsPerPage]);
+    }, [data, valueSearch, selectedGenres, selectedCountries, selectedSortByKeys, isSelectedOwner, rowsPerPage]);
 
     return (<>
+        <ModalMidia
+            key='modal_midia'
+            midiaSelected={midiaSelected}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}/>
+
         <SearchMidia
             expandSearch={expandSearch}
             setExpandSearch={setExpandSearch}
             valueSearch={valueSearch}
             setValueSearch={setValueSearch}
-            genres={[]}
-            selectedGenres={selectedCountries}
+            genres={genres}
+            selectedGenres={selectedGenres}
             setSelectedGenres={setSelectedGenres}
-            countries={[]}
+            countries={countries}
             selectedCountries={selectedCountries}
             setSelectedCountries={setSelectedCountries}
             isSelectedOwner={isSelectedOwner}
@@ -147,7 +236,7 @@ export const MidiaPage = ({
                         <div className="flex items-center space-x-2">
                             <MovieIcon />
                             <span>Movies</span>
-                            <Chip size="sm" variant="faded">{0}</Chip>
+                            <Chip size="sm" variant="faded">{moviesLoaded.length}</Chip>
                         </div>
                     }
                 />
@@ -157,7 +246,7 @@ export const MidiaPage = ({
                         <div className="flex items-center space-x-2">
                             <TVIcon />
                             <span>TV Shows</span>
-                            <Chip size="sm" variant="faded">{0}</Chip>
+                            <Chip size="sm" variant="faded">{tvShowLoaded.length}</Chip>
                         </div>
                     }
                 />
@@ -167,7 +256,7 @@ export const MidiaPage = ({
                         <div className="flex items-center space-x-2">
                             <TokusatsuIcon />
                             <span>TV Tokusatsu</span>
-                            <Chip size="sm" variant="faded">{0}</Chip>
+                            <Chip size="sm" variant="faded">{tvTokuLoaded.length}</Chip>
                         </div>
                     }
                 />
@@ -177,7 +266,7 @@ export const MidiaPage = ({
                         <div className="flex items-center space-x-2">
                             <AnimeIcon />
                             <span>Animes</span>
-                            <Chip size="sm" variant="faded">{0}</Chip>
+                            <Chip size="sm" variant="faded">{animesLoaded.length}</Chip>
                         </div>
                     }
                 />
@@ -187,7 +276,7 @@ export const MidiaPage = ({
                         <div className="flex items-center space-x-2">
                             <ComicIcon />
                             <span>Comics</span>
-                            <Chip size="sm" variant="faded">{0}</Chip>
+                            <Chip size="sm" variant="faded">{comicsLoaded.length}</Chip>
                         </div>
                     }
                 />
@@ -197,7 +286,7 @@ export const MidiaPage = ({
                         <div className="flex items-center space-x-2">
                             <MangaIcon />
                             <span>Mangas</span>
-                            <Chip size="sm" variant="faded">{0}</Chip>
+                            <Chip size="sm" variant="faded">{mangasLoaded.length}</Chip>
                         </div>
                     }
                 />
@@ -208,12 +297,14 @@ export const MidiaPage = ({
             filteredItems={filteredItems}
             initialColumns={initialColumns}
             columns={columns}
+            selectedSortByKeys={selectedSortByKeys}
+            setSelectedSortByKeys={setSelectedSortByKeys}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             page={page}
             setPage={setPage}
-            setMidiaSelected={() => { }}
-            onOpen={() => { }}
+            setMidiaSelected={setMidiaSelected}
+            onOpen={onOpen}
         />
     </>)
 }
