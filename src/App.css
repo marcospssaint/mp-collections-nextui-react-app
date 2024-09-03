@@ -206,14 +206,18 @@ body {
     align-items: center;
 }
 
+.text-justify {
+    text-align: justify;
+}
+
+.whitespace-pre-wrap {
+    white-space: pre-wrap;
+}
+
 .h-\[260px\] {
     height: 260px;
 }
 
 .h-\[298px\] {
     height: 298px;
-}
-
-.whitespace-pre-wrap {
-    white-space: pre-wrap;
 }

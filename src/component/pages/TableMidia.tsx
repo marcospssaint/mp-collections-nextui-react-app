@@ -1,15 +1,17 @@
 import type { Selection } from "@nextui-org/react";
-import { Avatar, Button, Chip, ChipProps, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, User } from "@nextui-org/react";
+import { Avatar, Button, Chip, ChipProps, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import React, { useEffect } from "react";
+import { IMidia, ownedByMidia, status, statusByMidia } from "../../data/midia";
 import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY } from "../../utils/constantes";
-import { capitalize, getFlagCountries, imageModified } from "../../utils/utils";
+import { capitalize, getFlagCountries } from "../../utils/utils";
 import { ChevronDownIcon } from "../icons/ChevronDownIcon";
-import { IMidia, status, statusByMidia } from "../../data/midia";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
     W: "success",
+    Y: "success",
     R: "success",
     P: "danger",
+    N: "danger",
     NOTW: "warning",
     NOTR: "warning",
 };
@@ -65,8 +67,8 @@ export const TableMidia = ({
     const [visibleColumns, setVisibleColumns] = React.useState<Selection>(initialColumns);
 
     useEffect(() => {
-        setVisibleColumns(visibleColumns);
-    }, [filteredItems, visibleColumns]);
+        setVisibleColumns(initialColumns);
+    }, [initialColumns]);
 
     const headerColumns = React.useMemo(() => {
         return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
@@ -92,15 +94,12 @@ export const TableMidia = ({
         switch (columnKey) {
             case "title":
                 return (
-                    <User
-                        avatarProps={{ className: "", radius: "full", size: "lg", src: imageModified(midia.img) }}
-                        classNames={{
-                            description: "text-default-500",
-                        }}
-                        description={midia.subtitle ?? midia.publicationTitle}
-                        name={cellValue}>
-                        {midia.subtitle ?? midia.publicationTitle}
-                    </User>
+                    <>
+                        <div className="inline-flex flex-col items-start">
+                            <span className="text-small text-inherit">{cellValue}</span>
+                            <span className="text-tiny text-default-500">{midia.subtitle ?? midia.publicationTitle ?? midia.originalTitle}</span>
+                        </div>
+                    </>
                 );
             case "countries":
                 return (
@@ -120,6 +119,14 @@ export const TableMidia = ({
                         {status(midia)}
                     </Chip>
                 );
+            case "owned":
+                return (
+                    <Chip
+                        className="capitalize border-none gap-1 text-default-600"
+                        color={statusColorMap[ownedByMidia(midia)]}
+                        size="sm"
+                        variant="dot" />
+                );
             default:
                 return cellValue;
         }
@@ -138,7 +145,7 @@ export const TableMidia = ({
                                 Sort by
                             </Button>
                         </DropdownTrigger>
-                        <DropdownMenu 
+                        <DropdownMenu
                             disallowEmptySelection
                             aria-label="Sort by"
                             closeOnSelect={false}
@@ -147,13 +154,13 @@ export const TableMidia = ({
                             onSelectionChange={setSelectedSortByKeys}
                             items={sortBy}>
                             {(item) => (
-                            <DropdownItem
-                                key={item.key}
-                                color={item.key === "delete" ? "danger" : "default"}
-                                className={item.key === "delete" ? "text-danger" : ""}
-                            >
-                                {item.label}
-                            </DropdownItem>
+                                <DropdownItem
+                                    key={item.key}
+                                    color={item.key === "delete" ? "danger" : "default"}
+                                    className={item.key === "delete" ? "text-danger" : ""}
+                                >
+                                    {item.label}
+                                </DropdownItem>
                             )}
                         </DropdownMenu>
                         {/* <DropdownMenu
@@ -183,7 +190,7 @@ export const TableMidia = ({
                             aria-label="Table Columns"
                             closeOnSelect={false}
                             selectedKeys={visibleColumns}
-                            selectionMode="single"
+                            selectionMode="multiple"
                             onSelectionChange={setVisibleColumns}
                         >
                             {columns.map((column) => (
@@ -198,7 +205,7 @@ export const TableMidia = ({
                         <select
                             className="bg-transparent outline-none text-default-400 text-small"
                             onChange={onRowsPerPageChange}>
-                            <option value="3">3</option>
+                            <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
                             <option value="100">100</option>
@@ -266,6 +273,7 @@ export const TableMidia = ({
                 aria-label="Data of midias"
                 isCompact
                 isHeaderSticky
+                isStriped
                 bottomContent={bottomContent}
                 bottomContentPlacement="outside"
                 classNames={classNames}
@@ -284,8 +292,8 @@ export const TableMidia = ({
                         <TableColumn
                             key={column.uid}
                             align={column.uid === "actions" ? "center" : "start"}
-                            //allowsSorting={column.sortable}
-                            >
+                        //allowsSorting={column.sortable}
+                        >
                             {column.name}
                         </TableColumn>
                     )}

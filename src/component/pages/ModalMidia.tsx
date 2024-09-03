@@ -193,7 +193,7 @@ export const ModalMidia = ({
                                                                 Array.from({ length: midiaSelected?.language?.split(', ')?.length ?? 0 }).map((_, index) => {
                                                                     const languageCurrent = midiaSelected?.language?.split(',').at(index);
                                                                     const volumeCurrent_ = (midiaSelected?.volume + '')?.split(';').at(index);
-                                                                    const readVolumeCurrent_ = Number(midiaSelected?.readVolume?.split(';').at(index));
+                                                                    const readVolumeCurrent_ = Number((midiaSelected?.readVolume + '')?.split(';').at(index));
                                                                     const editions = nOfEdition(volumeCurrent_?.trim());
 
                                                                     return (<AccordionItem

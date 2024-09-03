@@ -16,8 +16,8 @@ export const TYPE_F_OWNED = 'T_OWNED';
 export const TYPES_FIELD = [TYPE_F_TITLE, TYPE_F_SUBTITLE, TYPE_F_PUBLICATION_TITLE, TYPE_F_ORIGINAL_TITLE, TYPE_F_CAST, TYPE_F_AUTHOR, TYPE_F_PUBLISHER];
 
 export const TAB_MOVIES_KEY = "MOVIES";
-export const TAB_TV_KEY = "TV";
-export const TAB_TV_TOKU_KEY = "TV_TOKU";
+export const TAB_TV_KEY = "TV_SHOWS";
+export const TAB_TV_TOKU_KEY = "TV_TOKUSATSU";
 export const TAB_ANIMES_KEY = "ANIMES";
 export const TAB_COMICS_KEY = "COMICS";
 export const TAB_MANGAS_KEY = "MANGAS";

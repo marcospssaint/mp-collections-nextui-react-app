@@ -41,7 +41,7 @@ export const MidiaPage = ({
     const [midiaSelected, setMidiaSelected] = React.useState<any>();
 
     const [selectedSortByKeys, setSelectedSortByKeys] = React.useState<Selection>(new Set([DROPD_SORTBY_TL_AZ_KEY]));
-    const [rowsPerPage, setRowsPerPage] = React.useState(3);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(1);
 
     const [initialColumns, setInitialColumns] = React.useState<any[]>([]);
@@ -64,12 +64,6 @@ export const MidiaPage = ({
     }, [username]);
 
     useEffect(() => {
-        /* setMidiaKVArray([]);
-        setSelectedAlphabets([]);
-        setSelectedGenres([]);
-        setCountries([]);
-        setLoading(true); */
-
         setExpandSearch(false);
         setPage(1);
 
@@ -78,7 +72,7 @@ export const MidiaPage = ({
 
     const data = React.useMemo(() => {
         var midiaLoaded = [];
-        const initialVisibleDefault = ["title", "year", "originalTitle",];
+        const initialVisibleDefault = ["title", "year", "originalTitle", "countries"];
         const columnsDefault = [
             { name: "ID", uid: "id", sortable: true },
             { name: "TITLE", uid: "title", sortable: true },
@@ -88,8 +82,16 @@ export const MidiaPage = ({
         ];
 
         if (selected === TAB_MOVIES_KEY) {
-            setInitialColumns([...initialVisibleDefault, "status"]);
-            setColumns([...columnsDefault, { name: "STATUS", uid: "status" }]);
+            setInitialColumns(["title", "year", "originalTitle", "countries", "status"]);
+            setColumns([ 
+                { name: "ID", uid: "id", sortable: true },
+                { name: "TITLE", uid: "title", sortable: true },
+                { name: "YEAR", uid: "year", sortable: true },
+                { name: "ORIGINAL TITLE", uid: "originalTitle", sortable: true },
+                { name: "COUNTRIES", uid: "countries" }, 
+                { name: "STATUS", uid: "status",  },
+                { name: "OWNED", uid: "owned",  }
+            ]);
             midiaLoaded = moviesLoaded;
         } else if (selected === TAB_TV_KEY) {
             setInitialColumns(["title", "season", "year", "status"]);
@@ -127,16 +129,25 @@ export const MidiaPage = ({
             ]);
             midiaLoaded = animesLoaded;
         } else if (selected === TAB_COMICS_KEY) {
-            setInitialColumns([...initialVisibleDefault, "phase", "status"]);
-            setColumns([...columnsDefault, 
+            setInitialColumns(["title", "year", "phase", "publisher", "countries", "status"]);
+            setColumns([
+                { name: "ID", uid: "id", sortable: true },
+                { name: "TITLE", uid: "title", sortable: true },
+                { name: "YEAR", uid: "year", sortable: true },
                 { name: "PHASE", uid: "phase", sortable: true },
+                { name: "PUBLISHER", uid: "publisher" },
+                { name: "COUNTRIES", uid: "countries" },
                 { name: "STATUS", uid: "status" }
             ]);
             midiaLoaded = comicsLoaded;
         } else if (selected === TAB_MANGAS_KEY) {
-            setInitialColumns([...initialVisibleDefault, "phase", "status"]);
-            setColumns([...columnsDefault, 
-                { name: "PHASE", uid: "phase", sortable: true },
+            setInitialColumns(["title", "year", "publisher", "language", "status"]);
+            setColumns([
+                { name: "ID", uid: "id", sortable: true },
+                { name: "TITLE", uid: "title", sortable: true },
+                { name: "YEAR", uid: "year", sortable: true },
+                { name: "PUBLISHER", uid: "publisher" },
+                { name: "LANGUAGE", uid: "language"},
                 { name: "STATUS", uid: "status" }
             ]);
             midiaLoaded = mangasLoaded;

@@ -59,6 +59,7 @@ export const createMidia = (data: IMidia[]) => {
 
         midiaArray.push({
             ...midia,
+            year: midia.year?? 1900,
             genre: firstObject.genre,
             countries: firstObject.countries,
             synopsis: midia.synopsis ?? firstObject.synopsis,
@@ -96,8 +97,12 @@ export const statusByMidia = (midia: IMidia) => {
     return (!!midia.read ? midia.read : midia.watched) ?? '';
 }
 
+export const ownedByMidia = (midia: IMidia) => {
+    return midia.owned === true ? 'Y' : 'N';
+}
+
 export const loadMidia = async (type: string, username: any) => {
-    return await load(getValueEnv(type, `REACT_APP_${type}`, username)) as IMidia[]; 
+    return createMidia(await load(getValueEnv(type, `REACT_APP_${type}`, username)) as IMidia[]); 
 }
 
 const getValueEnv = (type: string, value: string, username: any) => {

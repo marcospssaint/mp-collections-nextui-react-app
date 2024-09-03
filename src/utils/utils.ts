@@ -116,6 +116,7 @@ export const linkFlags = (country: string) => {
         case 'Colombia': flag += 'co.svg'; break;
         case 'Czech Republic': flag += 'cz.svg'; break;
         case 'Greece': flag += 'gr.svg'; break;
+        case 'Germany': flag += 'de.svg'; break;
         case 'Hong Kong': flag += 'hk.svg'; break;
         case 'India': flag += 'in.svg'; break;
         case 'Italy': flag += 'it.svg'; break;
