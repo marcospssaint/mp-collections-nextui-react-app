@@ -59,6 +59,7 @@ export const createMidia = (data: IMidia[]) => {
 
         midiaArray.push({
             ...midia,
+            originalTitle: midia.originalTitle ?? firstObject.originalTitle,
             year: midia.year?? 1900,
             genre: firstObject.genre,
             countries: firstObject.countries,

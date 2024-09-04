@@ -72,83 +72,76 @@ export const MidiaPage = ({
 
     const data = React.useMemo(() => {
         var midiaLoaded = [];
-        const initialVisibleDefault = ["title", "year", "originalTitle", "countries"];
-        const columnsDefault = [
-            { name: "ID", uid: "id", sortable: true },
-            { name: "TITLE", uid: "title", sortable: true },
-            { name: "YEAR", uid: "year", sortable: true },
-            { name: "ORIGINAL TITLE", uid: "originalTitle", sortable: true },
-            { name: "COUNTRIES", uid: "countries" },
-        ];
-
         if (selected === TAB_MOVIES_KEY) {
-            setInitialColumns(["title", "year", "originalTitle", "countries", "status"]);
+            setInitialColumns(["title", "year", "status", "owned"]);
             setColumns([ 
-                { name: "ID", uid: "id", sortable: true },
-                { name: "TITLE", uid: "title", sortable: true },
-                { name: "YEAR", uid: "year", sortable: true },
-                { name: "ORIGINAL TITLE", uid: "originalTitle", sortable: true },
+                { name: "ID", uid: "id" },
+                { name: "TITLE", uid: "title" },
+                { name: "YEAR", uid: "year" },
                 { name: "COUNTRIES", uid: "countries" }, 
                 { name: "STATUS", uid: "status",  },
                 { name: "OWNED", uid: "owned",  }
             ]);
             midiaLoaded = moviesLoaded;
         } else if (selected === TAB_TV_KEY) {
-            setInitialColumns(["title", "season", "year", "status"]);
+            setInitialColumns(["title", "season", "year", "status", "owned"]);
             setColumns([
-                { name: "ID", uid: "id", sortable: true },
-                { name: "TITLE", uid: "title", sortable: true },
+                { name: "ID", uid: "id" },
+                { name: "TITLE", uid: "title" },
                 { name: "SEASON", uid: "season" },
-                { name: "YEAR", uid: "year", sortable: true },
+                { name: "YEAR", uid: "year" },
                 { name: "STATUS", uid: "status" },
+                { name: "OWNED", uid: "owned",  },
                 { name: "COUNTRIES", uid: "countries" },
             ]);
             midiaLoaded = tvShowLoaded;
         } else if (selected === TAB_TV_TOKU_KEY) {
-            setInitialColumns(["title", "season", "year", "type", "status"]);
+            setInitialColumns(["title", "season", "year", "type", "status", "owned"]);
             setColumns([
-                { name: "ID", uid: "id", sortable: true },
-                { name: "TITLE", uid: "title", sortable: true },
+                { name: "ID", uid: "id" },
+                { name: "TITLE", uid: "title" },
                 { name: "SEASON", uid: "season" },
-                { name: "YEAR", uid: "year", sortable: true },
+                { name: "YEAR", uid: "year" },
                 { name: "TYPE", uid: "type" },
                 { name: "STATUS", uid: "status" },
-                { name: "COUNTRIES", uid: "countries" },
+                { name: "OWNED", uid: "owned",  }
             ]);
             midiaLoaded = tvTokuLoaded
         } else if (selected === TAB_ANIMES_KEY) {
-            setInitialColumns(["title", "season", "year", "type", "status"]);
+            setInitialColumns(["title", "season", "year", "type", "status", "owned"]);
             setColumns([
-                { name: "ID", uid: "id", sortable: true },
-                { name: "TITLE", uid: "title", sortable: true },
+                { name: "ID", uid: "id" },
+                { name: "TITLE", uid: "title" },
                 { name: "SEASON", uid: "season" },
-                { name: "YEAR", uid: "year", sortable: true },
-                { name: "TYPE", uid: "type", sortable: true },
+                { name: "YEAR", uid: "year" },
+                { name: "TYPE", uid: "type" },
                 { name: "STATUS", uid: "status" },
-                { name: "COUNTRIES", uid: "countries" },
+                { name: "OWNED", uid: "owned",  }
             ]);
             midiaLoaded = animesLoaded;
         } else if (selected === TAB_COMICS_KEY) {
-            setInitialColumns(["title", "year", "phase", "publisher", "countries", "status"]);
+            setInitialColumns(["title", "year", "publisher", "status", "owned"]);
             setColumns([
-                { name: "ID", uid: "id", sortable: true },
-                { name: "TITLE", uid: "title", sortable: true },
-                { name: "YEAR", uid: "year", sortable: true },
-                { name: "PHASE", uid: "phase", sortable: true },
+                { name: "ID", uid: "id" },
+                { name: "TITLE", uid: "title" },
+                { name: "YEAR", uid: "year" },
+                { name: "PHASE", uid: "phase" },
                 { name: "PUBLISHER", uid: "publisher" },
                 { name: "COUNTRIES", uid: "countries" },
-                { name: "STATUS", uid: "status" }
+                { name: "STATUS", uid: "status" },
+                { name: "OWNED", uid: "owned",  }
             ]);
             midiaLoaded = comicsLoaded;
         } else if (selected === TAB_MANGAS_KEY) {
-            setInitialColumns(["title", "year", "publisher", "language", "status"]);
+            setInitialColumns(["title", "year", "publisher", "status", "owned"]);
             setColumns([
-                { name: "ID", uid: "id", sortable: true },
-                { name: "TITLE", uid: "title", sortable: true },
-                { name: "YEAR", uid: "year", sortable: true },
+                { name: "ID", uid: "id" },
+                { name: "TITLE", uid: "title" },
+                { name: "YEAR", uid: "year" },
                 { name: "PUBLISHER", uid: "publisher" },
                 { name: "LANGUAGE", uid: "language"},
-                { name: "STATUS", uid: "status" }
+                { name: "STATUS", uid: "status" },
+                { name: "OWNED", uid: "owned",  }
             ]);
             midiaLoaded = mangasLoaded;
         }

@@ -1,7 +1,7 @@
 import type { Selection } from "@nextui-org/react";
 import { Avatar, Button, Chip, ChipProps, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import React, { useEffect } from "react";
-import { IMidia, ownedByMidia, status, statusByMidia } from "../../data/midia";
+import { IMidia, ownedByMidia, statusByMidia } from "../../data/midia";
 import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY } from "../../utils/constantes";
 import { capitalize, getFlagCountries } from "../../utils/utils";
 import { ChevronDownIcon } from "../icons/ChevronDownIcon";
@@ -115,9 +115,7 @@ export const TableMidia = ({
                         className="capitalize border-none gap-1 text-default-600"
                         color={statusColorMap[statusByMidia(midia)]}
                         size="sm"
-                        variant="dot">
-                        {status(midia)}
-                    </Chip>
+                        variant="dot" />
                 );
             case "owned":
                 return (
