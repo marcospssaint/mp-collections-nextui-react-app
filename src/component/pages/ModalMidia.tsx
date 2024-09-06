@@ -307,19 +307,12 @@ const NOfEditionsComponent = ({ isMoreLanguage, volumeCurrent, readVolumeCurrent
                     const indexCurrent = index + 1;
                     const contais = numeros.includes(indexCurrent);
 
-                    var conditionColor = "warning";
-                    if (reads.includes(indexCurrent)) {
-                        conditionColor = "success";
-                    } else if (contais) {
-                        conditionColor = "primary";
-                    }
-
                     return <div key={`issue_${index}_${indexCurrent}`} className="px-1">
                         <Avatar
                             key={`avatar_${indexCurrent}`}
                             name={`${indexCurrent}`}
                             isBordered
-                            color={reads.includes(indexCurrent) ? "success" : "primary"}
+                            color={colorNOfComponent(reads, indexCurrent, contais)}
                             size="sm" />
                     </div>
                 })
@@ -369,17 +362,27 @@ const NOfEpisodesWatchedComponent = ({ midiaVideo }: NOfEpisodesWatchedComponent
             {
                 [...Array(total).keys()].map((index) => {
                     const indexCurrent = index + 1;
+                    const contais = numeros.includes(indexCurrent);
 
                     return <div key={`ep_${midiaVideo?.season}_${indexCurrent}`} className="px-1">
                         <Avatar
                             key={`${midiaVideo?.season}_${indexCurrent}`}
                             name={`${indexCurrent}`}
                             isBordered
-                            color={watched.includes(indexCurrent) ? "success" : "primary"}
+                            color={colorNOfComponent(watched, indexCurrent, contais)}
                             size="sm" />
                     </div>
                 })
             }
         </div>
     );
+}
+
+const colorNOfComponent = (reads: any[], indexCurrent: number, contais: boolean) => {
+    if (reads.includes(indexCurrent)) {
+        return "success";
+    } else if (contais) {
+        return "primary";
+    }
+    return "warning";
 }
