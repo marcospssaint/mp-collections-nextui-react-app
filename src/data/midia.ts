@@ -24,6 +24,8 @@ export interface IMidia {
     notes?: string | null;
     img?: string | null;
 
+    flagMainMidia?: boolean;
+
     // leitura
     publicationTitle?: string;
     authors?: string;
@@ -59,6 +61,7 @@ export const createMidia = (data: IMidia[]) => {
 
         midiaArray.push({
             ...midia,
+            flagMainMidia: firstObject.id === midia.id,
             originalTitle: midia.originalTitle ?? firstObject.originalTitle,
             year: midia.year?? 1900,
             genre: firstObject.genre,

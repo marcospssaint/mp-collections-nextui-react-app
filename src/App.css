@@ -183,6 +183,10 @@ body {
     }
 }
 
+.border-1 {
+    border-width: 1px;
+}
+
 .col-span-3 {
     grid-column: span 3 / span 3;
 }

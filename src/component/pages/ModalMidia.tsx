@@ -1,6 +1,6 @@
 import { Accordion, AccordionItem, Avatar, Divider, Image, Modal, ModalBody, ModalContent, ModalHeader, ScrollShadow, Tab, Tabs } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { IMidia, nOfEdition } from "../../data/midia";
+import { IMidia } from "../../data/midia";
 import { getFlagCountries, iconFlagLanguage, imageModified, range, rangeBySeparator } from "../../utils/utils";
 
 interface ModalMidiaProps {
@@ -32,10 +32,6 @@ export const ModalMidia = ({
 
     const genres = () => {
         return midiaSelected?.genre?.replaceAll(',', ' · ');
-    }
-
-    const languages = () => {
-        return midiaSelected?.language !== null ? midiaSelected?.language?.replaceAll(',', ' · ') : '';
     }
 
     const writes = () => {
@@ -167,12 +163,6 @@ export const ModalMidia = ({
                                                                 <div className="text-small text-default-500 py-2">
                                                                     Perciler <p className="text-default-500">{pencilers()}</p>
                                                                 </div>
-                                                                <Divider className="my-4" />
-                                                                <div className="text-small text-default-500 py-2">
-                                                                    Language <p className="text-default-500">
-                                                                        {languages()}
-                                                                    </p>
-                                                                </div>
                                                             </>
                                                         }
 
@@ -182,71 +172,77 @@ export const ModalMidia = ({
                                                                 <NOfEpisodesWatchedComponent key={`nepisodies_${midiaSelected.season}`} midiaVideo={midiaSelected} />
                                                             </ScrollShadow>
                                                         }
+                                                        <div className="">
+                                                        <Divider className="my-4" />
+                                                            <Accordion selectionMode="single">
+                                                                {
+                                                                    Array.from({ length: midiaSelected?.language?.split(', ')?.length ?? 0 }).map((_, index) => {
+                                                                        const languageCurrent = midiaSelected?.language?.split(',').at(index)?.trim();
+                                                                        const volumeCurrent_ = (midiaSelected?.volume + '')?.split(';').at(index);
+                                                                        const readVolumeCurrent_ = Number((midiaSelected?.readVolume + '')?.split(';').at(index));
+
+                                                                        return (<AccordionItem
+                                                                            key={index + ''}
+                                                                            aria-label="Issues"
+                                                                            isCompact
+                                                                            startContent={
+                                                                                <Avatar
+                                                                                    key={`c_${index}`}
+                                                                                    className="w-6 h-6"
+                                                                                    src={iconFlagLanguage(languageCurrent?.trim())} />
+                                                                            }
+                                                                            title={`Issue(s) (${languageCurrent})`}
+                                                                            classNames={{
+                                                                                title: "font-bold h3"
+                                                                            }}>
+                                                                            <ScrollShadow key={`scroll_issue_${midiaSelected?.id}`}
+                                                                                orientation="horizontal"
+                                                                                hideScrollBar className="h-[150px]">
+                                                                                <NOfEditionsComponent
+                                                                                    readVolumeCurrent={readVolumeCurrent_}
+                                                                                    volumeCurrent={volumeCurrent_} />
+                                                                            </ScrollShadow>
+                                                                        </AccordionItem>)
+                                                                    })
+                                                                }
+                                                            </Accordion>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </Tab>
-                                            {
-                                                !!midiaSelected.volume && <Tab key={`issues_${midiaSelected?.id}`} title="Issues">
-                                                    <div className="h-[298px]">
-                                                        <Accordion selectionMode="multiple" defaultExpandedKeys={["0"]}>
-                                                            {
-                                                                Array.from({ length: midiaSelected?.language?.split(', ')?.length ?? 0 }).map((_, index) => {
-                                                                    const languageCurrent = midiaSelected?.language?.split(',').at(index);
-                                                                    const volumeCurrent_ = (midiaSelected?.volume + '')?.split(';').at(index);
-                                                                    const readVolumeCurrent_ = Number((midiaSelected?.readVolume + '')?.split(';').at(index));
-                                                                    const editions = nOfEdition(volumeCurrent_?.trim());
-
-                                                                    return (<AccordionItem
-                                                                        key={index + ''}
-                                                                        aria-label="Issues"
-                                                                        isCompact
-                                                                        startContent={
-                                                                            <Avatar
-                                                                                key={`c_${index}`}
-                                                                                className="w-6 h-6"
-                                                                                src={iconFlagLanguage(languageCurrent?.trim())} />
-                                                                        }
-                                                                        title={`${editions} issues in this volume`}
-                                                                        classNames={{
-                                                                            title: "font-bold"
-                                                                        }}
-                                                                    >
-                                                                        <ScrollShadow key={`scroll_issue_${midiaSelected?.id}`} orientation="horizontal" hideScrollBar className="h-[150px]">
-                                                                            <NOfEditionsComponent
-                                                                                isMoreLanguage={true}
-                                                                                readVolumeCurrent={readVolumeCurrent_}
-                                                                                volumeCurrent={volumeCurrent_} />
-                                                                        </ScrollShadow>
-                                                                    </AccordionItem>)
-                                                                })
-                                                            }
-                                                        </Accordion>
-                                                    </div>
-                                                </Tab>
-                                            }
                                             <Tab key={`perfil_${midiaSelected?.id}`} title="Perfil">
                                                 <div className="h-[298px]">
                                                     <div className="text-default-500 text-justify font-serif pb-4">
                                                         {!!midiaSelected?.originalTitle && <div className="py-1">{midiaSelected.originalTitle}</div>}
                                                     </div>
-                                                    <ScrollShadow key={`scroll_synopsis_${midiaSelected?.id}`} orientation="horizontal" hideScrollBar className="h-[260px]">
-                                                        <p className="text-default-500 text-justify font-serif">
-                                                            {midiaSelected.synopsis}
-                                                        </p>
+                                                    <ScrollShadow key={`scroll_synopsis_${midiaSelected?.id}`}
+                                                        orientation="horizontal" hideScrollBar className="h-[260px]">
+                                                        <div className="border-solid border-1 border-indigo-600 p-2">
+                                                            <p className="text-default-500 text-justify font-serif">
+                                                                {midiaSelected.synopsis}
+                                                            </p>
+                                                        </div>
                                                     </ScrollShadow>
                                                 </div>
                                             </Tab>
                                             <Tab key={`control_${midiaSelected?.id}`} title="Control">
                                                 <div className="h-[298px]">
-                                                    <div className="text-small text-default-500 py-2">
-                                                        Owned <p className="text-default-500">{midiaSelected.owned === true ? 'YES' : 'NO'}</p>
-                                                    </div>
-                                                    <Divider className="my-4" />
-                                                    <div className="text-small text-default-500 py-2">
-                                                        Watched <p className="text-default-500">{midiaSelected.watched === 'W' ? 'YES' : 'NO'}</p>
-                                                    </div>
-                                                    <Divider className="my-4" />
-                                                    <ScrollShadow key={`scroll_notes_${midiaSelected?.id}`} orientation="horizontal" hideScrollBar className="h-[150px]">
+                                                    {
+                                                        !midiaSelected.flagMainMidia &&
+                                                        <>
+                                                            <div className="text-small text-default-500 py-2">
+                                                                Owned <p className="text-default-500">{midiaSelected.owned === true ? 'YES' : 'NO'}</p>
+                                                            </div>
+                                                            <Divider className="my-4" />
+                                                            <div className="text-small text-default-500 py-2">
+                                                                Watched <p className="text-default-500">{midiaSelected.watched === 'W' ? 'YES' : 'NO'}</p>
+                                                            </div>
+                                                            <Divider className="my-4" />
+                                                        </>
+                                                    }
+                                                    <ScrollShadow key={`scroll_notes_${midiaSelected?.id}`}
+                                                        orientation="horizontal"
+                                                        hideScrollBar className={`h-[${midiaSelected.flagMainMidia ? '298' : '150'}px]`}>
                                                         <div className="text-small text-default-500 py-2">
                                                             Notes <p className="text-default-500 whitespace-pre-wrap">{midiaSelected.notes}</p>
                                                         </div>
@@ -267,13 +263,50 @@ export const ModalMidia = ({
     </>)
 }
 
+interface NOfComponentProps {
+    total: number;
+    numeros: any[];
+    list: any[];
+}
+
+const NOfComponent = ({ total, numeros, list }: NOfComponentProps) => {
+    return (
+        <div key={`_noof`} className="flex flex-wrap gap-2 items-center py-2">
+            {
+                [...Array(total).keys()].map((index) => {
+                    const indexCurrent = index + 1;
+                    const contais = numeros.includes(indexCurrent);
+
+                    return <div key={`issue_${index}_${indexCurrent}`} className="px-1">
+                        <Avatar
+                            key={`avatar_${indexCurrent}`}
+                            name={`${indexCurrent}`}
+                            radius="md"
+                            isBordered
+                            color={colorNOfComponent(list, indexCurrent, contais)}
+                            size="sm" />
+                    </div>
+                })
+            }
+        </div>
+    )
+}
+
+const colorNOfComponent = (list: any[], indexCurrent: number, contais: boolean) => {
+    if (list.includes(indexCurrent)) {
+        return "success";
+    } else if (contais) {
+        return "primary";
+    }
+    return "warning";
+}
+
 interface NOfEditionsComponentProps {
-    isMoreLanguage: boolean;
     volumeCurrent?: string,
     readVolumeCurrent?: number,
 }
 
-const NOfEditionsComponent = ({ isMoreLanguage, volumeCurrent, readVolumeCurrent }: NOfEditionsComponentProps) => {
+const NOfEditionsComponent = ({ volumeCurrent, readVolumeCurrent }: NOfEditionsComponentProps) => {
 
     const [total, setTotal] = useState<number>(0);
     const [numeros, setNumeros] = useState<(number | number[])[]>([0]);
@@ -298,27 +331,9 @@ const NOfEditionsComponent = ({ isMoreLanguage, volumeCurrent, readVolumeCurrent
         if (readVolumeCurrent !== undefined && !Number.isNaN(readVolumeCurrent)) {
             setReads([...range(0, readVolumeCurrent)]);
         }
-    }, [isMoreLanguage, readVolumeCurrent, volumeCurrent]);
+    }, [readVolumeCurrent, volumeCurrent]);
 
-    return (
-        <div key={`${isMoreLanguage}_noissues`} className="flex flex-wrap gap-2 items-center py-2">
-            {
-                [...Array(total).keys()].map((index) => {
-                    const indexCurrent = index + 1;
-                    const contais = numeros.includes(indexCurrent);
-
-                    return <div key={`issue_${index}_${indexCurrent}`} className="px-1">
-                        <Avatar
-                            key={`avatar_${indexCurrent}`}
-                            name={`${indexCurrent}`}
-                            isBordered
-                            color={colorNOfComponent(reads, indexCurrent, contais)}
-                            size="sm" />
-                    </div>
-                })
-            }
-        </div>
-    );
+    return <NOfComponent total={total} numeros={numeros} list={reads} />
 }
 
 interface NOfEpisodesWatchedComponentProps {
@@ -357,32 +372,5 @@ const NOfEpisodesWatchedComponent = ({ midiaVideo }: NOfEpisodesWatchedComponent
         }
     }, [midiaVideo, midiaVideo?.episodes, midiaVideo?.watchedEpisodes]);
 
-    return (
-        <div key={`${midiaVideo?.season}_nofep`} className="flex flex-wrap gap-2 items-center py-2">
-            {
-                [...Array(total).keys()].map((index) => {
-                    const indexCurrent = index + 1;
-                    const contais = numeros.includes(indexCurrent);
-
-                    return <div key={`ep_${midiaVideo?.season}_${indexCurrent}`} className="px-1">
-                        <Avatar
-                            key={`${midiaVideo?.season}_${indexCurrent}`}
-                            name={`${indexCurrent}`}
-                            isBordered
-                            color={colorNOfComponent(watched, indexCurrent, contais)}
-                            size="sm" />
-                    </div>
-                })
-            }
-        </div>
-    );
-}
-
-const colorNOfComponent = (reads: any[], indexCurrent: number, contais: boolean) => {
-    if (reads.includes(indexCurrent)) {
-        return "success";
-    } else if (contais) {
-        return "primary";
-    }
-    return "warning";
+    return <NOfComponent total={total} numeros={numeros} list={watched} />
 }
