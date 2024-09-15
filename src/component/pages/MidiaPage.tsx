@@ -47,6 +47,8 @@ export const MidiaPage = ({
     const [initialColumns, setInitialColumns] = React.useState<any[]>([]);
     const [columns, setColumns] = React.useState<any[]>([]);
 
+    const [changeGrid, setChangeGrid] = React.useState(true);
+
     const [moviesLoaded, setMoviesLoaded] = React.useState<any[]>([]);
     const [tvShowLoaded, setTvShowLoaded] = React.useState<any[]>([]);
     const [tvTokuLoaded, setTvTokuLoaded] = React.useState<any[]>([]);
@@ -65,7 +67,6 @@ export const MidiaPage = ({
 
     useEffect(() => {
         setExpandSearch(false);
-        setPage(1);
 
         handleLoad();
     }, [handleLoad]);
@@ -220,7 +221,7 @@ export const MidiaPage = ({
             setIsSelectedOwner={setIsSelectedOwner}
         />
 
-        <div className="flex w-full flex-col ">
+        <div className="flex w-full flex-col">
             <Tabs
                 aria-label="Options"
                 color="primary"
@@ -301,6 +302,8 @@ export const MidiaPage = ({
             filteredItems={filteredItems}
             initialColumns={initialColumns}
             columns={columns}
+            changeGrid={changeGrid}
+            setChangeGrid={setChangeGrid}
             selectedSortByKeys={selectedSortByKeys}
             setSelectedSortByKeys={setSelectedSortByKeys}
             rowsPerPage={rowsPerPage}

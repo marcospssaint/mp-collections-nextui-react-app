@@ -4,6 +4,10 @@ export const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+export const textMidia = (str: string) => {
+    return str?.length > 20 ? str.substring(0, 15) + '...' : str;
+}
+
 export const groupByToMap = <T, Q>(array: T[], predicate: (value: T, index: number, array: T[]) => Q) =>
     array.reduce((map, value, index, array) => {
         const key = predicate(value, index, array);

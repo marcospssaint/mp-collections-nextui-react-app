@@ -1,8 +1,8 @@
 import { Accordion, AccordionItem, Badge, Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, cn, Input, ScrollShadow, Switch, User } from "@nextui-org/react";
+import { linkFlags } from "../../utils/utils";
 import { MinusIcon } from "../icons/MinusIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 import { SearchIcon } from "../icons/SearchIcon";
-import { linkFlags } from "../../utils/utils";
 
 interface SearchMidiaProps {
     expandSearch: boolean;
@@ -53,7 +53,7 @@ export const SearchMidia = ({
                 <Card>
                     <CardHeader className="flex items-center justify-between px-4">
                         <h2 className="text-xl font-semibold text-black">Search</h2>
-                        <button className="text-gray-500 hover:text-gray-700 border-0" 
+                        <button className="text-gray-500 hover:text-gray-700 border-0"
                             onClick={() => setExpandSearch(!expandSearch)}>
                             <span className="sr-only">Close</span>
                             <svg className="h-6 w-6" x-description="Heroicon name: x" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -76,13 +76,18 @@ export const SearchMidia = ({
                                 value={valueSearch}
                                 onValueChange={onInputChange}
                             />
-                            <Button color="primary" variant="light" size="sm" onPress={() => {
-                                setSelectedGenres([]);
-                                setSelectedCountries([]);
-                                setIsSelectedOwner(false)
-                            }}>
-                                Reset all
-                            </Button>
+
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <Button color="primary" variant="light" size="sm" onPress={() => {
+                                        setSelectedGenres([]);
+                                        setSelectedCountries([]);
+                                        setIsSelectedOwner(false)
+                                    }}>
+                                        Reset all
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
 
                         <Accordion isCompact defaultExpandedKeys={['3']}>
@@ -115,7 +120,7 @@ export const SearchMidia = ({
                                 classNames={{
                                     title: "text-default-500"
                                 }}
-                                indicator={({ isOpen }) => (isOpen ? <MinusIcon  className="fill-current" /> :
+                                indicator={({ isOpen }) => (isOpen ? <MinusIcon className="fill-current" /> :
                                     <Badge color="default" placement="top-left" content={selectedCountries.length} shape="circle">
                                         <PlusIcon className="fill-current" />
                                     </Badge>

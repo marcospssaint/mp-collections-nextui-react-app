@@ -5,6 +5,9 @@ import { IMidia, ownedByMidia, statusByMidia } from "../../data/midia";
 import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY } from "../../utils/constantes";
 import { capitalize, getFlagCountries } from "../../utils/utils";
 import { ChevronDownIcon } from "../icons/ChevronDownIcon";
+import { GridMidiaComponent } from "./GridMidia";
+import { GridIcon } from "../icons/GridIcon";
+import { TableIcon } from "../icons/TableIcon";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
     W: "success",
@@ -39,13 +42,21 @@ interface TableMidiaProps {
     filteredItems: any[],
     initialColumns: any,
     columns: any[],
+
+    changeGrid: boolean,
+    setChangeGrid: React.Dispatch<React.SetStateAction<boolean>>,
+
     selectedSortByKeys: Selection;
     setSelectedSortByKeys: React.Dispatch<React.SetStateAction<Selection>>;
+
     rowsPerPage: number,
     setRowsPerPage: React.Dispatch<React.SetStateAction<number>>,
+
     page: number,
     setPage: React.Dispatch<React.SetStateAction<number>>,
+
     setMidiaSelected: React.Dispatch<React.SetStateAction<IMidia>>,
+
     onOpen: any
 }
 
@@ -53,13 +64,21 @@ export const TableMidia = ({
     filteredItems,
     initialColumns = [],
     columns,
+
+    changeGrid,
+    setChangeGrid,
+    
     selectedSortByKeys,
     setSelectedSortByKeys,
+    
     rowsPerPage,
     setRowsPerPage,
+
     page,
     setPage,
+
     setMidiaSelected,
+
     onOpen
 }: TableMidiaProps) => {
     type Midia = typeof filteredItems[0];
@@ -68,6 +87,7 @@ export const TableMidia = ({
 
     useEffect(() => {
         setVisibleColumns(initialColumns);
+        setPage(1);
     }, [initialColumns]);
 
     const headerColumns = React.useMemo(() => {
@@ -155,24 +175,11 @@ export const TableMidia = ({
                                 <DropdownItem
                                     key={item.key}
                                     color={item.key === "delete" ? "danger" : "default"}
-                                    className={item.key === "delete" ? "text-danger" : ""}
-                                >
+                                    className={item.key === "delete" ? "text-danger" : ""}>
                                     {item.label}
                                 </DropdownItem>
                             )}
                         </DropdownMenu>
-                        {/* <DropdownMenu
-                            disallowEmptySelection
-                            aria-label="Sort by"
-                            closeOnSelect={false}
-                            selectedKeys={selectedSortByKeys}
-                            selectionMode="single"
-                            onSelectionChange={setSelectedSortByKeys}>
-                            <DropdownItem key={DROPD_SORTBY_DT_DESC_KEY}>Release Date Descending</DropdownItem>
-                            <DropdownItem key={DROPD_SORTBY_DT_ASC_KEY}>Release Date Ascending</DropdownItem>
-                            <DropdownItem key={DROPD_SORTBY_TL_AZ_KEY}>Title (A-Z)</DropdownItem>
-                            <DropdownItem key={DROPD_SORTBY_TL_ZA_KEY}>Title (Z-A)</DropdownItem>
-                        </DropdownMenu> */}
                     </Dropdown>
                     <Dropdown>
                         <DropdownTrigger>
@@ -189,8 +196,7 @@ export const TableMidia = ({
                             closeOnSelect={false}
                             selectedKeys={visibleColumns}
                             selectionMode="multiple"
-                            onSelectionChange={setVisibleColumns}
-                        >
+                            onSelectionChange={setVisibleColumns}>
                             {columns.map((column) => (
                                 <DropdownItem key={column.uid} className="capitalize">
                                     {capitalize(column.name)}
@@ -209,11 +215,27 @@ export const TableMidia = ({
                             <option value="100">100</option>
                         </select>
                     </label>
+
+                    <div>
+                        {
+                            changeGrid && <Button isIconOnly aria-label="Change" variant="light"
+                                onPress={() => setChangeGrid(!changeGrid)}>
+                                <GridIcon />
+                            </Button>
+                        }
+                        {
+                            !changeGrid && <Button isIconOnly aria-label="Change" variant="light"
+                                onPress={() => setChangeGrid(!changeGrid)}>
+                                <TableIcon />
+                            </Button>
+                        }
+                    </div>
                 </div>
             </div>
         );
     }, [
         visibleColumns,
+        changeGrid,
         onRowsPerPageChange,
         filteredItems
     ]);
@@ -267,43 +289,58 @@ export const TableMidia = ({
 
     return (<>
         <div className="relative flex flex-col px-2">
-            <Table
-                aria-label="Data of midias"
-                isCompact
-                isHeaderSticky
-                isStriped
-                bottomContent={bottomContent}
-                bottomContentPlacement="outside"
-                classNames={classNames}
-                selectionBehavior="replace"
-                onRowAction={(key) => {
-                    setMidiaSelected(filteredItems.filter((m: any) => m.id + '' === key)[0])
-                    onOpen();
-                }}
-                //sortDescriptor={sortDescriptor}
-                topContent={topContent}
-                topContentPlacement="outside"
-                //onSortChange={setSortDescriptor}
-                selectionMode="single">
-                <TableHeader columns={headerColumns}>
-                    {(column) => (
-                        <TableColumn
-                            key={column.uid}
-                            align={column.uid === "actions" ? "center" : "start"}
-                        //allowsSorting={column.sortable}
-                        >
-                            {column.name}
-                        </TableColumn>
-                    )}
-                </TableHeader>
-                <TableBody emptyContent={"No data found"} items={items}>
-                    {(item) => (
-                        <TableRow key={item.id}>
-                            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+            {
+                changeGrid &&
+                    <Table
+                        aria-label="Data of midias"
+                        isCompact
+                        isHeaderSticky
+                        isStriped
+                        bottomContent={bottomContent}
+                        bottomContentPlacement="outside"
+                        classNames={classNames}
+                        selectionBehavior="replace"
+                        onRowAction={(key) => {
+                            setMidiaSelected(filteredItems.filter((m: any) => m.id + '' === key)[0])
+                            onOpen();
+                        }}
+                        topContent={topContent}
+                        topContentPlacement="outside"
+                        selectionMode="single">
+                        <TableHeader columns={headerColumns}>
+                            {(column) => (
+                                <TableColumn
+                                    key={column.uid}
+                                    align={column.uid === "actions" ? "center" : "start"}
+                                >
+                                    {column.name}
+                                </TableColumn>
+                            )}
+                        </TableHeader>
+                        <TableBody emptyContent={"No data found"} items={items}>
+                            {(item) => (
+                                <TableRow key={item.id}>
+                                    {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+            }
+
+            {
+                !changeGrid && <>
+                    {topContent}
+
+                    <GridMidiaComponent
+                        items={items}
+                        page={page}
+                        pages={pages}
+                        setPage={(setPage)}
+                        setMidiaSelected={setMidiaSelected}
+                        onOpen={onOpen}
+                    />
+                </>
+            }
         </div>
     </>)
 };

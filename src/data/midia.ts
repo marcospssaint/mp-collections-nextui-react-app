@@ -55,13 +55,14 @@ export const createMidia = (data: IMidia[]) => {
     const midiaArray = [] as IMidia[];
 
     for (let midia of data) {
-        const firstObject = midiaGrouped.get(midia.title)?.[0] ?? {} as IMidia;
+        const midiasByTitle = midiaGrouped.get(midia.title);
+        const firstObject = midiasByTitle?.[0] ?? {} as IMidia;
 
         if (midia?.collection && !midia?.countries) continue;
 
         midiaArray.push({
             ...midia,
-            flagMainMidia: firstObject.id === midia.id,
+            flagMainMidia: (midiasByTitle?.length??0 ) > 1 && firstObject.id === midia.id,
             originalTitle: midia.originalTitle ?? firstObject.originalTitle,
             year: midia.year?? 1900,
             genre: firstObject.genre,
