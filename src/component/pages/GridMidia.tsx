@@ -42,10 +42,10 @@ export const GridMidiaComponent = ({
                             </CardBody>
                             <Divider />
                             <CardFooter className="text-small">
-                                <div className="flex flex-col justify-items-start">
-                                    <span className="text-small text-inherit">{textMidia(item.title)}</span>
-                                    <span className="text-tiny text-default-500">{textMidia(item.subtitle ?? item.publicationTitle ?? item.originalTitle)}</span>
-                                    <span className=" text-tiny text-default-500">{item?.year}</span>
+                                <div>
+                                    <p className="text-inherit">{textMidia(item.title)}</p>
+                                    <p className="text-default-500">{textMidia(item.subtitle ?? item.publicationTitle ?? item.originalTitle)}</p>
+                                    <p className="text-default-500">{item?.year}</p>
                                 </div>
                             </CardFooter>
                         </Card>
