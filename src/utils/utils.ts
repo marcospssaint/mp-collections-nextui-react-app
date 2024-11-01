@@ -92,7 +92,10 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
         countries = midia?.countries?.split(', ');
         return countries?.some((country: string) => country === value);
     } 
-    else if (type === TYPE_F_OWNED) return midia?.owned === value;
+    else if (type === TYPE_F_OWNED) {
+        if (value === 'all') return true;
+        return midia?.owned+'' === value;
+    }
     return true;
 }
 

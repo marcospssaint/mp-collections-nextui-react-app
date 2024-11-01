@@ -1,7 +1,7 @@
 import { Chip, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect } from "react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE } from "../../utils/constantes";
-import { createByType, isFilterMultipleSelect, isFilterSearch, isNotNullArray, isNotNullStr } from "../../utils/utils";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_OWNED } from "../../utils/constantes";
+import { createByType, isFilterMultipleSelect, isFilterSearch, isFilterSingleSelect, isNotNullArray, isNotNullStr } from "../../utils/utils";
 import { AnimeIcon } from "../icons/AnimeIcon";
 import { ComicIcon } from "../icons/ComicIcon";
 import { MangaIcon } from "../icons/MangaIcon";
@@ -33,7 +33,7 @@ export const MidiaPage = ({
     const [valueSearch, setValueSearch] = React.useState('');
     const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
     const [selectedCountries, setSelectedCountries] = React.useState<string[]>([]);
-    const [isSelectedOwner, setIsSelectedOwner] = React.useState(true);
+    const [isSelectedOwner, setIsSelectedOwner] = React.useState('all');
 
     const hasSearchFilter = isNotNullStr(valueSearch);
 
@@ -158,10 +158,15 @@ export const MidiaPage = ({
         return createByType(data, TYPE_F_COUNTRIES);
     }, [data]);
 
+    const owners = React.useMemo(() => {
+        return ['all', 'true', 'false'];
+    }, []);
+
     const wasResearch = () => {
         return hasSearchFilter
             || isNotNullArray(selectedGenres)
-            || isNotNullArray(selectedCountries);
+            || isNotNullArray(selectedCountries)
+            || isNotNullStr(isSelectedOwner);
     }
 
     const filteredItems = React.useMemo(() => {
@@ -193,9 +198,9 @@ export const MidiaPage = ({
                 .filter((m: any) => {
                     return isFilterMultipleSelect(selectedCountries, m, TYPE_F_COUNTRIES);
                 })
-            /* .filter((m: any) => {
-                return isFilterSingleSelect(isSelectedOwner, m, TYPE_F_OWNED);
-            }) */
+                .filter((m: any) => {
+                    return isFilterSingleSelect(isSelectedOwner, m, TYPE_F_OWNED);
+                })
             : filtered;
     }, [data, valueSearch, selectedGenres, selectedCountries, selectedSortByKeys, isSelectedOwner, rowsPerPage]);
 
@@ -217,6 +222,7 @@ export const MidiaPage = ({
             countries={countries}
             selectedCountries={selectedCountries}
             setSelectedCountries={setSelectedCountries}
+            owners={owners}
             isSelectedOwner={isSelectedOwner}
             setIsSelectedOwner={setIsSelectedOwner}
         />

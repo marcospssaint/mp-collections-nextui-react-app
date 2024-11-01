@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, Badge, Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, cn, Input, ScrollShadow, Switch, User } from "@nextui-org/react";
+import { Accordion, AccordionItem, Badge, Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, cn, Input, Radio, RadioGroup, ScrollShadow, User } from "@nextui-org/react";
 import { linkFlags } from "../../utils/utils";
 import { MinusIcon } from "../icons/MinusIcon";
 import { PlusIcon } from "../icons/PlusIcon";
@@ -19,8 +19,9 @@ interface SearchMidiaProps {
     selectedCountries: string[],
     setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
 
-    isSelectedOwner: boolean,
-    setIsSelectedOwner: React.Dispatch<React.SetStateAction<boolean>>;
+    owners: string[];
+    isSelectedOwner: string,
+    setIsSelectedOwner: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const SearchMidia = ({
@@ -38,6 +39,7 @@ export const SearchMidia = ({
     selectedCountries,
     setSelectedCountries,
 
+    owners,
     isSelectedOwner,
     setIsSelectedOwner
 }: SearchMidiaProps) => {
@@ -82,7 +84,7 @@ export const SearchMidia = ({
                                     <Button color="primary" variant="light" size="sm" onPress={() => {
                                         setSelectedGenres([]);
                                         setSelectedCountries([]);
-                                        setIsSelectedOwner(false)
+                                        setIsSelectedOwner('all')
                                     }}>
                                         Reset all
                                     </Button>
@@ -166,31 +168,15 @@ export const SearchMidia = ({
                                     title: "text-default-500"
                                 }}>
 
-                                <div>
-                                    <Switch
-                                        classNames={{
-                                            base: cn(
-                                                "inline-flex flex-row-reverse w-full max-w-md bg-content1 hover:bg-content2 items-center",
-                                                "justify-between cursor-pointer rounded-lg gap-2 p-2 border-2 border-transparent",
-                                                "data-[selected=true]:border-primary",
-                                            ),
-                                            wrapper: "p-0 h-4 overflow-visible",
-                                            thumb: cn("w-6 h-6 border-2 shadow-lg",
-                                                "group-data-[hover=true]:border-primary",
-                                                //selected
-                                                "group-data-[selected=true]:ml-6",
-                                                // pressed
-                                                "group-data-[pressed=true]:w-7",
-                                                "group-data-[selected]:group-data-[pressed]:ml-4",
-                                            ),
-                                        }}
-                                        isSelected={isSelectedOwner}
+                                <ScrollShadow className="h-[150px]">
+                                    <RadioGroup
+                                        label="Owner"
+                                        defaultValue={isSelectedOwner}
+                                        value={isSelectedOwner}
                                         onValueChange={setIsSelectedOwner}>
-                                        <div className="flex flex-col gap-1">
-                                            <p className="text-medium">Owner</p>
-                                        </div>
-                                    </Switch>
-                                </div>
+                                        {owners.map((o) => <Radio value={o}>{o}</Radio>)}
+                                    </RadioGroup>
+                                </ScrollShadow>
                             </AccordionItem>
                         </Accordion>
                     </CardBody>
