@@ -1,3 +1,15 @@
+:root {
+    --banner-filter: blur(4px);
+    --banner-height: 13.5rem;
+    --banner-overlay-gradient: linear-gradient(67.81deg, rgba(0, 0, 0, .64) 35.51%, transparent);
+    --navbar-height: 3.5rem;
+    --top-margin: .5rem;
+    --md-background: 255 255 255;
+    --banner-overlap: calc(var(--navbar-height) + var(--top-margin));
+    --banner-top: 0;
+    --tw-text-opacity: 1;
+}
+
 body {
     background-color: #FAFAFA;
 }
@@ -86,7 +98,6 @@ body {
 }
 
 .group[data-selected=true] .group-data-\[selected\=true\]\:text-\[\#06b6d4\] {
-    --tw-text-opacity: 1;
     color: rgb(6 182 212 / var(--tw-text-opacity));
 }
 
@@ -227,13 +238,236 @@ body {
 
 /** GridMidia **/
 .mb-8 {
-    margin-bottom: 2rem; /* 32px */
+    margin-bottom: 2rem;
+    /* 32px */
 }
 
 .pt-4 {
-    padding: 1rem; /* 16px */
+    padding: 1rem;
+    /* 16px */
 }
 
 .justify-items-start {
     justify-items: start;
+}
+
+/* Modal Midia new */
+.mb-auto {
+    margin-bottom: auto;
+}
+
+.mb-1 {
+    margin-bottom: .25rem;
+}
+
+.md-content>* {
+    margin-bottom: 2rem;
+    margin-bottom: calc(var(--bottom-nav-area) + var(--bottom-margin));
+    margin-top: 0;
+    margin-top: var(--top-margin);
+    padding-left: var(--side-margin);
+    padding-right: var(--side-margin);
+}
+
+.layout-container {
+    --banner-overlay-gradient: linear-gradient(to bottom, rgb(var(--md-background) / .8) 0%, rgb(var(--md-background)) 100%);
+    gap: .75rem 1rem;
+    grid-template-areas:
+        "art title"
+        "art stats"
+        "info info"
+        "buttons buttons"
+        "synopsis synopsis"
+        "content content";
+    grid-template-columns: 100px auto;
+}
+
+.layout-container.modal-midia {
+    display: grid;
+    position: relative;
+}
+
+.banner-container,
+.banner-image {
+    height: 230px;
+}
+
+.rounded {
+    border-radius: .25rem !important;
+}
+
+.banner-container {
+    clip: rect(0, auto, auto, 0);
+    clip-path: inset(0 0);
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: var(--banner-top);
+    width: auto;
+    z-index: -1;
+    border-radius: .25rem;
+    
+}
+
+.block {
+    display: block;
+}
+
+.banner-image {
+    background-position: 25%;
+    background-size: cover;
+    position: fixed;
+    transition: width .15s ease-in-out;
+    width: 100%;
+}
+
+.banner-shade {
+    backdrop-filter: var(--banner-filter);
+    background: var(--banner-overlay-gradient);
+    bottom: 0;
+    height: auto;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+.title-banner {
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    font-weight: 700;
+    grid-area: title;
+    line-height: 100%;
+    min-width: 0;
+    position: relative;
+}
+
+.line-clamp-2 {
+    -webkit-line-clamp: 2;
+}
+
+.line-clamp-1, .line-clamp-2 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+}
+
+.text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.text-xs {
+    font-size: .75rem;
+    line-height: 1rem;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.md-md-container {
+    all: revert;
+}
+
+.genre-midia span {
+    font-weight: 700;
+    line-Height: 1.5em;
+}
+
+.bottom-1 {
+    bottom: 0.25rem;
+}
+
+.my-6 {
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.tag {
+    align-items: center;
+    border-radius: .25rem;
+    display: inline-flex
+;
+    font-size: .75rem;
+    min-height: 1.75rem;
+    padding: .3125rem .5rem;
+    transition: all .1s ease-out;
+}
+
+.tag.no-wrapper {
+    border-radius: 0;
+    margin-bottom: -.3125rem;
+    margin-top: -.3125rem;
+    padding: 0;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+@media (min-width: 48rem) {
+    .md\:grid-cols-\[1fr_12rem\] {
+        grid-template-columns: 1fr 12rem;
+    }
+}
+
+@media (min-width: 40rem) {
+    .layout-container {
+        --banner-filter: blur(4px);
+        --banner-overlay-gradient: linear-gradient(67.81deg, rgba(0, 0, 0, .64) 35.51%, transparent);
+        gap: 0.5rem;
+        grid-template-areas:
+            "left art title right"
+            "left art buttons right"
+            "left art info right"
+            "left art stats right"
+            "left art padding right"
+            "left synopsis synopsis right"
+            "left content content right";
+        grid-template-columns: 1fr 200px minmax(0, calc(1240px - 3.5rem)) 1fr;
+    }
+
+    .title-banner {
+        padding-bottom: .5rem;
+        padding-left: .5rem;
+        padding-right: .5rem;
+        --tw-text-opacity: 1;
+        color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+        height: var(--banner-height);
+        justify-content: flex-end;
+        font-size: 3rem;
+    }
+
+    .sm\:block {
+        display: block;
+    }
+
+    .sm\:text-xl {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    .sm\:text-base {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    .sm\:truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sm\:mx-2 {
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
+
+    .sm\:font-bold {
+        font-weight: 700;
+    }
 }

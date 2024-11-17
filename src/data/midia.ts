@@ -48,31 +48,44 @@ export interface IMidia {
     episodes?: string | null;
     watchedEpisodes?: number;
     type?: string;
+
+    midiasTvs?: IMidia[]
 }
 
-export const createMidia = (data: IMidia[]) => {
+export const createMidia = (data: IMidia[], type: string) => {
     const midiaGrouped = groupByToMap(data, (e) => e.title);
     const midiaArray = [] as IMidia[];
 
-    for (let midia of data) {
-        const midiasByTitle = midiaGrouped.get(midia.title);
-        const firstObject = midiasByTitle?.[0] ?? {} as IMidia;
+    if (TAB_TV_KEY === type) {
+        for (let m of midiaGrouped) {
+            const firstObject = m?.[1][0] ?? {} as IMidia;
+            console.log('m > ', m, firstObject)
 
-        if (midia?.collection && !midia?.countries) continue;
-
-        midiaArray.push({
-            ...midia,
-            flagMainMidia: (midiasByTitle?.length??0 ) > 1 && firstObject.id === midia.id,
-            originalTitle: midia.originalTitle ?? firstObject.originalTitle,
-            year: midia.year?? 1900,
-            genre: firstObject.genre,
-            countries: firstObject.countries,
-            synopsis: midia.synopsis ?? firstObject.synopsis,
-            notes: midia.notes ?? firstObject.notes,
-            img: midia.img ?? firstObject.img
-        })
+            midiaArray.push({
+                ...firstObject,
+                midiasTvs: m?.[1]
+            })
+        }
+    } else {
+        for (let midia of data) {
+            const midiasByTitle = midiaGrouped.get(midia.title);
+            const firstObject = midiasByTitle?.[0] ?? {} as IMidia;
+    
+            if (midia?.collection && !midia?.countries) continue;
+    
+            midiaArray.push({
+                ...midia,
+                flagMainMidia: false ,//(midiasByTitle?.length??0 ) > 1 && firstObject.id === midia.id,
+                originalTitle: midia.originalTitle ?? firstObject.originalTitle,
+                year: midia.year?? 1900,
+                genre: firstObject.genre,
+                countries: firstObject.countries,
+                synopsis: midia.synopsis ?? firstObject.synopsis,
+                notes: midia.notes ?? firstObject.notes,
+                img: midia.img ?? firstObject.img
+            })
+        }
     }
-
     return midiaArray;
 }
 
@@ -107,7 +120,7 @@ export const ownedByMidia = (midia: IMidia) => {
 }
 
 export const loadMidia = async (type: string, username: any) => {
-    return createMidia(await load(getValueEnv(type, `REACT_APP_${type}`, username)) as IMidia[]); 
+    return createMidia(await load(getValueEnv(type, `REACT_APP_${type}`, username)) as IMidia[], type); 
 }
 
 const getValueEnv = (type: string, value: string, username: any) => {

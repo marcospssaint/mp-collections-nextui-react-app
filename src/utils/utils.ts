@@ -1,3 +1,4 @@
+import { ChipProps } from "@nextui-org/react";
 import { TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
 
 export const capitalize = (str: string) => {
@@ -99,7 +100,7 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
     return true;
 }
 
-export const getFlagCountries = (countries: string) => {
+export const getFlagCountries = (countries?: string) => {
     if (!isNotNullStr(countries)) return [];
     
     var options = [''];
@@ -109,6 +110,16 @@ export const getFlagCountries = (countries: string) => {
 
     return options?.filter(isNotNullStr);
 }
+
+export const statusColorMap: Record<string, ChipProps["color"]> = {
+    W: "success",
+    Y: "success",
+    R: "success",
+    P: "danger",
+    N: "danger",
+    NOTW: "warning",
+    NOTR: "warning",
+};
 
 export const linkFlags = (country: string) => {
     var flag = 'https://flagcdn.com/';

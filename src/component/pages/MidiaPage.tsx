@@ -1,4 +1,4 @@
-import { Chip, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import { Button, Chip, Input, Select, SelectItem, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect } from "react";
 import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_OWNED } from "../../utils/constantes";
 import { createByType, isFilterMultipleSelect, isFilterSearch, isFilterSingleSelect, isNotNullArray, isNotNullStr } from "../../utils/utils";
@@ -17,6 +17,10 @@ import { TableMidia } from "./TableMidia";
 
 import type { Selection } from "@nextui-org/react";
 import { ModalMidia } from "./ModalMidia";
+import { SearchIcon } from "../icons/SearchIcon";
+import { MinusIcon } from "../icons/MinusIcon";
+import { GridIcon } from "../icons/GridIcon";
+import { TableIcon } from "../icons/TableIcon";
 
 interface MidiaPageProps {
     expandSearch: boolean;
@@ -75,13 +79,13 @@ export const MidiaPage = ({
         var midiaLoaded = [];
         if (selected === TAB_MOVIES_KEY) {
             setInitialColumns(["title", "year", "status", "owned"]);
-            setColumns([ 
+            setColumns([
                 { name: "ID", uid: "id" },
                 { name: "TITLE", uid: "title" },
                 { name: "YEAR", uid: "year" },
-                { name: "COUNTRIES", uid: "countries" }, 
-                { name: "STATUS", uid: "status",  },
-                { name: "OWNED", uid: "owned",  }
+                { name: "COUNTRIES", uid: "countries" },
+                { name: "STATUS", uid: "status", },
+                { name: "OWNED", uid: "owned", }
             ]);
             midiaLoaded = moviesLoaded;
         } else if (selected === TAB_TV_KEY) {
@@ -92,7 +96,7 @@ export const MidiaPage = ({
                 { name: "SEASON", uid: "season" },
                 { name: "YEAR", uid: "year" },
                 { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned",  },
+                { name: "OWNED", uid: "owned", },
                 { name: "COUNTRIES", uid: "countries" },
             ]);
             midiaLoaded = tvShowLoaded;
@@ -105,7 +109,7 @@ export const MidiaPage = ({
                 { name: "YEAR", uid: "year" },
                 { name: "TYPE", uid: "type" },
                 { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned",  }
+                { name: "OWNED", uid: "owned", }
             ]);
             midiaLoaded = tvTokuLoaded
         } else if (selected === TAB_ANIMES_KEY) {
@@ -117,7 +121,7 @@ export const MidiaPage = ({
                 { name: "YEAR", uid: "year" },
                 { name: "TYPE", uid: "type" },
                 { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned",  }
+                { name: "OWNED", uid: "owned", }
             ]);
             midiaLoaded = animesLoaded;
         } else if (selected === TAB_COMICS_KEY) {
@@ -130,7 +134,7 @@ export const MidiaPage = ({
                 { name: "PUBLISHER", uid: "publisher" },
                 { name: "COUNTRIES", uid: "countries" },
                 { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned",  }
+                { name: "OWNED", uid: "owned", }
             ]);
             midiaLoaded = comicsLoaded;
         } else if (selected === TAB_MANGAS_KEY) {
@@ -140,9 +144,9 @@ export const MidiaPage = ({
                 { name: "TITLE", uid: "title" },
                 { name: "YEAR", uid: "year" },
                 { name: "PUBLISHER", uid: "publisher" },
-                { name: "LANGUAGE", uid: "language"},
+                { name: "LANGUAGE", uid: "language" },
                 { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned",  }
+                { name: "OWNED", uid: "owned", }
             ]);
             midiaLoaded = mangasLoaded;
         }
@@ -209,7 +213,7 @@ export const MidiaPage = ({
             key='modal_midia'
             midiaSelected={midiaSelected}
             isOpen={isOpen}
-            onOpenChange={onOpenChange}/>
+            onOpenChange={onOpenChange} />
 
         <SearchMidia
             expandSearch={expandSearch}
@@ -226,6 +230,58 @@ export const MidiaPage = ({
             isSelectedOwner={isSelectedOwner}
             setIsSelectedOwner={setIsSelectedOwner}
         />
+
+        <div className="grid gap-2 md:grid-cols-[1fr_12rem] pt-2">
+            <div >
+                <Input
+                    aria-label="Search filter"
+                    //radius="full"
+                    placeholder="Search"
+                    size="md"
+                    isClearable
+                    startContent={
+                        <SearchIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    }
+                    value={valueSearch}
+                //onValueChange={onInputChange}
+                />
+            </div>
+
+            <Button
+                className="md:hidden rounded custom-opacity relative md-btn flex items-center px-3 overflow-hidden accent md:hidden"
+                startContent={<MinusIcon />}>
+                Open filters
+            </Button>
+
+        </div>
+
+        <div>
+            
+        </div>
+
+        <div className="flex my-6 flex-row justify-between gap-6">
+            <div></div>
+            <div className="pr-1">
+
+                <Button isIconOnly
+                    aria-label="Grid"
+                    variant={!changeGrid ? 'shadow' : 'light'}
+                    color={!changeGrid ? 'primary' : 'default'}
+                    onPress={() => setChangeGrid(!changeGrid)}
+                >
+                    <GridIcon />
+                </Button>
+
+                <Button isIconOnly
+                    aria-label="Table"
+                    variant={changeGrid ? 'shadow' : 'light'}
+                    color={changeGrid ? 'primary' : 'default'}
+                    onPress={() => setChangeGrid(!changeGrid)}>
+                    <TableIcon />
+                </Button>
+
+            </div>
+        </div>
 
         <div className="flex w-full flex-col">
             <Tabs

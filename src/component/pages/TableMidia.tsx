@@ -270,8 +270,8 @@ export const TableMidia = ({
     const classNames = React.useMemo(
         () => ({
             wrapper: ["max-h-[390px]"],
-
-            th: ["text-default-500"],
+            th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
+            //th: ["text-default-500"],
             td: [
                 // changing the rows border radius
                 // first
@@ -294,8 +294,9 @@ export const TableMidia = ({
                     <Table
                         aria-label="Data of midias"
                         isCompact
-                        isHeaderSticky
-                        isStriped
+                        removeWrapper
+                        //isHeaderSticky
+                        //isStriped
                         bottomContent={bottomContent}
                         bottomContentPlacement="outside"
                         classNames={classNames}

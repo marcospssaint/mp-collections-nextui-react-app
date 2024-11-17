@@ -54,7 +54,7 @@ export const SearchMidia = ({
             <div className="grid justify-items-end">
                 <Card>
                     <CardHeader className="flex items-center justify-between px-4">
-                        <h2 className="text-xl font-semibold text-black">Search</h2>
+                        <h2 className="text-xl font-semibold text-black">Filters</h2>
                         <button className="text-gray-500 hover:text-gray-700 border-0"
                             onClick={() => setExpandSearch(!expandSearch)}>
                             <span className="sr-only">Close</span>
