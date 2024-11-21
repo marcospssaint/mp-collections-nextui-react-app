@@ -21,6 +21,7 @@ import { SearchIcon } from "../icons/SearchIcon";
 import { MinusIcon } from "../icons/MinusIcon";
 import { GridIcon } from "../icons/GridIcon";
 import { TableIcon } from "../icons/TableIcon";
+import { FilterMidia } from "./FilterMidia";
 
 interface MidiaPageProps {
     expandSearch: boolean;
@@ -35,7 +36,7 @@ export const MidiaPage = ({
     const { username } = useAuth();
     const [selected, setSelected] = React.useState<Key>(TAB_MOVIES_KEY);
     const [valueSearch, setValueSearch] = React.useState('');
-    const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
+    const [selectedGenres, setSelectedGenres] = React.useState<Selection>(new Set([]));
     const [selectedCountries, setSelectedCountries] = React.useState<string[]>([]);
     const [isSelectedOwner, setIsSelectedOwner] = React.useState('all');
 
@@ -168,7 +169,7 @@ export const MidiaPage = ({
 
     const wasResearch = () => {
         return hasSearchFilter
-            || isNotNullArray(selectedGenres)
+            || selectedGenres != null
             || isNotNullArray(selectedCountries)
             || isNotNullStr(isSelectedOwner);
     }
@@ -215,7 +216,7 @@ export const MidiaPage = ({
             isOpen={isOpen}
             onOpenChange={onOpenChange} />
 
-        <SearchMidia
+        {/* <SearchMidia
             expandSearch={expandSearch}
             setExpandSearch={setExpandSearch}
             valueSearch={valueSearch}
@@ -229,44 +230,32 @@ export const MidiaPage = ({
             owners={owners}
             isSelectedOwner={isSelectedOwner}
             setIsSelectedOwner={setIsSelectedOwner}
+        /> */}
+
+        <FilterMidia
+            valueSearch={valueSearch}
+            setValueSearch={setValueSearch}
+            selectedSortByKeys={selectedSortByKeys}
+            setSelectedSortByKeys={setSelectedSortByKeys}
+            genres={genres}
+            selectedGenres={selectedGenres}
+            setSelectedGenres={setSelectedGenres}
+            countries={countries}
+            selectedCountries={selectedCountries}
+            setSelectedCountries={setSelectedCountries}
+            owners={owners}
+            isSelectedOwner={isSelectedOwner}
+            setIsSelectedOwner={setIsSelectedOwner}
         />
 
-        <div className="grid gap-2 md:grid-cols-[1fr_12rem] pt-2">
-            <div >
-                <Input
-                    aria-label="Search filter"
-                    //radius="full"
-                    placeholder="Search"
-                    size="md"
-                    isClearable
-                    startContent={
-                        <SearchIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                    value={valueSearch}
-                //onValueChange={onInputChange}
-                />
-            </div>
-
-            <Button
-                className="md:hidden rounded custom-opacity relative md-btn flex items-center px-3 overflow-hidden accent md:hidden"
-                startContent={<MinusIcon />}>
-                Open filters
-            </Button>
-
-        </div>
-
-        <div>
-            
-        </div>
-
-        <div className="flex my-6 flex-row justify-between gap-6">
+        <div className="flex my-4 flex-row justify-between gap-6">
             <div></div>
-            <div className="pr-1">
-
+            <div className="flex gap-4 items-center pr-2">
                 <Button isIconOnly
+                    size="lg"
                     aria-label="Grid"
-                    variant={!changeGrid ? 'shadow' : 'light'}
-                    color={!changeGrid ? 'primary' : 'default'}
+                    variant={changeGrid ? 'faded' : 'shadow'}
+                    //color={!changeGrid ? 'primary' : 'default'}
                     onPress={() => setChangeGrid(!changeGrid)}
                 >
                     <GridIcon />
@@ -274,12 +263,12 @@ export const MidiaPage = ({
 
                 <Button isIconOnly
                     aria-label="Table"
-                    variant={changeGrid ? 'shadow' : 'light'}
-                    color={changeGrid ? 'primary' : 'default'}
+                    size="lg"
+                    variant={!changeGrid ? 'faded' : 'shadow'}
+                    //color={changeGrid ? 'primary' : 'default'}
                     onPress={() => setChangeGrid(!changeGrid)}>
                     <TableIcon />
                 </Button>
-
             </div>
         </div>
 

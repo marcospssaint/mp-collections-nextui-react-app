@@ -154,7 +154,7 @@ export const TableMidia = ({
         return (
             <div className="flex flex-col gap-4 py-2">
                 <div className="flex justify-between items-center">
-                    <Dropdown>
+                    {/* <Dropdown>
                         <DropdownTrigger>
                             <Button
                                 endContent={<ChevronDownIcon className="text-small" />}
@@ -180,7 +180,7 @@ export const TableMidia = ({
                                 </DropdownItem>
                             )}
                         </DropdownMenu>
-                    </Dropdown>
+                    </Dropdown> */}
                     <Dropdown>
                         <DropdownTrigger>
                             <Button
@@ -216,7 +216,7 @@ export const TableMidia = ({
                         </select>
                     </label>
 
-                    <div>
+                    {/* <div>
                         {
                             changeGrid && <Button isIconOnly aria-label="Change" variant="light"
                                 onPress={() => setChangeGrid(!changeGrid)}>
@@ -229,7 +229,7 @@ export const TableMidia = ({
                                 <TableIcon />
                             </Button>
                         }
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );
@@ -330,7 +330,7 @@ export const TableMidia = ({
 
             {
                 !changeGrid && <>
-                    {topContent}
+                    
 
                     <GridMidiaComponent
                         items={items}

@@ -1,5 +1,5 @@
 import { ChipProps } from "@nextui-org/react";
-import { TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
 
 export const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -73,10 +73,10 @@ const isFilterSearchByType = (value: any, midia: any, type: string) => {
     return valueSearchStr?.toLowerCase().includes(value?.toLowerCase());
 }
 
-export const isFilterMultipleSelect = (values: any[] | undefined, midia: any, type: string) => {
-    if (!isNotNullArray(values)) return true;
+export const isFilterMultipleSelect = (values: Selection | any | any[] | undefined, midia: any, type: string) => {
+    if (Array.from(values).length == 0) return true;
 
-    return values?.some((value) => isFilterByType(value, midia, type));
+    return Array.from(values)?.some((value: any) => isFilterByType(value, midia, type));
 }
 
 export const isFilterSingleSelect = (value: any | undefined, midia: any, type: string) => {
@@ -121,7 +121,44 @@ export const statusColorMap: Record<string, ChipProps["color"]> = {
     NOTR: "warning",
 };
 
-export const linkFlags = (country: string) => {
+export const sortBy = [
+    {
+        key: DROPD_SORTBY_DT_DESC_KEY,
+        label: "Release Date Descending",
+    },
+    {
+        key: DROPD_SORTBY_DT_ASC_KEY,
+        label: "Release Date Ascending",
+    },
+    {
+        key: DROPD_SORTBY_TL_AZ_KEY,
+        label: "Title (A-Z)",
+    },
+    {
+        key: DROPD_SORTBY_TL_ZA_KEY,
+        label: "Title (Z-A)",
+    },
+];
+
+export const owner = [
+    {
+        key: "true",
+        label: "I have"
+    },
+    {
+        key: "false",
+        label: "I don't have"
+    }
+]
+
+export const status = [
+    {
+        key: "false",
+        label: "Ongoing"
+    },
+]
+
+export const linkFlags = (country?: string) => {
     var flag = 'https://flagcdn.com/';
 
     switch(country) {

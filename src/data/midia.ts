@@ -56,13 +56,13 @@ export const createMidia = (data: IMidia[], type: string) => {
     const midiaGrouped = groupByToMap(data, (e) => e.title);
     const midiaArray = [] as IMidia[];
 
-    if (TAB_TV_KEY === type) {
+    if (TAB_TV_KEY === type || TAB_ANIMES_KEY === type) {
         for (let m of midiaGrouped) {
             const firstObject = m?.[1][0] ?? {} as IMidia;
-            console.log('m > ', m, firstObject)
 
             midiaArray.push({
                 ...firstObject,
+                type: type,
                 midiasTvs: m?.[1]
             })
         }
