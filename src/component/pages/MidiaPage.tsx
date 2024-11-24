@@ -1,44 +1,38 @@
-import { Button, Chip, Input, Select, SelectItem, Tab, Tabs, useDisclosure } from "@nextui-org/react";
-import React, { useCallback, useEffect } from "react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_OWNED } from "../../utils/constantes";
-import { createByType, isFilterMultipleSelect, isFilterSearch, isFilterSingleSelect, isNotNullArray, isNotNullStr } from "../../utils/utils";
+import { Button, Chip, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import React, { useCallback, useEffect, useRef } from "react";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_OWNED, TYPE_F_STATUS } from "../../utils/constantes";
+import { createByType, isFilterMultipleSelect, isFilterSearch, isFilterSingleSelect, isNotNullSelectionArray, isNotNullStr } from "../../utils/utils";
 import { AnimeIcon } from "../icons/AnimeIcon";
 import { ComicIcon } from "../icons/ComicIcon";
 import { MangaIcon } from "../icons/MangaIcon";
 import { MovieIcon } from "../icons/MovieIcon";
 import { TokusatsuIcon } from "../icons/TokusatsuIcon";
 import { TVIcon } from "../icons/TvIcon";
-import { SearchMidia } from "./SearchMidia";
 
 import { Key } from '@react-types/shared';
 import { useAuth } from "../../contexts/auth";
 import { loadMidia } from "../../data/midia";
-import { TableMidia } from "./TableMidia";
 
 import type { Selection } from "@nextui-org/react";
-import { ModalMidia } from "./ModalMidia";
-import { SearchIcon } from "../icons/SearchIcon";
-import { MinusIcon } from "../icons/MinusIcon";
 import { GridIcon } from "../icons/GridIcon";
 import { TableIcon } from "../icons/TableIcon";
+import { ComponentMidia } from "./ComponentMidia";
 import { FilterMidia } from "./FilterMidia";
+import { ModalMidia } from "./ModalMidia";
 
 interface MidiaPageProps {
-    expandSearch: boolean;
-    setExpandSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const MidiaPage = ({
-    expandSearch,
-    setExpandSearch,
 }: MidiaPageProps) => {
 
     const { username } = useAuth();
     const [selected, setSelected] = React.useState<Key>(TAB_MOVIES_KEY);
     const [valueSearch, setValueSearch] = React.useState('');
     const [selectedGenres, setSelectedGenres] = React.useState<Selection>(new Set([]));
-    const [selectedCountries, setSelectedCountries] = React.useState<string[]>([]);
-    const [isSelectedOwner, setIsSelectedOwner] = React.useState('all');
+    const [selectedCountries, setSelectedCountries] = React.useState<Selection>(new Set());
+    const [isSelectedOwner, setIsSelectedOwner] = React.useState<Selection>(new Set());
+    const [selectedStatus, setSelectedStatus] = React.useState<Selection>(new Set());
 
     const hasSearchFilter = isNotNullStr(valueSearch);
 
@@ -46,13 +40,12 @@ export const MidiaPage = ({
     const [midiaSelected, setMidiaSelected] = React.useState<any>();
 
     const [selectedSortByKeys, setSelectedSortByKeys] = React.useState<Selection>(new Set([DROPD_SORTBY_TL_AZ_KEY]));
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(24);
     const [page, setPage] = React.useState(1);
 
-    const [initialColumns, setInitialColumns] = React.useState<any[]>([]);
-    const [columns, setColumns] = React.useState<any[]>([]);
+    const [changeVisibleMidia, setChangeVisibleMidia] = React.useState(true);
 
-    const [changeGrid, setChangeGrid] = React.useState(true);
+    const pageTopRef = useRef<HTMLDivElement>(null);
 
     const [moviesLoaded, setMoviesLoaded] = React.useState<any[]>([]);
     const [tvShowLoaded, setTvShowLoaded] = React.useState<any[]>([]);
@@ -71,7 +64,7 @@ export const MidiaPage = ({
     }, [username]);
 
     useEffect(() => {
-        setExpandSearch(false);
+        //setExpandSearch(false);
 
         handleLoad();
     }, [handleLoad]);
@@ -79,76 +72,16 @@ export const MidiaPage = ({
     const data = React.useMemo(() => {
         var midiaLoaded = [];
         if (selected === TAB_MOVIES_KEY) {
-            setInitialColumns(["title", "year", "status", "owned"]);
-            setColumns([
-                { name: "ID", uid: "id" },
-                { name: "TITLE", uid: "title" },
-                { name: "YEAR", uid: "year" },
-                { name: "COUNTRIES", uid: "countries" },
-                { name: "STATUS", uid: "status", },
-                { name: "OWNED", uid: "owned", }
-            ]);
             midiaLoaded = moviesLoaded;
         } else if (selected === TAB_TV_KEY) {
-            setInitialColumns(["title", "season", "year", "status", "owned"]);
-            setColumns([
-                { name: "ID", uid: "id" },
-                { name: "TITLE", uid: "title" },
-                { name: "SEASON", uid: "season" },
-                { name: "YEAR", uid: "year" },
-                { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned", },
-                { name: "COUNTRIES", uid: "countries" },
-            ]);
             midiaLoaded = tvShowLoaded;
         } else if (selected === TAB_TV_TOKU_KEY) {
-            setInitialColumns(["title", "season", "year", "type", "status", "owned"]);
-            setColumns([
-                { name: "ID", uid: "id" },
-                { name: "TITLE", uid: "title" },
-                { name: "SEASON", uid: "season" },
-                { name: "YEAR", uid: "year" },
-                { name: "TYPE", uid: "type" },
-                { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned", }
-            ]);
             midiaLoaded = tvTokuLoaded
         } else if (selected === TAB_ANIMES_KEY) {
-            setInitialColumns(["title", "season", "year", "type", "status", "owned"]);
-            setColumns([
-                { name: "ID", uid: "id" },
-                { name: "TITLE", uid: "title" },
-                { name: "SEASON", uid: "season" },
-                { name: "YEAR", uid: "year" },
-                { name: "TYPE", uid: "type" },
-                { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned", }
-            ]);
             midiaLoaded = animesLoaded;
         } else if (selected === TAB_COMICS_KEY) {
-            setInitialColumns(["title", "year", "publisher", "status", "owned"]);
-            setColumns([
-                { name: "ID", uid: "id" },
-                { name: "TITLE", uid: "title" },
-                { name: "YEAR", uid: "year" },
-                { name: "PHASE", uid: "phase" },
-                { name: "PUBLISHER", uid: "publisher" },
-                { name: "COUNTRIES", uid: "countries" },
-                { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned", }
-            ]);
             midiaLoaded = comicsLoaded;
         } else if (selected === TAB_MANGAS_KEY) {
-            setInitialColumns(["title", "year", "publisher", "status", "owned"]);
-            setColumns([
-                { name: "ID", uid: "id" },
-                { name: "TITLE", uid: "title" },
-                { name: "YEAR", uid: "year" },
-                { name: "PUBLISHER", uid: "publisher" },
-                { name: "LANGUAGE", uid: "language" },
-                { name: "STATUS", uid: "status" },
-                { name: "OWNED", uid: "owned", }
-            ]);
             midiaLoaded = mangasLoaded;
         }
 
@@ -163,15 +96,12 @@ export const MidiaPage = ({
         return createByType(data, TYPE_F_COUNTRIES);
     }, [data]);
 
-    const owners = React.useMemo(() => {
-        return ['all', 'true', 'false'];
-    }, []);
-
     const wasResearch = () => {
         return hasSearchFilter
-            || selectedGenres != null
-            || isNotNullArray(selectedCountries)
-            || isNotNullStr(isSelectedOwner);
+            || isNotNullSelectionArray(selectedGenres)
+            || isNotNullSelectionArray(selectedCountries)
+            || isNotNullSelectionArray(isSelectedOwner)
+            || isNotNullSelectionArray(selectedStatus);
     }
 
     const filteredItems = React.useMemo(() => {
@@ -194,20 +124,52 @@ export const MidiaPage = ({
 
         return wasResearch() ?
             filtered
-                .filter((m: any) => {
-                    return isFilterSearch(valueSearch, m);
-                })
-                .filter((m: any) => {
-                    return isFilterMultipleSelect(selectedGenres, m, TYPE_F_GENRE);
-                })
-                .filter((m: any) => {
-                    return isFilterMultipleSelect(selectedCountries, m, TYPE_F_COUNTRIES);
-                })
-                .filter((m: any) => {
-                    return isFilterSingleSelect(isSelectedOwner, m, TYPE_F_OWNED);
-                })
+                .filter((m: any) => isFilterSearch(valueSearch, m))
+                .filter((m: any) => isFilterMultipleSelect(selectedGenres, m, TYPE_F_GENRE))
+                .filter((m: any) => isFilterSingleSelect(selectedCountries, m, TYPE_F_COUNTRIES))
+                .filter((m: any) => isFilterSingleSelect(isSelectedOwner, m, TYPE_F_OWNED))
+                .filter((m: any) => isFilterSingleSelect(selectedStatus, m, TYPE_F_STATUS))
             : filtered;
-    }, [data, valueSearch, selectedGenres, selectedCountries, selectedSortByKeys, isSelectedOwner, rowsPerPage]);
+    }, [data, valueSearch, selectedGenres, selectedCountries, selectedSortByKeys, isSelectedOwner, selectedStatus, changeVisibleMidia, rowsPerPage]);
+
+    let tabs = [
+        {
+            id: TAB_MOVIES_KEY,
+            icon: <MovieIcon />,
+            title: 'Movies',
+            length: moviesLoaded.length
+        },
+        {
+            id: TAB_TV_KEY,
+            icon: <TVIcon />,
+            title: 'TV Shows',
+            length: tvShowLoaded.length
+        },
+        {
+            id: TAB_TV_TOKU_KEY,
+            icon: <TokusatsuIcon />,
+            title: 'TV Tokusatsu',
+            length: tvTokuLoaded.length
+        },
+        {
+            id: TAB_ANIMES_KEY,
+            icon: <AnimeIcon />,
+            title: 'Animes',
+            length: animesLoaded.length
+        },
+        {
+            id: TAB_COMICS_KEY,
+            icon: <ComicIcon />,
+            title: 'Comics',
+            length: comicsLoaded.length
+        },
+        {
+            id: TAB_MANGAS_KEY,
+            icon: <MangaIcon />,
+            title: 'Mangas',
+            length: mangasLoaded.length
+        }
+    ]
 
     return (<>
         <ModalMidia
@@ -216,26 +178,9 @@ export const MidiaPage = ({
             isOpen={isOpen}
             onOpenChange={onOpenChange} />
 
-        {/* <SearchMidia
-            expandSearch={expandSearch}
-            setExpandSearch={setExpandSearch}
-            valueSearch={valueSearch}
-            setValueSearch={setValueSearch}
-            genres={genres}
-            selectedGenres={selectedGenres}
-            setSelectedGenres={setSelectedGenres}
-            countries={countries}
-            selectedCountries={selectedCountries}
-            setSelectedCountries={setSelectedCountries}
-            owners={owners}
-            isSelectedOwner={isSelectedOwner}
-            setIsSelectedOwner={setIsSelectedOwner}
-        /> */}
-
         <FilterMidia
             valueSearch={valueSearch}
             setValueSearch={setValueSearch}
-            selectedSortByKeys={selectedSortByKeys}
             setSelectedSortByKeys={setSelectedSortByKeys}
             genres={genres}
             selectedGenres={selectedGenres}
@@ -243,10 +188,10 @@ export const MidiaPage = ({
             countries={countries}
             selectedCountries={selectedCountries}
             setSelectedCountries={setSelectedCountries}
-            owners={owners}
             isSelectedOwner={isSelectedOwner}
             setIsSelectedOwner={setIsSelectedOwner}
-        />
+            selectedStatus={selectedStatus}
+            setSelectedStatus={setSelectedStatus} />
 
         <div className="flex my-4 flex-row justify-between gap-6">
             <div></div>
@@ -254,25 +199,22 @@ export const MidiaPage = ({
                 <Button isIconOnly
                     size="lg"
                     aria-label="Grid"
-                    variant={changeGrid ? 'faded' : 'shadow'}
-                    //color={!changeGrid ? 'primary' : 'default'}
-                    onPress={() => setChangeGrid(!changeGrid)}
-                >
+                    variant={changeVisibleMidia ? 'faded' : 'shadow'}
+                    onPress={() => setChangeVisibleMidia(!changeVisibleMidia)}>
                     <GridIcon />
                 </Button>
 
                 <Button isIconOnly
-                    aria-label="Table"
                     size="lg"
-                    variant={!changeGrid ? 'faded' : 'shadow'}
-                    //color={changeGrid ? 'primary' : 'default'}
-                    onPress={() => setChangeGrid(!changeGrid)}>
+                    aria-label="Table"
+                    variant={!changeVisibleMidia ? 'faded' : 'shadow'}
+                    onPress={() => setChangeVisibleMidia(!changeVisibleMidia)}>
                     <TableIcon />
                 </Button>
             </div>
         </div>
 
-        <div className="flex w-full flex-col">
+        <div className="flex w-full flex-col" ref={pageTopRef}>
             <Tabs
                 aria-label="Options"
                 color="primary"
@@ -285,84 +227,30 @@ export const MidiaPage = ({
                 }}
                 selectedKey={selected}
                 onSelectionChange={setSelected}
-            >
-                <Tab
-                    key={TAB_MOVIES_KEY}
-                    title={
+                items={tabs}>
+                {(item) => (
+                    <Tab key={item.id} title={<>
                         <div className="flex items-center space-x-2">
-                            <MovieIcon />
-                            <span>Movies</span>
-                            <Chip size="sm" variant="faded">{moviesLoaded.length}</Chip>
+                            {item.icon}
+                            <span>{item.title}</span>
+                            <Chip size="sm" variant="faded">{item.length}</Chip>
                         </div>
-                    }
-                />
-                <Tab
-                    key={TAB_TV_KEY}
-                    title={
-                        <div className="flex items-center space-x-2">
-                            <TVIcon />
-                            <span>TV Shows</span>
-                            <Chip size="sm" variant="faded">{tvShowLoaded.length}</Chip>
-                        </div>
-                    }
-                />
-                <Tab
-                    key={TAB_TV_TOKU_KEY}
-                    title={
-                        <div className="flex items-center space-x-2">
-                            <TokusatsuIcon />
-                            <span>TV Tokusatsu</span>
-                            <Chip size="sm" variant="faded">{tvTokuLoaded.length}</Chip>
-                        </div>
-                    }
-                />
-                <Tab
-                    key={TAB_ANIMES_KEY}
-                    title={
-                        <div className="flex items-center space-x-2">
-                            <AnimeIcon />
-                            <span>Animes</span>
-                            <Chip size="sm" variant="faded">{animesLoaded.length}</Chip>
-                        </div>
-                    }
-                />
-                <Tab
-                    key={TAB_COMICS_KEY}
-                    title={
-                        <div className="flex items-center space-x-2">
-                            <ComicIcon />
-                            <span>Comics</span>
-                            <Chip size="sm" variant="faded">{comicsLoaded.length}</Chip>
-                        </div>
-                    }
-                />
-                <Tab
-                    key={TAB_MANGAS_KEY}
-                    title={
-                        <div className="flex items-center space-x-2">
-                            <MangaIcon />
-                            <span>Mangas</span>
-                            <Chip size="sm" variant="faded">{mangasLoaded.length}</Chip>
-                        </div>
-                    }
-                />
+                    </>} />
+                )}
             </Tabs>
         </div>
 
-        <TableMidia
+        <ComponentMidia
             filteredItems={filteredItems}
-            initialColumns={initialColumns}
-            columns={columns}
-            changeGrid={changeGrid}
-            setChangeGrid={setChangeGrid}
-            selectedSortByKeys={selectedSortByKeys}
-            setSelectedSortByKeys={setSelectedSortByKeys}
+            selected={selected}
+            changeVisibleMidia={changeVisibleMidia}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             page={page}
             setPage={setPage}
             setMidiaSelected={setMidiaSelected}
             onOpen={onOpen}
+            pageTopRef={pageTopRef}
         />
     </>)
 }

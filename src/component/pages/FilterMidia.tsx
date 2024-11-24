@@ -10,7 +10,6 @@ interface FilterMidiaProps {
     valueSearch: string;
     setValueSearch: React.Dispatch<React.SetStateAction<string>>;
 
-    selectedSortByKeys: Selection;
     setSelectedSortByKeys: React.Dispatch<React.SetStateAction<Selection>>;
 
     genres: string[],
@@ -18,19 +17,20 @@ interface FilterMidiaProps {
     setSelectedGenres: React.Dispatch<React.SetStateAction<Selection>>;
 
     countries: string[],
-    selectedCountries: string[],
-    setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
+    selectedCountries: Selection,
+    setSelectedCountries: React.Dispatch<React.SetStateAction<Selection>>;
 
-    owners: string[];
-    isSelectedOwner: string,
-    setIsSelectedOwner: React.Dispatch<React.SetStateAction<string>>;
+    isSelectedOwner: Selection,
+    setIsSelectedOwner: React.Dispatch<React.SetStateAction<Selection>>;
+
+    selectedStatus: Selection,
+    setSelectedStatus: React.Dispatch<React.SetStateAction<Selection>>;
 }
 
 export const FilterMidia = ({
     valueSearch,
     setValueSearch,
 
-    selectedSortByKeys,
     setSelectedSortByKeys,
 
     genres,
@@ -41,9 +41,11 @@ export const FilterMidia = ({
     selectedCountries,
     setSelectedCountries,
 
-    owners,
     isSelectedOwner,
-    setIsSelectedOwner
+    setIsSelectedOwner,
+
+    selectedStatus,
+    setSelectedStatus
 }: FilterMidiaProps) => {
 
     const [expandFilter, setExpandFilter] = React.useState(false);
@@ -88,8 +90,7 @@ export const FilterMidia = ({
                             placeholder="Any"
                             selectionMode="single"
                             className="max-w-xs"
-                            onSelectionChange={setSelectedSortByKeys}
-                        >
+                            onSelectionChange={setSelectedSortByKeys}>
                             {sortBy.map((item) => (
                                 <SelectItem key={item.key}>
                                     {item.label}
@@ -102,8 +103,8 @@ export const FilterMidia = ({
                             placeholder="Any"
                             selectionMode="multiple"
                             className="max-w-xs"
-                            onSelectionChange={setSelectedGenres}
-                        >
+                            selectedKeys={selectedGenres}
+                            onSelectionChange={setSelectedGenres}>
                             {genres.map((g) => (
                                 <SelectItem key={g}>
                                     {g}
@@ -116,7 +117,8 @@ export const FilterMidia = ({
                             placeholder="Any"
                             selectionMode="single"
                             className="max-w-xs"
-                            //onSelectionChange={setSelectedGenres}
+                            selectedKeys={selectedCountries}
+                            onSelectionChange={setSelectedCountries}
                             renderValue={(items) => {
                                 return items.map((item) => (
                                     <div key={item.key} className="flex items-center gap-2">
@@ -128,8 +130,7 @@ export const FilterMidia = ({
                                         </div>
                                     </div>
                                 ));
-                            }}
-                        >
+                            }}>
                             {countries.map((c) => (
                                 <SelectItem key={c} textValue={c}>
                                     <div className="flex gap-2 items-center">
@@ -149,8 +150,8 @@ export const FilterMidia = ({
                             placeholder="Any"
                             selectionMode="single"
                             className="max-w-xs"
-                        //onSelectionChange={setSelectedGenres}
-                        >
+                            selectedKeys={isSelectedOwner}
+                            onSelectionChange={setIsSelectedOwner}>
                             {owner.map((o) => (
                                 <SelectItem key={o.key}>
                                     {o.label}
@@ -163,8 +164,8 @@ export const FilterMidia = ({
                             placeholder="Any"
                             selectionMode="single"
                             className="max-w-xs"
-                        //onSelectionChange={setSelectedGenres}
-                        >
+                            selectedKeys={selectedStatus}
+                            onSelectionChange={setSelectedStatus}>
                             {status.map((s) => (
                                 <SelectItem key={s.key}>
                                     {s.label}
@@ -175,17 +176,17 @@ export const FilterMidia = ({
                     <div className="flex justify-between items-center">
                         <div>
                             <Button color="primary" variant="light" size="sm" onPress={() => {
-                                setSelectedGenres(new Set());
-                                setSelectedCountries([]);
-                                setIsSelectedOwner('all')
+                                setSelectedGenres(new Set([]));
+                                setSelectedCountries(new Set());
+                                setIsSelectedOwner(new Set());
+                                setSelectedStatus(new Set());
                             }}>
-                                Reset all
+                                Reset filters
                             </Button>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }

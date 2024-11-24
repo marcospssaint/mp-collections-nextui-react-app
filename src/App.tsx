@@ -1,13 +1,9 @@
-import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, NextUIProvider } from "@nextui-org/react";
-import { SearchIcon } from "./component/icons/SearchIcon";
+import { Navbar, NavbarBrand, NavbarContent, NextUIProvider } from "@nextui-org/react";
 
-import React from "react";
 import './App.css';
 import { MidiaPage } from "./component/pages/MidiaPage";
 
 function App() {
-
-    const [expandSearch, setExpandSearch] = React.useState(false);
 
     return (
         <NextUIProvider>
@@ -25,23 +21,10 @@ function App() {
                         </NavbarContent>
 
                         <NavbarContent justify="end">
-                            <NavbarItem>
-                                <Button
-                                    isIconOnly
-                                    disableAnimation={false}
-                                    variant="light"
-                                    radius="full"
-                                    aria-label="Like"
-                                    onPress={() => {
-                                        setExpandSearch(!expandSearch)
-                                    }}>
-                                    <SearchIcon className="fill-current" size={15} />
-                                </Button>
-                            </NavbarItem>
                         </NavbarContent>
                     </Navbar>
                     <div className="px-0">
-                        <MidiaPage expandSearch={expandSearch} setExpandSearch={setExpandSearch} />
+                        <MidiaPage  />
                     </div>
                 </div>
             </div>

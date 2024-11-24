@@ -1,5 +1,5 @@
 import { ChipProps } from "@nextui-org/react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_STATUS, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
 
 export const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -30,6 +30,8 @@ export const squash = <T>(arr: T[] | undefined) => {
 export const isNotNull = (value: any | undefined): boolean => value !== undefined && value !== null;
 export const isNotNullStr = (value: String | undefined | null): boolean => value !== undefined && value !== null && value !== '';
 export const isNotNullArray = (value: any[] | undefined): boolean => value !== undefined && value?.length > 0;
+
+export const isNotNullSelectionArray = (value: Selection | any | any[] | undefined): boolean => value !== undefined && Array.from(value)?.length > 0;
 
 export const isNumberObject = (value: any) => {
     return value !== null && typeof value === 'number';
@@ -74,13 +76,14 @@ const isFilterSearchByType = (value: any, midia: any, type: string) => {
 }
 
 export const isFilterMultipleSelect = (values: Selection | any | any[] | undefined, midia: any, type: string) => {
-    if (Array.from(values).length == 0) return true;
+    if (!isNotNullSelectionArray(values)) return true;
 
     return Array.from(values)?.some((value: any) => isFilterByType(value, midia, type));
 }
 
 export const isFilterSingleSelect = (value: any | undefined, midia: any, type: string) => {
-    return isFilterByType(value, midia, type);
+    if (value === undefined || Array.from(value).length === 0) return true;
+    return isFilterByType(Array.from(value).at(0), midia, type);
 }
 
 export const isFilterByType = (value: any | any[], midia: any, type: string) => {
@@ -94,8 +97,17 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
         return countries?.some((country: string) => country === value);
     } 
     else if (type === TYPE_F_OWNED) {
-        if (value === 'all') return true;
         return midia?.owned+'' === value;
+    } else if (type === TYPE_F_STATUS) {
+        if (midia?.watched !== undefined) {
+            if (value === 'O') return midia?.watched === 'P'
+            else if (value === 'N') return midia?.watched === 'NOTW'
+            return midia?.watched === 'W'
+        } else if (midia?.read !== undefined) {
+            if (value === 'O') return midia?.read === 'P'
+            else if (value === 'N') return midia?.read === 'NOTR'
+            return midia?.read === 'R'
+        }
     }
     return true;
 }
@@ -153,9 +165,17 @@ export const owner = [
 
 export const status = [
     {
-        key: "false",
+        key: "O",
         label: "Ongoing"
     },
+    {
+        key: "C",
+        label: "Completed"
+    },
+    {
+        key: "N",
+        label: "Not initiated"
+    }
 ]
 
 export const linkFlags = (country?: string) => {
@@ -246,8 +266,10 @@ export const createByType = (midias: any[], type: string) => {
         .sort((a, b) => (a ?? '').localeCompare(b ?? ''));
 }
 
+
 export const imageModified = (image: string | null | undefined) => {
-    if (!isNotNull(image)) return '';
+    const IMG_DEFAULT = process.env.VITE_HOMEPAGE_URL + '/imagens/imgDefault.png';
+    if (!isNotNull(image)) return IMG_DEFAULT;
 
     let imageModified = image?.slice(1, -1);
     const imageMultipleArr = image?.split('", "') ?? [];
