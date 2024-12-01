@@ -189,7 +189,14 @@ export const ModalMidia = ({
                                                     key={index + ''}
                                                     aria-label="Watched"
                                                     isCompact
-                                                    title={`Season ${m?.season} · ${m?.type}`}
+                                                    title={<>
+                                                        Season {m?.season} · {m?.type}
+                                                        <Chip
+                                                            className="capitalize border-none gap-1 text-default-600"
+                                                            color={statusColorMap[statusByMidia(m)]}
+                                                            size="sm"
+                                                            variant="dot" />
+                                                    </>}
                                                     subtitle={<>
                                                         <p>{m.originalTitle}</p>
                                                         <p>{m.year} · {nOfEdition(m.episodes)} episódios</p>

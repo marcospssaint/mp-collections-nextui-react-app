@@ -100,8 +100,7 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
         return midia?.owned+'' === value;
     } else if (type === TYPE_F_STATUS) {
         if (midia?.midiasTvs !== undefined) {
-            console.log(midia?.midiasTvs, value, midia?.midiasTvs?.filter((m: any) => m?.watched === 'NOTW').length, midia?.midiasTvs?.length)
-            if (value === 'O') return midia?.midiasTvs?.filter((m: any) => m?.watched === 'P').length === midia?.midiasTvs?.length
+            if (value === 'O') return midia?.midiasTvs?.some((m: any) => m?.watched === 'P')
             else if (value === 'N') return midia?.midiasTvs?.filter((m: any) => m?.watched === 'NOTW').length === midia?.midiasTvs?.length
             return midia?.midiasTvs?.filter((m: any) => m?.watched === 'W').length === midia?.midiasTvs?.length
         } else if (midia?.watched !== undefined) {
