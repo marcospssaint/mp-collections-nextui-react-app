@@ -99,15 +99,21 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
     else if (type === TYPE_F_OWNED) {
         return midia?.owned+'' === value;
     } else if (type === TYPE_F_STATUS) {
-        if (midia?.watched !== undefined) {
+        if (midia?.midiasTvs !== undefined) {
+            console.log(midia?.midiasTvs, value, midia?.midiasTvs?.filter((m: any) => m?.watched === 'NOTW').length, midia?.midiasTvs?.length)
+            if (value === 'O') return midia?.midiasTvs?.filter((m: any) => m?.watched === 'P').length === midia?.midiasTvs?.length
+            else if (value === 'N') return midia?.midiasTvs?.filter((m: any) => m?.watched === 'NOTW').length === midia?.midiasTvs?.length
+            return midia?.midiasTvs?.filter((m: any) => m?.watched === 'W').length === midia?.midiasTvs?.length
+        } else if (midia?.watched !== undefined) {
             if (value === 'O') return midia?.watched === 'P'
             else if (value === 'N') return midia?.watched === 'NOTW'
             return midia?.watched === 'W'
-        } else if (midia?.read !== undefined) {
+        } else if (midia?.read !== undefined && !midia?.collection) {
             if (value === 'O') return midia?.read === 'P'
             else if (value === 'N') return midia?.read === 'NOTR'
             return midia?.read === 'R'
         }
+        return false;
     }
     return true;
 }
