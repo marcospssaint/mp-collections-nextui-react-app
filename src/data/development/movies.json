@@ -11,7 +11,7 @@
         "img": "\"https://res.cloudinary.com/dwvqty6kx/image/upload/v1688660563/data-imagens/movies/0-9/..._E_o_Vento_Levou.jpg\"",
         "flagWatched": false,
         "owned": false,
-        "watched": "NOTW"
+        "watched": "W"
     },
     {
         "id": 18,
@@ -27,7 +27,7 @@
         "notes": "Filme of James Bond series actor Roger Moore (1973 - 83)\n\n06. Filme\n\r\nHD Antigo",
         "flagWatched": false,
         "owned": true,
-        "watched": "NOTW"
+        "watched": "W"
     },
     {
         "id": 19,
@@ -43,7 +43,7 @@
         "notes": "Filme of James Bond series actor Roger Moore (1973 - 83)\n\n07. Filme\n\r\nHD Antigo",
         "flagWatched": false,
         "owned": true,
-        "watched": "NOTW"
+        "watched": "W"
     },
     {
         "id": 20,

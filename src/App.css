@@ -407,6 +407,15 @@ body {
     text-transform: uppercase;
 }
 
+.bg-green-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1));
+}
+
+.m-2 {
+    margin: 0.5rem;
+}
+
 @media (min-width: 48rem) {
     .md\:grid-cols-\[1fr_12rem\] {
         grid-template-columns: 1fr 12rem;
