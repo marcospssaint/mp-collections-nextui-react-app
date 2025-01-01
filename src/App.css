@@ -306,7 +306,7 @@ body {
     width: auto;
     z-index: -1;
     border-radius: .25rem;
-    
+
 }
 
 .block {
@@ -349,7 +349,8 @@ body {
     -webkit-line-clamp: 2;
 }
 
-.line-clamp-1, .line-clamp-2 {
+.line-clamp-1,
+.line-clamp-2 {
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
@@ -414,6 +415,12 @@ body {
 
 .m-2 {
     margin: 0.5rem;
+}
+
+.cls-1 {
+    fill: none;
+    stroke-miterlimit: 10;
+    stroke-width: 1.91px;
 }
 
 @media (min-width: 48rem) {

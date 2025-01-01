@@ -1,8 +1,8 @@
 import { Accordion, AccordionItem, Avatar, Chip, Divider, Image, Modal, ModalBody, ModalContent, ModalHeader, ScrollShadow, Tab, Tabs } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { IMidia, nOfEdition, ownedByMidia, statusByMidia } from "../../data/midia";
-import { TAB_ANIMES_KEY, TAB_TV_KEY } from "../../utils/constantes";
-import { getFlagCountries, iconFlagLanguage, imageModified, range, rangeBySeparator, statusColorMap } from "../../utils/utils";
+import { TAB_ANIMES_KEY, TAB_MOVIES_KEY, TAB_TV_KEY } from "../../utils/constantes";
+import { getFlagCountries, iconFlagLanguage, imageModified, isNotNullStr, range, rangeBySeparator, statusColorMap } from "../../utils/utils";
 
 interface ModalMidiaProps {
     midiaSelected: IMidia,
@@ -178,86 +178,92 @@ export const ModalMidia = ({
                         defaultSelectedKey={`info_${midiaSelected?.id}`}
                         variant="underlined"
                         color="default">
-                        <Tab key={`info_${midiaSelected?.id}`} title="Details" style={{ fontWeight: 400 }}>
-                            {
-                                ((midiaSelected?.type === TAB_TV_KEY || midiaSelected?.type === TAB_ANIMES_KEY) && !!midiaSelected?.midiasTvs) && 
-                                <>
-                                    <Accordion selectionMode="single" defaultExpandedKeys={["0"]}>
-                                        {
-                                            midiaSelected?.midiasTvs.map((m, index) => {
-                                                return (<AccordionItem
-                                                    key={index + ''}
-                                                    aria-label="Watched"
-                                                    isCompact
-                                                    title={<>
-                                                        Season {m?.season} · {m?.type}
-                                                        <Chip
-                                                            className="capitalize border-none gap-1 text-default-600"
-                                                            color={statusColorMap[statusByMidia(m)]}
-                                                            size="sm"
-                                                            variant="dot" />
-                                                    </>}
-                                                    subtitle={<>
-                                                        <p>{m.originalTitle}</p>
-                                                        <p>{m.year} · {nOfEdition(m.episodes)} episódios</p>
-                                                    </>}
-                                                    classNames={{
-                                                        title: "font-bold h3"
-                                                    }}>
-                                                    <ScrollShadow key={`scroll_ep_${m?.id}`} orientation="horizontal" hideScrollBar className="h-[150px]">
-                                                        <NOfEpisodesWatchedComponent key={`nepisodies_${m.season}`} midiaVideo={m} />
-                                                    </ScrollShadow>
-                                                </AccordionItem>
-                                                )
-                                            })
-                                        }
-                                    </Accordion>
-                                </>
-                            }
-                            <Accordion selectionMode="single" defaultExpandedKeys={["0"]}>
+                        {
+                            midiaSelected?.type !== TAB_MOVIES_KEY &&
+                            <Tab key={`info_${midiaSelected?.id}`} title="Details" style={{ fontWeight: 400 }}>
                                 {
-                                    Array.from({ length: midiaSelected?.language?.split(', ')?.length ?? 0 }).map((_, index) => {
-                                        const languageCurrent = midiaSelected?.language?.split(',').at(index)?.trim();
-                                        const volumeCurrent_ = (midiaSelected?.volume + '')?.split(';').at(index);
-                                        const readVolumeCurrent_ = Number((midiaSelected?.readVolume + '')?.split(';').at(index));
-                                        const publicationTitleCurrent = (midiaSelected?.publisher + '')?.split(';').at(index);
-
-                                        return (<AccordionItem
-                                            key={index + ''}
-                                            aria-label="Issues"
-                                            isCompact
-                                            startContent={
-                                                <Avatar
-                                                    key={`c_${index}`}
-                                                    className="w-6 h-6"
-                                                    src={iconFlagLanguage(languageCurrent?.trim())} />
+                                    ((midiaSelected?.type === TAB_TV_KEY || midiaSelected?.type === TAB_ANIMES_KEY) && !!midiaSelected?.midiasTvs) &&
+                                    <>
+                                        <Accordion selectionMode="single" defaultExpandedKeys={["0"]}>
+                                            {
+                                                midiaSelected?.midiasTvs.map((m, index) => {
+                                                    return (<AccordionItem
+                                                        key={index + ''}
+                                                        aria-label="Watched"
+                                                        isCompact
+                                                        title={<>
+                                                            Season {m?.season} · {m?.type}
+                                                            <Chip
+                                                                className="capitalize border-none gap-1 text-default-600"
+                                                                color={statusColorMap[statusByMidia(m)]}
+                                                                size="sm"
+                                                                variant="dot" />
+                                                        </>}
+                                                        subtitle={<>
+                                                            <p>{m.originalTitle}</p>
+                                                            <p>{m.year} · {nOfEdition(m.episodes)} episódios</p>
+                                                        </>}
+                                                        classNames={{
+                                                            title: "font-bold h3"
+                                                        }}>
+                                                        <ScrollShadow key={`scroll_ep_${m?.id}`} orientation="horizontal" hideScrollBar className="h-[150px]">
+                                                            <NOfEpisodesWatchedComponent key={`nepisodies_${m.season}`} midiaVideo={m} />
+                                                        </ScrollShadow>
+                                                    </AccordionItem>
+                                                    )
+                                                })
                                             }
-                                            title={publicationTitleCurrent}
-                                            subtitle={`${nOfEdition(volumeCurrent_)} issues in this volume`}
-                                            classNames={{
-                                                title: "font-bold h3"
-                                            }}>
-                                            <ScrollShadow key={`scroll_issue_${midiaSelected?.id}`}
-                                                orientation="horizontal"
-                                                hideScrollBar>
-                                                <NOfEditionsComponent
-                                                    readVolumeCurrent={readVolumeCurrent_}
-                                                    volumeCurrent={volumeCurrent_} />
-                                            </ScrollShadow>
-                                        </AccordionItem>)
-                                    })
+                                        </Accordion>
+                                    </>
                                 }
-                            </Accordion>
-                        </Tab>
-                        <Tab key={`control_${midiaSelected?.id}`} title="Control">
-                            <ScrollShadow key={`scroll_notes_${midiaSelected?.id}`}
-                                orientation="horizontal"
-                                hideScrollBar>
-                                <div className="text-small text-default-500 py-2">
-                                    <p className="text-default-500 whitespace-pre-wrap">{midiaSelected.notes}</p>
-                                </div>
-                            </ScrollShadow>
-                        </Tab>
+                                <Accordion selectionMode="single" defaultExpandedKeys={["0"]}>
+                                    {
+                                        Array.from({ length: midiaSelected?.language?.split(', ')?.length ?? 0 }).map((_, index) => {
+                                            const languageCurrent = midiaSelected?.language?.split(',').at(index)?.trim();
+                                            const volumeCurrent_ = (midiaSelected?.volume + '')?.split(';').at(index);
+                                            const readVolumeCurrent_ = Number((midiaSelected?.readVolume + '')?.split(';').at(index));
+                                            const publicationTitleCurrent = (midiaSelected?.publisher + '')?.split(';').at(index);
+
+                                            return (<AccordionItem
+                                                key={index + ''}
+                                                aria-label="Issues"
+                                                isCompact
+                                                startContent={
+                                                    <Avatar
+                                                        key={`c_${index}`}
+                                                        className="w-6 h-6"
+                                                        src={iconFlagLanguage(languageCurrent?.trim())} />
+                                                }
+                                                title={publicationTitleCurrent}
+                                                subtitle={`${nOfEdition(volumeCurrent_)} issues in this volume`}
+                                                classNames={{
+                                                    title: "font-bold h3"
+                                                }}>
+                                                <ScrollShadow key={`scroll_issue_${midiaSelected?.id}`}
+                                                    orientation="horizontal"
+                                                    hideScrollBar>
+                                                    <NOfEditionsComponent
+                                                        readVolumeCurrent={readVolumeCurrent_}
+                                                        volumeCurrent={volumeCurrent_} />
+                                                </ScrollShadow>
+                                            </AccordionItem>)
+                                        })
+                                    }
+                                </Accordion>
+                            </Tab>
+                        }
+                        {
+                            isNotNullStr(midiaSelected.notes) &&
+                            <Tab key={`control_${midiaSelected?.id}`} title="Control">
+                                <ScrollShadow key={`scroll_notes_${midiaSelected?.id}`}
+                                    orientation="horizontal"
+                                    hideScrollBar>
+                                    <div className="text-small text-default-500 py-2">
+                                        <p className="text-default-500 whitespace-pre-wrap">{midiaSelected.notes}</p>
+                                    </div>
+                                </ScrollShadow>
+                            </Tab>
+                        }
                     </Tabs>
                 </div>
             </ModalBody>

@@ -29,12 +29,14 @@ export const MidiaPage = ({
     const { username } = useAuth();
     const [selected, setSelected] = React.useState<Key>(TAB_MOVIES_KEY);
     const [valueSearch, setValueSearch] = React.useState('');
+    const [isAdult18, setAdult18] = React.useState<boolean>(false);
     const [selectedGenres, setSelectedGenres] = React.useState<Selection>(new Set([]));
     const [selectedCountries, setSelectedCountries] = React.useState<Selection>(new Set());
     const [isSelectedOwner, setIsSelectedOwner] = React.useState<Selection>(new Set());
     const [selectedStatus, setSelectedStatus] = React.useState<Selection>(new Set());
 
     const hasSearchFilter = isNotNullStr(valueSearch);
+    const hasAdult18Filter = !!isAdult18;
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [midiaSelected, setMidiaSelected] = React.useState<any>();
@@ -89,7 +91,9 @@ export const MidiaPage = ({
     }, [selected, moviesLoaded, tvShowLoaded, tvTokuLoaded, animesLoaded, comicsLoaded, mangasLoaded]);
 
     const genres = React.useMemo(() => {
-        return createByType(data, TYPE_F_GENRE);
+        return createByType(data, TYPE_F_GENRE)
+            .filter((g) => g !== 'Adult')
+            .filter((g) => g !== 'Erotic');
     }, [data]);
 
     const countries = React.useMemo(() => {
@@ -98,6 +102,7 @@ export const MidiaPage = ({
 
     const wasResearch = () => {
         return hasSearchFilter
+            || hasAdult18Filter
             || isNotNullSelectionArray(selectedGenres)
             || isNotNullSelectionArray(selectedCountries)
             || isNotNullSelectionArray(isSelectedOwner)
@@ -108,15 +113,16 @@ export const MidiaPage = ({
         const sortByKey = Array.from(selectedSortByKeys).join(", ");
 
         let filtered = [...data].sort((a, b) => {
+            
             if (DROPD_SORTBY_DT_DESC_KEY === sortByKey) {
                 return b?.year - a?.year;
             } else if (DROPD_SORTBY_DT_ASC_KEY === sortByKey) {
                 return a?.year - b?.year;
             } else if (DROPD_SORTBY_TL_ZA_KEY === sortByKey) {
-                return b.title?.localeCompare(a?.title)
+                return b?.title?.localeCompare(a?.title)
             }
 
-            return a.title?.localeCompare(b?.title)
+            return a?.title?.localeCompare(b?.title)
         });
 
         setRowsPerPage(hasSearchFilter ? 100 : rowsPerPage);
@@ -124,13 +130,19 @@ export const MidiaPage = ({
 
         return wasResearch() ?
             filtered
+                .filter((m: any) => {
+                    if (hasAdult18Filter) {
+                        return isFilterMultipleSelect(new Set(['Adult', 'Erotic']), m, TYPE_F_GENRE);
+                    }
+                    return !isFilterMultipleSelect(new Set(['Adult', 'Erotic']), m, TYPE_F_GENRE);
+                })
                 .filter((m: any) => isFilterSearch(valueSearch, m))
                 .filter((m: any) => isFilterMultipleSelect(selectedGenres, m, TYPE_F_GENRE))
                 .filter((m: any) => isFilterSingleSelect(selectedCountries, m, TYPE_F_COUNTRIES))
                 .filter((m: any) => isFilterSingleSelect(isSelectedOwner, m, TYPE_F_OWNED))
                 .filter((m: any) => isFilterSingleSelect(selectedStatus, m, TYPE_F_STATUS))
             : filtered;
-    }, [data, valueSearch, selectedGenres, selectedCountries, selectedSortByKeys, isSelectedOwner, selectedStatus, changeVisibleMidia, rowsPerPage]);
+    }, [data, valueSearch, hasAdult18Filter, selectedGenres, selectedCountries, selectedSortByKeys, isSelectedOwner, selectedStatus, changeVisibleMidia, rowsPerPage]);
 
     let tabs = [
         {
@@ -182,6 +194,7 @@ export const MidiaPage = ({
             valueSearch={valueSearch}
             setValueSearch={setValueSearch}
             setSelectedSortByKeys={setSelectedSortByKeys}
+            setAdult18={setAdult18}
             genres={genres}
             selectedGenres={selectedGenres}
             setSelectedGenres={setSelectedGenres}

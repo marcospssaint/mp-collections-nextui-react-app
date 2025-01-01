@@ -1,16 +1,18 @@
 import type { Selection } from "@nextui-org/react";
-import { Avatar, Button, Input, Select, SelectItem } from "@nextui-org/react";
+import { Avatar, Button, Input, Select, SelectItem, Switch, useSwitch, VisuallyHidden, SwitchProps } from "@nextui-org/react";
 import React from "react";
 import { linkFlags, owner, sortBy, status } from "../../utils/utils";
 import { MinusIcon } from "../icons/MinusIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 import { SearchIcon } from "../icons/SearchIcon";
+import { Adult18Icon } from "../icons/Adult18Icon";
 
 interface FilterMidiaProps {
     valueSearch: string;
     setValueSearch: React.Dispatch<React.SetStateAction<string>>;
 
     setSelectedSortByKeys: React.Dispatch<React.SetStateAction<Selection>>;
+    setAdult18: React.Dispatch<React.SetStateAction<boolean>>;
 
     genres: string[],
     selectedGenres: Selection,
@@ -32,6 +34,7 @@ export const FilterMidia = ({
     setValueSearch,
 
     setSelectedSortByKeys,
+    setAdult18,
 
     genres,
     selectedGenres,
@@ -97,6 +100,9 @@ export const FilterMidia = ({
                                 </SelectItem>
                             ))}
                         </Select>
+                        <Adult18Switch setAdult18={setAdult18} />
+                    </div>
+                    <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 gap-4">
                         <Select
                             labelPlacement="outside"
                             label="Genres"
@@ -111,6 +117,7 @@ export const FilterMidia = ({
                                 </SelectItem>
                             ))}
                         </Select>
+
                         <Select
                             labelPlacement="outside"
                             label="Countries"
@@ -142,8 +149,10 @@ export const FilterMidia = ({
                                 </SelectItem>
                             ))}
                         </Select>
+
                     </div>
                     <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 gap-4">
+
                         <Select
                             labelPlacement="outside"
                             label="Owner"
@@ -190,3 +199,36 @@ export const FilterMidia = ({
         </div>
     )
 }
+
+interface Adult18SwitchProps extends SwitchProps {
+    setAdult18: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Adult18Switch = ({ setAdult18, ...props }: Adult18SwitchProps) => {
+    const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } =
+        useSwitch(props);
+        setAdult18(isSelected ?? false)
+    return (
+        <div className="flex flex-col gap-2">
+            <Component {...getBaseProps()}>
+                <VisuallyHidden>
+                    <input {...getInputProps()} />
+                </VisuallyHidden>
+                <div
+                    {...getWrapperProps()}
+                    className={slots.wrapper({
+                        class: [
+                            "w-10 h-10",
+                            "flex items-center justify-center",
+                            "hover:bg-default-200"
+                        ],
+                    })}
+                    //</Component>onVolumeChange={(s) => setAdult18()}
+                    >
+                    <Adult18Icon />
+                </div>
+            </Component>
+
+        </div>
+    );
+};

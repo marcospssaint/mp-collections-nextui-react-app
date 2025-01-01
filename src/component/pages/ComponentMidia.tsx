@@ -44,30 +44,36 @@ export const ComponentMidia = ({
 
     return (
         <div className="relative flex flex-col px-2">
+            <div className="flex justify-between items-center">
+            <div></div>
+            <span className="text-small text-default-400 pb-2 pl-1">
+                Total {filteredItems.length} items
+            </span>
+            </div>
             {
                 changeVisibleMidia &&
-                    <TableMidia
-                        items={items}
-                        selected={selected}
-                        filteredItems={filteredItems}
-                        //initialColumns={initialColumns}
-                        //columns={columns}
-                        setRowsPerPage={setRowsPerPage}
-                        page={page}
-                        setPage={setPage}
-                        pages={pages}
-                        setMidiaSelected={setMidiaSelected}
-                        onOpen={onOpen} />
+                <TableMidia
+                    items={items}
+                    selected={selected}
+                    filteredItems={filteredItems}
+                    //initialColumns={initialColumns}
+                    //columns={columns}
+                    setRowsPerPage={setRowsPerPage}
+                    page={page}
+                    setPage={setPage}
+                    pages={pages}
+                    setMidiaSelected={setMidiaSelected}
+                    onOpen={onOpen} />
             }
             {
                 !changeVisibleMidia &&
-                    <GridMidiaComponent
-                        items={items}
-                        page={page}
-                        pages={pages}
-                        setPage={setPage}
-                        setMidiaSelected={setMidiaSelected}
-                        onOpen={onOpen} />
+                <GridMidiaComponent
+                    items={items}
+                    page={page}
+                    pages={pages}
+                    setPage={setPage}
+                    setMidiaSelected={setMidiaSelected}
+                    onOpen={onOpen} />
             }
         </div>
     )

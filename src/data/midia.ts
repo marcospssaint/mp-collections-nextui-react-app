@@ -75,6 +75,7 @@ export const createMidia = (data: IMidia[], type: string) => {
     
             midiaArray.push({
                 ...midia,
+                type: type,
                 flagMainMidia: false ,//(midiasByTitle?.length??0 ) > 1 && firstObject.id === midia.id,
                 originalTitle: midia.originalTitle ?? firstObject.originalTitle,
                 year: midia.year?? 1900,
