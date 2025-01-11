@@ -14,7 +14,6 @@ interface ComponentMidiaProps {
     setPage: React.Dispatch<React.SetStateAction<number>>,
     setMidiaSelected: React.Dispatch<React.SetStateAction<IMidia>>,
     onOpen: any,
-
     pageTopRef: React.RefObject<HTMLDivElement>
 }
 
@@ -28,14 +27,11 @@ export const ComponentMidia = ({
     setPage,
     setMidiaSelected,
     onOpen,
-
     pageTopRef
 }: ComponentMidiaProps) => {
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-
-        pageTopRef.current?.scrollIntoView();
 
         return filteredItems.slice(start, end);
     }, [page, filteredItems, rowsPerPage]);
@@ -56,14 +52,13 @@ export const ComponentMidia = ({
                     items={items}
                     selected={selected}
                     filteredItems={filteredItems}
-                    //initialColumns={initialColumns}
-                    //columns={columns}
                     setRowsPerPage={setRowsPerPage}
                     page={page}
                     setPage={setPage}
                     pages={pages}
                     setMidiaSelected={setMidiaSelected}
-                    onOpen={onOpen} />
+                    onOpen={onOpen}
+                    pageTopRef={pageTopRef} />
             }
             {
                 !changeVisibleMidia &&
@@ -73,7 +68,8 @@ export const ComponentMidia = ({
                     pages={pages}
                     setPage={setPage}
                     setMidiaSelected={setMidiaSelected}
-                    onOpen={onOpen} />
+                    onOpen={onOpen}
+                    pageTopRef={pageTopRef} />
             }
         </div>
     )

@@ -111,7 +111,6 @@ export const ModalMidia = ({
                         <div className="sm:mx-2 pt-4" style={{ gridArea: 'info' }}>
                             <div className="flex w-full flex-col">
                                 <div className="flex gap-1 items-center ">
-
                                     {
                                         genresList()?.map((g) =>
                                             <Chip

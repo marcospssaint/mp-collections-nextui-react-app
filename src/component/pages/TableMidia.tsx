@@ -28,7 +28,7 @@ interface TableMidiaProps {
     setMidiaSelected: React.Dispatch<React.SetStateAction<IMidia>>,
 
     onOpen: any,
-
+    pageTopRef: React.RefObject<HTMLDivElement>
 }
 
 export const TableMidia = ({
@@ -44,6 +44,7 @@ export const TableMidia = ({
     setMidiaSelected,
 
     onOpen,
+    pageTopRef
 }: TableMidiaProps) => {
     type Midia = typeof filteredItems[0];
 
@@ -235,7 +236,10 @@ export const TableMidia = ({
                         variant="light"
                         page={page}
                         total={pages}
-                        onChange={setPage}
+                        onChange={(e) => {
+                            setPage(e);
+                            pageTopRef.current?.scrollIntoView();
+                        }}
                     />
 
                     <span className="text-small text-default-400 pb-2 pl-1">

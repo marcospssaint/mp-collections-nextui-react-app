@@ -41,7 +41,7 @@ export const MidiaPage = ({
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [midiaSelected, setMidiaSelected] = React.useState<any>();
 
-    const [selectedSortByKeys, setSelectedSortByKeys] = React.useState<Selection>(new Set([DROPD_SORTBY_TL_AZ_KEY]));
+    const [selectedSortByKeys, setSelectedSortByKeys] = React.useState<Selection>(new Set([DROPD_SORTBY_DT_DESC_KEY]));
     const [rowsPerPage, setRowsPerPage] = React.useState(24);
     const [page, setPage] = React.useState(1);
 
@@ -102,7 +102,7 @@ export const MidiaPage = ({
 
     const wasResearch = () => {
         return hasSearchFilter
-            || hasAdult18Filter
+            || !hasAdult18Filter
             || isNotNullSelectionArray(selectedGenres)
             || isNotNullSelectionArray(selectedCountries)
             || isNotNullSelectionArray(isSelectedOwner)
@@ -131,10 +131,10 @@ export const MidiaPage = ({
         return wasResearch() ?
             filtered
                 .filter((m: any) => {
-                    if (hasAdult18Filter) {
-                        return isFilterMultipleSelect(new Set(['Adult', 'Erotic']), m, TYPE_F_GENRE);
+                    if (!hasAdult18Filter) {
+                        return !isFilterMultipleSelect(new Set(['Adult', 'Erotic']), m, TYPE_F_GENRE);
                     }
-                    return !isFilterMultipleSelect(new Set(['Adult', 'Erotic']), m, TYPE_F_GENRE);
+                    return true;
                 })
                 .filter((m: any) => isFilterSearch(valueSearch, m))
                 .filter((m: any) => isFilterMultipleSelect(selectedGenres, m, TYPE_F_GENRE))

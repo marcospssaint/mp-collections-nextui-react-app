@@ -1,11 +1,11 @@
 import type { Selection } from "@nextui-org/react";
-import { Avatar, Button, Input, Select, SelectItem, Switch, useSwitch, VisuallyHidden, SwitchProps } from "@nextui-org/react";
-import React from "react";
+import { Avatar, Button, Input, Select, SelectItem, SwitchProps, useSwitch, VisuallyHidden } from "@nextui-org/react";
+import React, { useEffect } from "react";
 import { linkFlags, owner, sortBy, status } from "../../utils/utils";
+import { Adult18Icon } from "../icons/Adult18Icon";
 import { MinusIcon } from "../icons/MinusIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 import { SearchIcon } from "../icons/SearchIcon";
-import { Adult18Icon } from "../icons/Adult18Icon";
 
 interface FilterMidiaProps {
     valueSearch: string;
@@ -207,7 +207,11 @@ interface Adult18SwitchProps extends SwitchProps {
 const Adult18Switch = ({ setAdult18, ...props }: Adult18SwitchProps) => {
     const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } =
         useSwitch(props);
+
+    useEffect(() => {
         setAdult18(isSelected ?? false)
+    }, [isSelected]);
+
     return (
         <div className="flex flex-col gap-2">
             <Component {...getBaseProps()}>

@@ -79,8 +79,8 @@ export const createMidia = (data: IMidia[], type: string) => {
                 flagMainMidia: false ,//(midiasByTitle?.length??0 ) > 1 && firstObject.id === midia.id,
                 originalTitle: midia.originalTitle ?? firstObject.originalTitle,
                 year: midia.year?? 1900,
-                genre: firstObject.genre,
-                countries: firstObject.countries,
+                genre: midia.genre ?? firstObject.genre,
+                countries: midia.countries ?? firstObject.countries,
                 synopsis: midia.synopsis ?? firstObject.synopsis,
                 notes: midia.notes ?? firstObject.notes,
                 img: midia.img ?? firstObject.img

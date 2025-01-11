@@ -8,7 +8,8 @@ interface GridMidiaProps {
     pages: number,
     setPage: React.Dispatch<React.SetStateAction<number>>,
     setMidiaSelected: React.Dispatch<React.SetStateAction<IMidia>>,
-    onOpen: any
+    onOpen: any,
+    pageTopRef: React.RefObject<HTMLDivElement>
 }
 
 export const GridMidiaComponent = ({
@@ -17,7 +18,8 @@ export const GridMidiaComponent = ({
     page,
     setPage,
     setMidiaSelected,
-    onOpen
+    onOpen,
+    pageTopRef
 }: GridMidiaProps) => {
     return (<>
         <div className="grid pt-4" >
@@ -32,8 +34,7 @@ export const GridMidiaComponent = ({
                         onPress={() => {
                             setMidiaSelected(item);
                             onOpen();
-                        }}
-                    >
+                        }}>
                         <Image
                             removeWrapper
                             key={`image_modal_${item?.id}`}
@@ -68,7 +69,10 @@ export const GridMidiaComponent = ({
                     variant="light"
                     page={page}
                     total={pages}
-                    onChange={setPage}
+                    onChange={(e) => {
+                        setPage(e); 
+                        pageTopRef.current?.scrollIntoView();
+                    }}
                 />
             </div>
         </div>
