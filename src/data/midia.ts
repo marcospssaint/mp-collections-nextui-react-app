@@ -56,7 +56,7 @@ export const createMidia = (data: IMidia[], type: string) => {
     const midiaGrouped = groupByToMap(data, (e) => e.title);
     const midiaArray = [] as IMidia[];
 
-    if (TAB_TV_KEY === type || TAB_ANIMES_KEY === type) {
+    if (TAB_TV_KEY === type || TAB_TV_TOKU_KEY === type || TAB_ANIMES_KEY === type) {
         for (let m of midiaGrouped) {
             const firstObject = m?.[1][0] ?? {} as IMidia;
 
@@ -114,6 +114,19 @@ export const status = (midia: IMidia) => {
 
 export const statusByMidia = (midia: IMidia) => {
     return (!!midia.read ? midia.read : midia.watched) ?? '';
+}
+
+export const statusByMidiaColor = (midia: IMidia) => {
+    if (TAB_TV_KEY === midia?.type || TAB_ANIMES_KEY === midia?.type) {
+        if (midia?.midiasTvs?.some((m: any) => m?.watched === 'P')) return 'O';
+        return (midia?.midiasTvs?.filter((m: any) => m?.watched === 'W').length === midia?.midiasTvs?.length) ? 'C' : 'N';
+    } else if (TAB_MOVIES_KEY === midia?.type) {
+        return midia?.watched === 'W' ? 'C' : 'N';
+    } else if (TAB_COMICS_KEY === midia?.type || TAB_MANGAS_KEY === midia?.type) {
+        if (midia?.read === 'P') return 'O';
+        return midia?.read === 'R' ? 'C' : 'N';
+    }
+    return 'N';
 }
 
 export const ownedByMidia = (midia: IMidia) => {

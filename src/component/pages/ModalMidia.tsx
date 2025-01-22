@@ -1,7 +1,7 @@
 import { Accordion, AccordionItem, Avatar, Chip, Divider, Image, Modal, ModalBody, ModalContent, ModalHeader, ScrollShadow, Tab, Tabs } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { IMidia, nOfEdition, ownedByMidia, statusByMidia } from "../../data/midia";
-import { TAB_ANIMES_KEY, TAB_MOVIES_KEY, TAB_TV_KEY } from "../../utils/constantes";
+import { TAB_ANIMES_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY } from "../../utils/constantes";
 import { getFlagCountries, iconFlagLanguage, imageModified, isNotNullStr, range, rangeBySeparator, statusColorMap } from "../../utils/utils";
 
 interface ModalMidiaProps {
@@ -181,7 +181,7 @@ export const ModalMidia = ({
                             midiaSelected?.type !== TAB_MOVIES_KEY &&
                             <Tab key={`info_${midiaSelected?.id}`} title="Details" style={{ fontWeight: 400 }}>
                                 {
-                                    ((midiaSelected?.type === TAB_TV_KEY || midiaSelected?.type === TAB_ANIMES_KEY) && !!midiaSelected?.midiasTvs) &&
+                                    ((midiaSelected?.type === TAB_TV_KEY || midiaSelected?.type === TAB_ANIMES_KEY || midiaSelected?.type === TAB_TV_TOKU_KEY ) && !!midiaSelected?.midiasTvs) &&
                                     <>
                                         <Accordion selectionMode="single" defaultExpandedKeys={["0"]}>
                                             {

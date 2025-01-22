@@ -1,6 +1,6 @@
 import { Card, CardFooter, Image, Pagination } from "@nextui-org/react";
-import { IMidia, statusByMidia } from "../../data/midia";
-import { imageModified, statusColorMap, textMidia } from "../../utils/utils";
+import { IMidia, statusByMidiaColor } from "../../data/midia";
+import { imageModified, textMidia } from "../../utils/utils";
 
 interface GridMidiaProps {
     items: any[],
@@ -44,8 +44,12 @@ export const GridMidiaComponent = ({
                             src={imageModified(item?.img)}
                         />
                         {
-                            statusColorMap[statusByMidia(item)] == 'success' &&
+                           statusByMidiaColor(item) === 'C' &&
                             <div className="absolute bg-green-500 top-0 right-0 rounded-full p-3 m-2 shadow-sm w-6 h-6" />
+                        }
+                        {
+                           statusByMidiaColor(item) === 'O' &&
+                            <div className="absolute bg-orange-500 top-0 right-0 rounded-full p-3 m-2 shadow-sm w-6 h-6" />
                         }
                         <CardFooter className="justify-between py-1 absolute bottom-1 ml-1 z-10" style={{
                             background: 'linear-gradient(180deg,transparent,rgba(0,0,0,.8))'
