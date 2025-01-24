@@ -250,12 +250,11 @@ export const MidiaPage = ({
                 }}
                 selectedKey={selected}
                 onSelectionChange={(e) => {
-                    if ('COMICS' === TAB_COMICS_KEY || 'MANGAS' === TAB_MANGAS_KEY) {
+                    if (e === TAB_COMICS_KEY || e === TAB_MANGAS_KEY) {
                         setSelectedSortByKeys(new Set([DROPD_SORTBY_TL_AZ_KEY]))
                     } else {
                         setSelectedSortByKeys(new Set([DROPD_SORTBY_DT_DESC_KEY]))
                     }
-                    console.log(e)
                     setSelected(e);
                 }}
                 items={tabs}>
