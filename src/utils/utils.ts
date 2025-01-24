@@ -1,5 +1,5 @@
 import { ChipProps } from "@nextui-org/react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_STATUS, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_STATUS, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
 
 export const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -95,7 +95,12 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
         let countries : string[] = [];
         countries = midia?.countries?.split(', ');
         return countries?.some((country: string) => country === value);
-    } 
+    } else if (type === TYPE_F_LANGUAGE) {
+        if (midia?.type === TAB_COMICS_KEY || midia?.type === TAB_MANGAS_KEY) {
+            return midia?.language === value;
+        }
+        return true;
+    }
     else if (type === TYPE_F_OWNED) {
         return midia?.owned+'' === value;
     } else if (type === TYPE_F_STATUS) {
@@ -107,7 +112,7 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
             if (value === 'O') return midia?.watched === 'P'
             else if (value === 'N') return midia?.watched === 'NOTW'
             return midia?.watched === 'W'
-        } else if (midia?.read !== undefined && !midia?.collection) {
+        } else if (midia?.read !== undefined) {
             if (value === 'O') return midia?.read === 'P'
             else if (value === 'N') return midia?.read === 'NOTR'
             return midia?.read === 'R'
@@ -182,6 +187,22 @@ export const status = [
         label: "Not initiated"
     }
 ]
+export const linkFlagsByLanguage = (language?: string) => {
+    var flag = 'https://flagcdn.com/';
+
+    switch(language) {
+        case 'Portugues': flag += 'br.svg'; break;
+        case 'Italian': flag += 'it.svg'; break;
+        case 'French': flag += 'fr.svg'; break;
+        case 'Japanese': flag += 'jp.svg'; break;
+        case 'Portugues-pt': flag += 'pt.svg'; break;
+        case 'Spanish': flag += 'es.svg'; break;
+        case 'English': flag += 'us.svg'; break;
+
+    }
+    return flag;
+}
+
 
 export const linkFlags = (country?: string) => {
     var flag = 'https://flagcdn.com/';
@@ -189,15 +210,19 @@ export const linkFlags = (country?: string) => {
     switch(country) {
         case 'Argentina': flag += 'ar.svg'; break;
         case 'Australia': flag += 'au.svg'; break;
+        case 'Austria': flag += 'at.svg'; break;
         case 'Brazil': flag += 'br.svg'; break;
         case 'Belgium': flag += 'be.svg'; break;
+        case 'Bulgaria': flag += 'bg.svg'; break;
         case 'Canada': flag += 'ca.svg'; break;
+        case 'Canada UK': flag += 'ca.svg'; break;
         case 'China': flag += 'cn.svg'; break;
         case 'Colombia': flag += 'co.svg'; break;
         case 'Czech Republic': flag += 'cz.svg'; break;
         case 'Greece': flag += 'gr.svg'; break;
         case 'Germany': flag += 'de.svg'; break;
         case 'Hong Kong': flag += 'hk.svg'; break;
+        case 'Hungary': flag += 'hu.svg'; break;
         case 'India': flag += 'in.svg'; break;
         case 'Italy': flag += 'it.svg'; break;
         case 'Ireland': flag += 'ie.svg'; break;
@@ -207,9 +232,12 @@ export const linkFlags = (country?: string) => {
         case 'Taiwan': flag += 'tw.svg'; break;
         case 'Netherlands': flag += 'nl.svg'; break;
         case 'Philippines': flag += 'ph.svg'; break;
+        case 'Portugal': flag += 'pt.svg'; break;
         case 'USA': flag += 'us.svg'; break;
         case 'UK': flag += 'gb.svg'; break;
+        case 'Russia': flag += 'ru.svg'; break;
         case 'South Africa': flag += 'za.svg'; break;
+        case 'South Korea': flag += 'kr.svg'; break;
         case 'France': flag += 'fr.svg'; break;
         case 'Switzerland': flag += 'ch.svg'; break;
         case 'Singapore': flag += 'sg.svg'; break;
@@ -255,12 +283,15 @@ export const createByType = (midias: any[], type: string) => {
                 return isNotNullStr(data?.genre)
             else if (type === TYPE_F_COUNTRIES)
                 return isNotNullStr(data?.countries)
+            else if (type === TYPE_F_LANGUAGE)
+                return isNotNullStr(data?.language)
             return '';
         })
         .forEach((data) => {
             var value;
             if (type === TYPE_F_GENRE) value = data?.genre
             else if (type === TYPE_F_COUNTRIES) value = data?.countries;
+            else if (type === TYPE_F_LANGUAGE) value = data?.language;
 
             value?.split(', ').forEach((c: any) => options.push(c))
         });

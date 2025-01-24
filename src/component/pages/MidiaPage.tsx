@@ -1,6 +1,6 @@
 import { Button, Chip, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect, useRef } from "react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_OWNED, TYPE_F_STATUS } from "../../utils/constantes";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_OWNED, TYPE_F_STATUS } from "../../utils/constantes";
 import { createByType, isFilterMultipleSelect, isFilterSearch, isFilterSingleSelect, isNotNullSelectionArray, isNotNullStr } from "../../utils/utils";
 import { AnimeIcon } from "../icons/AnimeIcon";
 import { ComicIcon } from "../icons/ComicIcon";
@@ -32,6 +32,7 @@ export const MidiaPage = ({
     const [isAdult18, setAdult18] = React.useState<boolean>(false);
     const [selectedGenres, setSelectedGenres] = React.useState<Selection>(new Set([]));
     const [selectedCountries, setSelectedCountries] = React.useState<Selection>(new Set());
+    const [selectedLanguages, setSelectedLanguages] = React.useState<Selection>(new Set());
     const [isSelectedOwner, setIsSelectedOwner] = React.useState<Selection>(new Set());
     const [selectedStatus, setSelectedStatus] = React.useState<Selection>(new Set());
 
@@ -100,11 +101,16 @@ export const MidiaPage = ({
         return createByType(data, TYPE_F_COUNTRIES);
     }, [data]);
 
+    const languages = React.useMemo(() => {
+        return createByType(data, TYPE_F_LANGUAGE);
+    }, [data]);
+
     const wasResearch = () => {
         return hasSearchFilter
             || !hasAdult18Filter
             || isNotNullSelectionArray(selectedGenres)
             || isNotNullSelectionArray(selectedCountries)
+            || isNotNullSelectionArray(selectedLanguages)
             || isNotNullSelectionArray(isSelectedOwner)
             || isNotNullSelectionArray(selectedStatus);
     }
@@ -139,10 +145,11 @@ export const MidiaPage = ({
                 .filter((m: any) => isFilterSearch(valueSearch, m))
                 .filter((m: any) => isFilterMultipleSelect(selectedGenres, m, TYPE_F_GENRE))
                 .filter((m: any) => isFilterSingleSelect(selectedCountries, m, TYPE_F_COUNTRIES))
+                .filter((m: any) => isFilterSingleSelect(selectedLanguages, m, TYPE_F_LANGUAGE))
                 .filter((m: any) => isFilterSingleSelect(isSelectedOwner, m, TYPE_F_OWNED))
                 .filter((m: any) => isFilterSingleSelect(selectedStatus, m, TYPE_F_STATUS))
             : filtered;
-    }, [data, valueSearch, hasAdult18Filter, selectedGenres, selectedCountries, selectedSortByKeys, isSelectedOwner, selectedStatus, changeVisibleMidia, rowsPerPage]);
+    }, [data, valueSearch, hasAdult18Filter, selectedGenres, selectedCountries, selectedLanguages, selectedSortByKeys, isSelectedOwner, selectedStatus, changeVisibleMidia, rowsPerPage]);
 
     let tabs = [
         {
@@ -201,6 +208,9 @@ export const MidiaPage = ({
             countries={countries}
             selectedCountries={selectedCountries}
             setSelectedCountries={setSelectedCountries}
+            languages={languages}
+            selectedLanguages={selectedLanguages}
+            setSelectedLanguages={setSelectedLanguages}
             isSelectedOwner={isSelectedOwner}
             setIsSelectedOwner={setIsSelectedOwner}
             selectedStatus={selectedStatus}
@@ -239,7 +249,15 @@ export const MidiaPage = ({
                     tabContent: "group-data-[selected=true]:text-[#06b6d4]"
                 }}
                 selectedKey={selected}
-                onSelectionChange={setSelected}
+                onSelectionChange={(e) => {
+                    if ('COMICS' === TAB_COMICS_KEY || 'MANGAS' === TAB_MANGAS_KEY) {
+                        setSelectedSortByKeys(new Set([DROPD_SORTBY_TL_AZ_KEY]))
+                    } else {
+                        setSelectedSortByKeys(new Set([DROPD_SORTBY_DT_DESC_KEY]))
+                    }
+                    console.log(e)
+                    setSelected(e);
+                }}
                 items={tabs}>
                 {(item) => (
                     <Tab key={item.id} title={<>

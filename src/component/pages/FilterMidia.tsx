@@ -1,7 +1,7 @@
 import type { Selection } from "@nextui-org/react";
 import { Avatar, Button, Input, Select, SelectItem, SwitchProps, useSwitch, VisuallyHidden } from "@nextui-org/react";
 import React, { useEffect } from "react";
-import { linkFlags, owner, sortBy, status } from "../../utils/utils";
+import { linkFlags, linkFlagsByLanguage, owner, sortBy, status } from "../../utils/utils";
 import { Adult18Icon } from "../icons/Adult18Icon";
 import { MinusIcon } from "../icons/MinusIcon";
 import { PlusIcon } from "../icons/PlusIcon";
@@ -21,6 +21,10 @@ interface FilterMidiaProps {
     countries: string[],
     selectedCountries: Selection,
     setSelectedCountries: React.Dispatch<React.SetStateAction<Selection>>;
+
+    languages: string[],
+    selectedLanguages: Selection,
+    setSelectedLanguages: React.Dispatch<React.SetStateAction<Selection>>;
 
     isSelectedOwner: Selection,
     setIsSelectedOwner: React.Dispatch<React.SetStateAction<Selection>>;
@@ -43,6 +47,10 @@ export const FilterMidia = ({
     countries,
     selectedCountries,
     setSelectedCountries,
+
+    languages,
+    selectedLanguages,
+    setSelectedLanguages,
 
     isSelectedOwner,
     setIsSelectedOwner,
@@ -149,7 +157,37 @@ export const FilterMidia = ({
                                 </SelectItem>
                             ))}
                         </Select>
-
+                        <Select
+                            labelPlacement="outside"
+                            label="Language"
+                            placeholder="Any"
+                            selectionMode="single"
+                            className="max-w-xs"
+                            selectedKeys={selectedLanguages}
+                            onSelectionChange={setSelectedLanguages}
+                            renderValue={(items) => {
+                                return items.map((item) => (
+                                    <div key={item.key} className="flex items-center gap-2">
+                                        <div className="flex gap-2 items-center">
+                                            <Avatar alt={item.textValue} className="flex-shrink-0" size="sm" src={linkFlagsByLanguage(item.textValue)} />
+                                            <div className="flex flex-col">
+                                                <span className="text-small">{item.textValue}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ));
+                            }}>
+                            {languages.map((l) => (
+                                <SelectItem key={l} textValue={l}>
+                                    <div className="flex gap-2 items-center">
+                                        <Avatar alt={l} className="flex-shrink-0" size="sm" src={linkFlagsByLanguage(l)} />
+                                        <div className="flex flex-col">
+                                            <span className="text-small">{l}</span>
+                                        </div>
+                                    </div>
+                                </SelectItem>
+                            ))}
+                        </Select>
                     </div>
                     <div className="flex w-full flex-wrap items-end md:flex-nowrap mb-6 gap-4">
 
