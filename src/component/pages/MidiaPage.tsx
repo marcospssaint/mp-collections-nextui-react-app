@@ -92,9 +92,7 @@ export const MidiaPage = ({
     }, [selected, moviesLoaded, tvShowLoaded, tvTokuLoaded, animesLoaded, comicsLoaded, mangasLoaded]);
 
     const genres = React.useMemo(() => {
-        return createByType(data, TYPE_F_GENRE)
-            .filter((g) => g !== 'Adult')
-            .filter((g) => g !== 'Erotic');
+        return createByType(data, TYPE_F_GENRE);
     }, [data]);
 
     const countries = React.useMemo(() => {

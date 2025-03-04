@@ -1,4 +1,4 @@
-import { Card, CardFooter, Image, Pagination } from "@nextui-org/react";
+import { Card, CardBody, Image, Pagination } from "@nextui-org/react";
 import { IMidia, statusByMidiaColor } from "../../data/midia";
 import { imageModified, textMidia } from "../../utils/utils";
 
@@ -35,29 +35,35 @@ export const GridMidiaComponent = ({
                             setMidiaSelected(item);
                             onOpen();
                         }}>
+                            <CardBody className="overflow-visible p-0">
                         <Image
                             removeWrapper
                             key={`image_modal_${item?.id}`}
                             className="z-0 w-full h-full object-cover"
                             width='180px'
-                            height='280px'
+                            height='240px'
                             src={imageModified(item?.img)}
                         />
-                        {
-                           statusByMidiaColor(item) === 'C' &&
-                            <div className="absolute bg-green-500 top-0 right-0 rounded-full p-3 m-2 shadow-sm w-6 h-6" />
-                        }
-                        {
-                           statusByMidiaColor(item) === 'O' &&
-                            <div className="absolute bg-orange-500 top-0 right-0 rounded-full p-3 m-2 shadow-sm w-6 h-6" />
-                        }
-                        <CardFooter className="justify-between py-1 absolute bottom-1 ml-1 z-10" style={{
-                            background: 'linear-gradient(180deg,transparent,rgba(0,0,0,.8))'
-                        }}>
-                            <span style={{ color: 'rgb(255 255 255/var(--tw-text-opacity,1))', fontSize: '.875rem', fontWeight: 400 }}>
-                                {item.year} ·  {textMidia(item.title)}
-                            </span>
-                        </CardFooter>
+                        <div className="content">
+                            <div className="consensus tight">
+                                <div className="outer_ring">
+                                    {
+                                        statusByMidiaColor(item) === 'C' &&
+                                        <div className="absolute bg-green-500 top-0 right-0 rounded-full p-3 m-2 shadow-sm w-6 h-6" />
+                                    }
+                                    {
+                                        statusByMidiaColor(item) === 'O' &&
+                                        <div className="absolute bg-orange-500 top-0 right-0 rounded-full p-3 m-2 shadow-sm w-6 h-6" />
+                                    }
+                                </div>
+
+                            </div>
+                            <h2>
+                                {textMidia((item.subtitle ?? item.publicationTitle) ?? item?.title)}
+                            </h2>
+                            <p>{item.year}</p>
+                        </div>
+                        </CardBody>
                     </Card>
 
                 ))}
@@ -74,7 +80,7 @@ export const GridMidiaComponent = ({
                     page={page}
                     total={pages}
                     onChange={(e) => {
-                        setPage(e); 
+                        setPage(e);
                         pageTopRef.current?.scrollIntoView();
                     }}
                 />

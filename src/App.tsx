@@ -15,7 +15,7 @@ function App() {
                         <NavbarContent justify="start">
                             <NavbarBrand>
                                 <p className="font-bold font-mono text-3xl text-inherit">
-                                    MP Collection APP
+                                    MP Collections
                                 </p>
                             </NavbarBrand>
                         </NavbarContent>

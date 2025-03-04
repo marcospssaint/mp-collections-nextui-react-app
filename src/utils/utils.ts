@@ -1,12 +1,12 @@
 import { ChipProps } from "@nextui-org/react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_STATUS, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, M_READING, M_VIDEO, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_STATUS, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
 
 export const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export const textMidia = (str: string) => {
-    return str?.length > 20 ? str.substring(0, 15) + '...' : str;
+    return str?.length > 20 ? str.substring(0, 16) : str;
 }
 
 export const groupByToMap = <T, Q>(array: T[], predicate: (value: T, index: number, array: T[]) => Q) =>
@@ -131,6 +131,18 @@ export const getFlagCountries = (countries?: string) => {
     });
 
     return options?.filter(isNotNullStr);
+}
+
+export const typeMidia = (type?: string) => {
+    switch (type) {
+        case TAB_MOVIES_KEY:
+        case TAB_TV_KEY:
+        case TAB_TV_TOKU_KEY:
+        case TAB_ANIMES_KEY:
+            return M_VIDEO;
+        default:
+            return M_READING;
+    }
 }
 
 export const statusColorMap: Record<string, ChipProps["color"]> = {

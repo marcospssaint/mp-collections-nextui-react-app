@@ -23,6 +23,9 @@ export const TAB_ANIMES_KEY = "ANIMES";
 export const TAB_COMICS_KEY = "COMICS";
 export const TAB_MANGAS_KEY = "MANGAS";
 
+export const M_VIDEO = "VIDEO";
+export const M_READING = "READING";
+
 export const DROPD_SORTBY_DT_DESC_KEY = "1";
 export const DROPD_SORTBY_DT_ASC_KEY = "2";
 export const DROPD_SORTBY_TL_AZ_KEY = "3";

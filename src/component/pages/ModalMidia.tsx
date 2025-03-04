@@ -1,8 +1,8 @@
-import { Accordion, AccordionItem, Avatar, Chip, Divider, Image, Modal, ModalBody, ModalContent, ModalHeader, ScrollShadow, Tab, Tabs } from "@nextui-org/react";
+import { Accordion, AccordionItem, Avatar, Chip, Image, Modal, ModalBody, ModalContent, ModalHeader, ScrollShadow, Tab, Tabs } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { IMidia, nOfEdition, ownedByMidia, statusByMidia } from "../../data/midia";
-import { TAB_ANIMES_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY } from "../../utils/constantes";
-import { getFlagCountries, iconFlagLanguage, imageModified, isNotNullStr, range, rangeBySeparator, statusColorMap } from "../../utils/utils";
+import { IMidia, nOfEdition, ownedByMidia, status, statusByMidia } from "../../data/midia";
+import { M_READING, M_VIDEO, TAB_ANIMES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY } from "../../utils/constantes";
+import { iconFlagLanguage, imageModified, isNotNullStr, range, rangeBySeparator, statusColorMap, typeMidia } from "../../utils/utils";
 
 interface ModalMidiaProps {
     midiaSelected: IMidia,
@@ -15,41 +15,6 @@ export const ModalMidia = ({
     isOpen,
     onOpenChange,
 }: ModalMidiaProps) => {
-
-    const directors = () => {
-        const directors = midiaSelected?.cast?.replaceAll(',', ' · ')
-            .split('*');
-
-        return directors?.at(0)?.replaceAll('<<>>', '')
-            .replaceAll('<>', '') ?? '-';
-    }
-
-    const stars = () => {
-        const stars = midiaSelected?.cast?.replaceAll(',', ' · ')
-            .split('*');
-
-        return stars?.at(1)?.replaceAll('*', '') ?? '-';
-    }
-
-    const genresList = () => {
-        return midiaSelected?.genre?.split(',');
-    }
-
-    const writes = () => {
-        const writes = midiaSelected?.authors?.replaceAll(',', ' · ')
-            .split('*');
-
-        return writes?.at(0)?.replaceAll('<<>>', '')
-            .replaceAll('<>', '');
-    }
-
-    const pencilers = () => {
-        const pencilers = midiaSelected?.authors?.replaceAll(',', ' · ')
-            .split('*');
-
-        return pencilers?.at(1)?.replaceAll('*', '') ?? '-';
-    }
-
     const modalNew = () => <Modal
         key={`modal_midia__${midiaSelected?.id}`}
         aria-label="Modal Midia"
@@ -59,16 +24,16 @@ export const ModalMidia = ({
         size="5xl"
         scrollBehavior="inside">
         <ModalContent key={`card_modal__${midiaSelected?.id}`}>
-            <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+            <ModalHeader className="flex flex-col gap-1 modal-header">
+                <h2>{(midiaSelected.subtitle ?? midiaSelected.publicationTitle) ?? midiaSelected?.title}
+                    <span className="release_date"> ({midiaSelected.year})</span>
+                </h2>
+            </ModalHeader>
             <ModalBody>
                 <div className="md-content flex-grow">
-                    <div className="layout-container modal-midia has-gradient px-4">
+                    <div className="layout-container modal-midia has-gradient">
                         <div className="banner-container block">
-                            <div
-                                className="banner-image"
-                                style={{
-                                    backgroundImage: `url(${imageModified(midiaSelected?.img)})`
-                                }} />
+                            <div className="banner-image" />
                             <div className="banner-shade" />
                         </div>
 
@@ -83,87 +48,40 @@ export const ModalMidia = ({
                                 </a>
                             </div>
                         </div>
-                        <div className="title-banner">
-                            <p className="mb-1">{midiaSelected?.title}</p>
-                            <div className="font-normal line-clamp-2 text-base sm:text-xl inline-block leading-5">
-                                {midiaSelected.originalTitle}
+                        <div className="title-banner m-2">
+                            <div className="font-normal text-xs sm:text-base sm:truncate flex-shrink-0">
+                                {midiaSelected?.originalTitle}
                             </div>
                             <div className="font-normal text-xs sm:text-base sm:truncate flex-shrink-0">
-                                {midiaSelected.subtitle ?? midiaSelected.publicationTitle}
+                                {midiaSelected?.subtitle !== null ? midiaSelected?.title : null}
                             </div>
                             <div className="font-normal text-xs sm:text-base sm:truncate flex-shrink-0">
                                 {midiaSelected.phase}
                             </div>
+                            <div className="flex gap-4 items-center pt-4">
+                                <Avatar isBordered
+                                    classNames={{
+                                        name: "text-base text-xs-avatar"
+                                    }}
+                                    color={statusColorMap[statusByMidia(midiaSelected)]}
+                                    size="sm"
+                                    showFallback
+                                    name="S" />
 
-                            <div className="flex flex-row gap-2">
-                                <div className="flex h-4 items-center space-x-4 text-small" style={{
-                                    marginTop: '20px'
-                                }}>
-                                    {
-                                        getFlagCountries(midiaSelected.countries).map((c) =>
-                                            <Avatar radius="sm" key={`c_${midiaSelected?.id}_${c}`}
-                                                className="w-8 h-8"
-                                                src={c} />)
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div className="sm:mx-2 pt-4" style={{ gridArea: 'info' }}>
-                            <div className="flex w-full flex-col">
-                                <div className="flex gap-1 items-center ">
-                                    {
-                                        genresList()?.map((g) =>
-                                            <Chip
-                                                className="genre-midia"
-                                                style={{
-                                                    backgroundColor: 'rgb(240 241 242)',
-                                                    fontSize: '.625rem',
-                                                    textTransform: 'uppercase'
-                                                }}
-                                                radius="sm">
-                                                {g}
-                                            </Chip>
-                                        )
-                                    }
-                                </div>
-                            </div>
-                            <div className="flex gap-1 flex-wrap items-center">
-                                <div className="flex items-center flex flex-wrap gap-1">
-                                    <div className="tag dot no-wrapper sm:font-bold uppercase">{midiaSelected.year}</div>
-                                    <div >
-                                        <Chip
-                                            className="capitalize border-none gap-1 "
-                                            color={statusColorMap[statusByMidia(midiaSelected)]}
-                                            size="md"
-                                            variant="dot">
-                                            <span className="tag dot no-wrapper sm:font-bold uppercase">Status</span>
-                                        </Chip>
-                                    </div>
-
-                                    <Chip
-                                        className="capitalize border-none gap-1"
-                                        color={statusColorMap[ownedByMidia(midiaSelected)]}
-                                        size="md"
-                                        variant="dot">
-
-                                        <span className="tag dot no-wrapper sm:font-bold uppercase">Owned</span>
-                                    </Chip>
-                                </div>
+                                <Avatar isBordered
+                                    classNames={{
+                                        name: "text-base text-xs-avatar"
+                                    }}
+                                    color={statusColorMap[ownedByMidia(midiaSelected)]}
+                                    size="sm"
+                                    showFallback
+                                    name="O" />
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div>
-                    <CreatorsMidias
-                        isVisible={midiaSelected?.cast !== undefined || midiaSelected?.authors !== undefined}
-                        isMidiaVideo={midiaSelected?.cast !== undefined}
-                        type={midiaSelected.type}
-                        directors={directors()}
-                        writers={writes()}
-                        staring={stars()}
-                        pencillers={pencilers()}
-                    />
-                    <Divider className="my-2" />
                     <ScrollShadow key={`scroll_synopsis_${midiaSelected?.id}`}
                         orientation="horizontal" hideScrollBar>
                         <p className=" text-justify font-serif">
@@ -171,6 +89,7 @@ export const ModalMidia = ({
                         </p>
                     </ScrollShadow>
                 </div>
+
                 <div className="flex w-full flex-col">
                     <Tabs
                         key={`tabs_${midiaSelected?.id}`}
@@ -178,82 +97,92 @@ export const ModalMidia = ({
                         variant="underlined"
                         color="default">
                         {
-                            midiaSelected?.type !== TAB_MOVIES_KEY &&
-                            <Tab key={`info_${midiaSelected?.id}`} title="Details" style={{ fontWeight: 400 }}>
-                                {
-                                    ((midiaSelected?.type === TAB_TV_KEY || midiaSelected?.type === TAB_ANIMES_KEY || midiaSelected?.type === TAB_TV_TOKU_KEY ) && !!midiaSelected?.midiasTvs) &&
-                                    <>
-                                        <Accordion selectionMode="single" defaultExpandedKeys={["0"]}>
-                                            {
-                                                midiaSelected?.midiasTvs.map((m, index) => {
-                                                    return (<AccordionItem
-                                                        key={index + ''}
-                                                        aria-label="Watched"
-                                                        isCompact
-                                                        title={<>
-                                                            Season {m?.season} · {m?.type}
-                                                            <Chip
-                                                                className="capitalize border-none gap-1 text-default-600"
-                                                                color={statusColorMap[statusByMidia(m)]}
-                                                                size="sm"
-                                                                variant="dot" />
-                                                        </>}
-                                                        subtitle={<>
-                                                            <p>{m.originalTitle}</p>
-                                                            <p>{m.year} · {nOfEdition(m.episodes)} episódios</p>
-                                                        </>}
-                                                        classNames={{
-                                                            title: "font-bold h3"
-                                                        }}>
-                                                        <ScrollShadow key={`scroll_ep_${m?.id}`} orientation="horizontal" hideScrollBar className="h-[150px]">
-                                                            <NOfEpisodesWatchedComponent key={`nepisodies_${m.season}`} midiaVideo={m} />
-                                                        </ScrollShadow>
-                                                    </AccordionItem>
-                                                    )
-                                                })
-                                            }
-                                        </Accordion>
-                                    </>
-                                }
-                                <Accordion selectionMode="single" defaultExpandedKeys={["0"]}>
-                                    {
-                                        Array.from({ length: midiaSelected?.language?.split(', ')?.length ?? 0 }).map((_, index) => {
-                                            const languageCurrent = midiaSelected?.language?.split(',').at(index)?.trim();
-                                            const volumeCurrent_ = (midiaSelected?.volume + '')?.split(';').at(index);
-                                            const readVolumeCurrent_ = Number((midiaSelected?.readVolume + '')?.split(';').at(index));
-                                            const publicationTitleCurrent = (midiaSelected?.publisher + '')?.split(';').at(index);
 
-                                            return (<AccordionItem
-                                                key={index + ''}
-                                                aria-label="Issues"
-                                                isCompact
-                                                startContent={
-                                                    <Avatar
-                                                        key={`c_${index}`}
-                                                        className="w-6 h-6"
-                                                        src={iconFlagLanguage(languageCurrent?.trim())} />
-                                                }
-                                                title={publicationTitleCurrent}
-                                                subtitle={`${nOfEdition(volumeCurrent_)} issues in this volume`}
-                                                classNames={{
-                                                    title: "font-bold h3"
-                                                }}>
-                                                <ScrollShadow key={`scroll_issue_${midiaSelected?.id}`}
-                                                    orientation="horizontal"
-                                                    hideScrollBar>
-                                                    <NOfEditionsComponent
-                                                        readVolumeCurrent={readVolumeCurrent_}
-                                                        volumeCurrent={volumeCurrent_} />
-                                                </ScrollShadow>
-                                            </AccordionItem>)
-                                        })
-                                    }
-                                </Accordion>
+                            <Tab key={`info_${midiaSelected?.id}`} title="Details" style={{ fontWeight: 400 }}>
+                                <DetailsMidia midia={midiaSelected} />
                             </Tab>
                         }
+
+                        <Tab key={`control_${midiaSelected?.id}`} title="Control">
+                        <div>
+                            <p style={{ fontWeight: '700' }}>Status:</p>
+                            {status(midiaSelected)}
+                        </div>
+                            
+                            {
+                                ((midiaSelected?.type === TAB_TV_KEY || midiaSelected?.type === TAB_ANIMES_KEY || midiaSelected?.type === TAB_TV_TOKU_KEY) && !!midiaSelected?.midiasTvs) &&
+                                <>
+                                    <Accordion selectionMode="single">
+                                        {
+                                            midiaSelected?.midiasTvs.map((m, index) => {
+                                                return (<AccordionItem
+                                                    key={index + ''}
+                                                    aria-label="Watched"
+                                                    isCompact
+                                                    title={<>
+                                                        Season {m?.season} · {m?.type}
+                                                        <Chip
+                                                            className="capitalize border-none gap-1 text-default-600"
+                                                            color={statusColorMap[statusByMidia(m)]}
+                                                            size="sm"
+                                                            variant="dot" />
+                                                    </>}
+                                                    subtitle={<>
+                                                        <p>{m.originalTitle}</p>
+                                                        <p>{m.year} · {nOfEdition(m.episodes)} episódios</p>
+                                                    </>}
+                                                    classNames={{
+                                                        title: "font-bold h3"
+                                                    }}>
+                                                    <ScrollShadow key={`scroll_ep_${m?.id}`} orientation="horizontal" hideScrollBar className="h-[150px]">
+                                                        <NOfEpisodesWatchedComponent key={`nepisodies_${m.season}`} midiaVideo={m} />
+                                                    </ScrollShadow>
+                                                </AccordionItem>
+                                                )
+                                            })
+                                        }
+                                    </Accordion>
+                                </>
+                            }
+                            <Accordion selectionMode="single">
+                                {
+                                    Array.from({ length: midiaSelected?.language?.split(', ')?.length ?? 0 }).map((_, index) => {
+                                        const languageCurrent = midiaSelected?.language?.split(',').at(index)?.trim();
+                                        const volumeCurrent_ = (midiaSelected?.volume + '')?.split(';').at(index);
+                                        const readVolumeCurrent_ = Number((midiaSelected?.readVolume + '')?.split(';').at(index));
+                                        const publicationTitleCurrent = (midiaSelected?.publisher + '')?.split(';').at(index);
+
+                                        return (<AccordionItem
+                                            key={index + ''}
+                                            aria-label="Issues"
+                                            isCompact
+                                            startContent={
+                                                <Avatar
+                                                    key={`c_${index}`}
+                                                    className="w-6 h-6"
+                                                    src={iconFlagLanguage(languageCurrent?.trim())} />
+                                            }
+                                            title={publicationTitleCurrent}
+                                            subtitle={`${nOfEdition(volumeCurrent_)} issues in this volume`}
+                                            classNames={{
+                                                title: "font-bold h3"
+                                            }}>
+                                            <ScrollShadow key={`scroll_issue_${midiaSelected?.id}`}
+                                                orientation="horizontal"
+                                                hideScrollBar>
+                                                <NOfEditionsComponent
+                                                    readVolumeCurrent={readVolumeCurrent_}
+                                                    volumeCurrent={volumeCurrent_} />
+                                            </ScrollShadow>
+                                        </AccordionItem>)
+                                    })
+                                }
+                            </Accordion>
+                        </Tab>
+
                         {
                             isNotNullStr(midiaSelected.notes) &&
-                            <Tab key={`control_${midiaSelected?.id}`} title="Control">
+                            <Tab key={`notas_${midiaSelected?.id}`} title="Notas">
                                 <ScrollShadow key={`scroll_notes_${midiaSelected?.id}`}
                                     orientation="horizontal"
                                     hideScrollBar>
@@ -276,27 +205,91 @@ export const ModalMidia = ({
     </>)
 }
 
-interface CreatorsMidiasProps {
-    isVisible: boolean;
-    isMidiaVideo: boolean,
-    type?: string,
-    directors: any,
-    staring: any,
-    writers: any,
-    pencillers: any,
+interface DetailsMidiaProps {
+    midia: IMidia | undefined;
 }
 
-const CreatorsMidias = ({ isVisible, isMidiaVideo, directors, staring, writers, pencillers }: CreatorsMidiasProps) => {
+const DetailsMidia = ({ midia }: DetailsMidiaProps) => {
+    const directors = () => {
+        const directors = midia?.cast?.replaceAll(',', ' · ')
+            .split('*');
+
+        return directors?.at(0)?.replaceAll('<<>>', '')
+            .replaceAll('<>', '') ?? '-';
+    }
+
+    const starring = () => {
+        const stars = midia?.cast?.replaceAll(',', ' · ')
+            .split('*');
+
+        return stars?.at(1)?.replaceAll('*', '') ?? '-';
+    }
+
+    const genres = () => {
+        return midia?.genre?.replaceAll(',', ' | ');
+    }
+
+    const countries = () => {
+        return midia?.countries?.replaceAll(',', ' | ');
+    }
+
+    const writers = () => {
+        const writes = midia?.authors?.replaceAll(',', ' · ')
+            .split('*');
+
+        return writes?.at(0)?.replaceAll('<<>>', '')
+            .replaceAll('<>', '');
+    }
+
+    const pencillers = () => {
+        const pencilers = midia?.authors?.replaceAll(',', ' · ')
+            .split('*');
+
+        return pencilers?.at(1)?.replaceAll('*', '') ?? '-';
+    }
+
     return (
-        isVisible && <>
+        <>
             <div>
-                <p style={{ fontSize: '1rem', fontWeight: '700' }}>{!!isMidiaVideo ? 'Diretors' : 'Writers'}</p>
-                {!!isMidiaVideo ? directors : writers}
+                <p style={{ fontWeight: '700' }}>Release Year:</p>
+                {midia?.year}
             </div>
-            <div className="pb-2">
-                <p style={{ fontSize: '1rem', fontWeight: '700' }}>{!!isMidiaVideo ? 'Staring' : 'Pencillers'}</p>
-                {!!isMidiaVideo ? staring : pencillers}
+            <div className="pt-2">
+                <p style={{ fontWeight: '700' }}>Country of origin:</p>
+                {countries()??'-'}
             </div>
+            <div className="pt-2">
+                <p style={{ fontWeight: '700' }}>Also known as:</p>
+                {midia?.originalTitle??'-'}
+            </div>
+            <div className="pt-2">
+                <p style={{ fontWeight: '700' }}>Genre:</p>
+                {genres()}
+            </div>
+            {
+                typeMidia(midia?.type) === M_VIDEO && <>
+                    <div className="pt-2">
+                        <p style={{ fontWeight: '700' }}>Director:</p>
+                        {directors()}
+                    </div>
+                    <div className="pt-2">
+                        <p style={{ fontWeight: '700' }}>Starring:</p>
+                        {starring()}
+                    </div>
+                </>
+            }
+            {
+                typeMidia(midia?.type) === M_READING && <>
+                    <div className="pt-2">
+                        <p style={{ fontWeight: '700' }}>Writers:</p>
+                        {writers()}
+                    </div>
+                    <div className="pt-2">
+                        <p style={{ fontWeight: '700' }}>Penciller:</p>
+                        {pencillers()}
+                    </div>
+                </>
+            }
         </>
     )
 }
@@ -318,8 +311,11 @@ const NOfComponent = ({ total, numeros, list }: NOfComponentProps) => {
                     return <div key={`issue_${index}_${indexCurrent}`} className="p-1">
                         <Avatar
                             key={`avatar_${indexCurrent}`}
+                            classNames={{
+                                name: "text-base text-xs-avatar"
+                            }}
                             name={`${indexCurrent}`}
-                            radius="md"
+                            radius="full"
                             isBordered
                             color={colorNOfComponent(list, indexCurrent, contais)}
                             size="sm" />

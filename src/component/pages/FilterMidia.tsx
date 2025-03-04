@@ -88,7 +88,7 @@ export const FilterMidia = ({
                     onPress={() => setExpandFilter(!expandFilter)}
                     color="default"
                     startContent={!expandFilter ? <PlusIcon /> : <MinusIcon />}>
-                    {!expandFilter ? `Show filters` : `Hide filters`}
+                    Filters
                 </Button>
             </div>
 

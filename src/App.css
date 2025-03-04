@@ -1,7 +1,7 @@
 :root {
     --banner-filter: blur(4px);
     --banner-height: 13.5rem;
-    --banner-overlay-gradient: linear-gradient(67.81deg, rgba(0, 0, 0, .64) 35.51%, transparent);
+    --banner-overlay-gradient: linear-gradient(rgba(0, 0, 0, .64) 100%, transparent);
     --navbar-height: 3.5rem;
     --top-margin: .5rem;
     --md-background: 255 255 255;
@@ -243,12 +243,77 @@ body {
 }
 
 .pt-4 {
-    padding: 1rem;
+    padding-top: 1rem;
     /* 16px */
 }
 
 .justify-items-start {
     justify-items: start;
+}
+
+.content {
+    width: 100%;
+    padding: 10px 10px 12px;
+    position: relative;
+    white-space: normal;
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.content h2 {
+    font-size: 1em;
+    margin: 0;
+    width: 100%;
+    text-align: start;
+    word-wrap: normal;
+    overflow-wrap: break-word;
+    font-weight: 600;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.content p {
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, .6);
+}
+
+div.content div.consensus {
+    position: absolute;
+    top: -19px;
+    left: 10px;
+}
+
+div.consensus.tight {
+    width: 38px;
+    height: 38px;
+    box-sizing: border-box;
+}
+
+div.consensus {
+    width: 68px;
+    height: 68px;
+    display: inline-block;
+    transition: transform .2s;
+    transform: scale(1);
+}
+
+div.consensus div.outer_ring {
+    margin-right: 0;
+}
+div.consensus.tight div.outer_ring {
+    width: 38px;
+    height: 38px;
+    padding: 2px;
+}
+div.consensus div.outer_ring {
+    display: inline-block;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    padding: 4px;
 }
 
 /* Modal Midia new */
@@ -270,8 +335,8 @@ body {
 }
 
 .layout-container {
-    --banner-overlay-gradient: linear-gradient(to bottom, rgb(var(--md-background) / .8) 0%, rgb(var(--md-background)) 100%);
-    gap: .75rem 1rem;
+    --banner-overlay-gradient: linear-gradient(rgba(0, 0, 0, .64) 100%, transparent);
+    gap: 0.1rem 1rem;
     grid-template-areas:
         "art title"
         "art stats"
@@ -289,7 +354,7 @@ body {
 
 .banner-container,
 .banner-image {
-    height: 230px;
+    height: 150px;
 }
 
 .rounded {
@@ -306,7 +371,6 @@ body {
     width: auto;
     z-index: -1;
     border-radius: .25rem;
-
 }
 
 .block {
@@ -322,7 +386,7 @@ body {
 }
 
 .banner-shade {
-    backdrop-filter: var(--banner-filter);
+    /* backdrop-filter: var(--banner-filter); */
     background: var(--banner-overlay-gradient);
     bottom: 0;
     height: auto;
@@ -343,6 +407,15 @@ body {
     line-height: 100%;
     min-width: 0;
     position: relative;
+
+    color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.title-banner h2 {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
 }
 
 .line-clamp-2 {
@@ -364,6 +437,11 @@ body {
 .text-xs {
     font-size: .75rem;
     line-height: 1rem;
+}
+
+.text-xs-avatar {
+    color: #FFF;
+    font-weight: 600;
 }
 
 .flex-shrink-0 {
@@ -399,9 +477,12 @@ body {
 
 .tag.no-wrapper {
     border-radius: 0;
-    margin-bottom: -.3125rem;
-    margin-top: -.3125rem;
+    margin-bottom: 0;
+    margin-top: 0;
     padding: 0;
+    font-weight: 400;
+    --white: #fff;
+    color: var(--white) !important;
 }
 
 .uppercase {
@@ -428,6 +509,20 @@ body {
     stroke-width: 1.91px;
 }
 
+.modal-header {
+    font-size: 1.5rem;
+}
+
+.modal-header span.release_date {
+    opacity: .8;
+    font-weight: 400;
+}
+
+.modal-header.py-4 {
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+}
+
 @media (min-width: 48rem) {
     .md\:grid-cols-\[1fr_12rem\] {
         grid-template-columns: 1fr 12rem;
@@ -436,9 +531,7 @@ body {
 
 @media (min-width: 40rem) {
     .layout-container {
-        --banner-filter: blur(4px);
-        --banner-overlay-gradient: linear-gradient(67.81deg, rgba(0, 0, 0, .64) 35.51%, transparent);
-        gap: 0.5rem;
+        gap: 0.1rem 0.5rem;
         grid-template-areas:
             "left art title right"
             "left art buttons right"
@@ -447,7 +540,7 @@ body {
             "left art padding right"
             "left synopsis synopsis right"
             "left content content right";
-        grid-template-columns: 1fr 200px minmax(0, calc(1240px - 3.5rem)) 1fr;
+        grid-template-columns: 1fr 150px minmax(0, calc(1240px - 3.5rem)) 1fr;
     }
 
     .title-banner {
@@ -457,8 +550,11 @@ body {
         --tw-text-opacity: 1;
         color: rgb(255 255 255 / var(--tw-text-opacity, 1));
         height: var(--banner-height);
-        justify-content: flex-end;
         font-size: 3rem;
+    }
+
+    .title-banner h2 {
+        font-size: 2.2rem;
     }
 
     .sm\:block {
