@@ -1,4 +1,4 @@
-import { Button, Chip, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import { Button, Chip, Navbar, NavbarBrand, NavbarContent, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect, useRef } from "react";
 import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_OWNED, TYPE_F_STATUS } from "../../utils/constantes";
 import { createByType, isFilterMultipleSelect, isFilterSearch, isFilterSingleSelect, isNotNullSelectionArray, isNotNullStr } from "../../utils/utils";
@@ -117,7 +117,7 @@ export const MidiaPage = ({
         const sortByKey = Array.from(selectedSortByKeys).join(", ");
 
         let filtered = [...data].sort((a, b) => {
-            
+
             if (DROPD_SORTBY_DT_DESC_KEY === sortByKey) {
                 return b?.year - a?.year;
             } else if (DROPD_SORTBY_DT_ASC_KEY === sortByKey) {
@@ -189,96 +189,115 @@ export const MidiaPage = ({
     ]
 
     return (<>
-        <ModalMidia
-            key='modal_midia'
-            midiaSelected={midiaSelected}
-            isOpen={isOpen}
-            onOpenChange={onOpenChange} />
+        <div className="flex flex-col">
+            <Navbar
+                isBordered isBlurred={false}>
+                <NavbarContent justify="start">
+                    <NavbarBrand>
+                        <p className="font-bold font-mono text-3xl text-inherit">
+                            MP Collections
+                        </p>
+                    </NavbarBrand>
+                </NavbarContent>
 
-        <FilterMidia
-            valueSearch={valueSearch}
-            setValueSearch={setValueSearch}
-            setSelectedSortByKeys={setSelectedSortByKeys}
-            setAdult18={setAdult18}
-            genres={genres}
-            selectedGenres={selectedGenres}
-            setSelectedGenres={setSelectedGenres}
-            countries={countries}
-            selectedCountries={selectedCountries}
-            setSelectedCountries={setSelectedCountries}
-            languages={languages}
-            selectedLanguages={selectedLanguages}
-            setSelectedLanguages={setSelectedLanguages}
-            isSelectedOwner={isSelectedOwner}
-            setIsSelectedOwner={setIsSelectedOwner}
-            selectedStatus={selectedStatus}
-            setSelectedStatus={setSelectedStatus} />
+                <NavbarContent justify="end">
+                <div className="flex flex-row justify-between gap-2">
+                    <div></div>
+                    <div className="flex gap-1 items-center">
+                        <Button isIconOnly
+                            size="lg"
+                            aria-label="Grid"
+                            variant={changeVisibleMidia ? 'faded' : 'shadow'}
+                            onPress={() => setChangeVisibleMidia(!changeVisibleMidia)}>
+                            <GridIcon />
+                        </Button>
 
-        <div className="flex my-4 flex-row justify-between gap-6">
-            <div></div>
-            <div className="flex gap-4 items-center pr-2">
-                <Button isIconOnly
-                    size="lg"
-                    aria-label="Grid"
-                    variant={changeVisibleMidia ? 'faded' : 'shadow'}
-                    onPress={() => setChangeVisibleMidia(!changeVisibleMidia)}>
-                    <GridIcon />
-                </Button>
+                        <Button isIconOnly
+                            size="lg"
+                            aria-label="Table"
+                            variant={!changeVisibleMidia ? 'faded' : 'shadow'}
+                            onPress={() => setChangeVisibleMidia(!changeVisibleMidia)}>
+                            <TableIcon />
+                        </Button>
+                    </div>
+                </div>
+                </NavbarContent>
+            </Navbar>
 
-                <Button isIconOnly
-                    size="lg"
-                    aria-label="Table"
-                    variant={!changeVisibleMidia ? 'faded' : 'shadow'}
-                    onPress={() => setChangeVisibleMidia(!changeVisibleMidia)}>
-                    <TableIcon />
-                </Button>
+            <ModalMidia
+                key='modal_midia'
+                midiaSelected={midiaSelected}
+                isOpen={isOpen}
+                onOpenChange={onOpenChange} />
+
+            <div className="px-0">
+                <FilterMidia
+                    valueSearch={valueSearch}
+                    setValueSearch={setValueSearch}
+                    setSelectedSortByKeys={setSelectedSortByKeys}
+                    setAdult18={setAdult18}
+                    genres={genres}
+                    selectedGenres={selectedGenres}
+                    setSelectedGenres={setSelectedGenres}
+                    countries={countries}
+                    selectedCountries={selectedCountries}
+                    setSelectedCountries={setSelectedCountries}
+                    languages={languages}
+                    selectedLanguages={selectedLanguages}
+                    setSelectedLanguages={setSelectedLanguages}
+                    isSelectedOwner={isSelectedOwner}
+                    setIsSelectedOwner={setIsSelectedOwner}
+                    selectedStatus={selectedStatus}
+                    setSelectedStatus={setSelectedStatus} />
+
+                
+
+                <div className="flex w-full flex-col" ref={pageTopRef}>
+                    <Tabs
+                        aria-label="Options"
+                        color="primary"
+                        variant="underlined"
+                        classNames={{
+                            tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+                            cursor: "w-full bg-[#22d3ee]",
+                            tab: "max-w-fit px-0 h-12",
+                            tabContent: "group-data-[selected=true]:text-[#06b6d4]"
+                        }}
+                        selectedKey={selected}
+                        onSelectionChange={(e) => {
+                            if (e === TAB_COMICS_KEY || e === TAB_MANGAS_KEY) {
+                                setSelectedSortByKeys(new Set([DROPD_SORTBY_TL_AZ_KEY]))
+                            } else {
+                                setSelectedSortByKeys(new Set([DROPD_SORTBY_DT_DESC_KEY]))
+                            }
+                            setSelected(e);
+                        }}
+                        items={tabs}>
+                        {(item) => (
+                            <Tab key={item.id} title={<>
+                                <div className="flex items-center space-x-2">
+                                    {item.icon}
+                                    <span>{item.title}</span>
+                                    <Chip size="sm" variant="faded">{item.length}</Chip>
+                                </div>
+                            </>} />
+                        )}
+                    </Tabs>
+                </div>
+
+                <ComponentMidia
+                    filteredItems={filteredItems}
+                    selected={selected}
+                    changeVisibleMidia={changeVisibleMidia}
+                    rowsPerPage={rowsPerPage}
+                    setRowsPerPage={setRowsPerPage}
+                    page={page}
+                    setPage={setPage}
+                    setMidiaSelected={setMidiaSelected}
+                    onOpen={onOpen}
+                    pageTopRef={pageTopRef}
+                />
             </div>
         </div>
-
-        <div className="flex w-full flex-col" ref={pageTopRef}>
-            <Tabs
-                aria-label="Options"
-                color="primary"
-                variant="underlined"
-                classNames={{
-                    tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-                    cursor: "w-full bg-[#22d3ee]",
-                    tab: "max-w-fit px-0 h-12",
-                    tabContent: "group-data-[selected=true]:text-[#06b6d4]"
-                }}
-                selectedKey={selected}
-                onSelectionChange={(e) => {
-                    if (e === TAB_COMICS_KEY || e === TAB_MANGAS_KEY) {
-                        setSelectedSortByKeys(new Set([DROPD_SORTBY_TL_AZ_KEY]))
-                    } else {
-                        setSelectedSortByKeys(new Set([DROPD_SORTBY_DT_DESC_KEY]))
-                    }
-                    setSelected(e);
-                }}
-                items={tabs}>
-                {(item) => (
-                    <Tab key={item.id} title={<>
-                        <div className="flex items-center space-x-2">
-                            {item.icon}
-                            <span>{item.title}</span>
-                            <Chip size="sm" variant="faded">{item.length}</Chip>
-                        </div>
-                    </>} />
-                )}
-            </Tabs>
-        </div>
-
-        <ComponentMidia
-            filteredItems={filteredItems}
-            selected={selected}
-            changeVisibleMidia={changeVisibleMidia}
-            rowsPerPage={rowsPerPage}
-            setRowsPerPage={setRowsPerPage}
-            page={page}
-            setPage={setPage}
-            setMidiaSelected={setMidiaSelected}
-            onOpen={onOpen}
-            pageTopRef={pageTopRef}
-        />
     </>)
 }

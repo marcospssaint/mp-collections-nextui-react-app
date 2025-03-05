@@ -1,6 +1,6 @@
 import { Card, CardBody, Image, Pagination } from "@nextui-org/react";
 import { IMidia, statusByMidiaColor } from "../../data/midia";
-import { imageModified, textMidia } from "../../utils/utils";
+import { imageModified } from "../../utils/utils";
 
 interface GridMidiaProps {
     items: any[],
@@ -59,7 +59,7 @@ export const GridMidiaComponent = ({
 
                             </div>
                             <h2>
-                                {textMidia((item.subtitle ?? item.publicationTitle) ?? item?.title)}
+                                {(item.subtitle ?? item.publicationTitle) ?? item?.title}
                             </h2>
                             <p>{item.year}</p>
                         </div>
