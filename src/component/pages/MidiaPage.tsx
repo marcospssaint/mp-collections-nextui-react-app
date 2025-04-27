@@ -191,8 +191,8 @@ export const MidiaPage = ({
             length: mangasLoaded.length
         },
         {
-            id: TAB_COMICS_KEY,
-            icon: <MangaIcon />,
+            id: TAB_BOOKS_KEY,
+            icon: <ComicIcon />,
             title: 'Books',
             length: booksLoaded.length
         }
