@@ -1,7 +1,7 @@
 import { Avatar, Button, Chip, ChipProps, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { IMidia, ownedByMidia, statusByMidia } from "../../data/midia";
-import { TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY } from "../../utils/constantes";
+import { TAB_ANIMES_KEY, TAB_BOOKS_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY } from "../../utils/constantes";
 import { capitalize, getFlagCountries } from "../../utils/utils";
 import { ChevronDownIcon } from "../icons/ChevronDownIcon";
 
@@ -115,6 +115,16 @@ export const TableMidia = ({
                 { name: "YEAR", uid: "year" },
                 { name: "PUBLISHER", uid: "publisher" },
                 { name: "LANGUAGE", uid: "language" },
+                { name: "STATUS", uid: "status" },
+                { name: "OWNED", uid: "owned", }
+            ]);
+        } else if (selected === TAB_BOOKS_KEY) {
+            setVisibleColumns(new Set(["title", "year", "publisher", "status", "owned"]));
+            setColumns([
+                { name: "ID", uid: "id" },
+                { name: "TITLE", uid: "title" },
+                { name: "YEAR", uid: "year" },
+                { name: "PUBLISHER", uid: "publisher" },
                 { name: "STATUS", uid: "status" },
                 { name: "OWNED", uid: "owned", }
             ]);

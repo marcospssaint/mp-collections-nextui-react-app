@@ -1,4 +1,4 @@
-import { TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY } from "../utils/constantes";
+import { TAB_ANIMES_KEY, TAB_BOOKS_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY } from "../utils/constantes";
 
 import movies from './development/movies.json';
 import tvShows from './development/tv-shows.json';
@@ -6,6 +6,7 @@ import tvTokusatsu from './development/tv-tokusatsu.json';
 import animes from './development/animes.json';
 import comics from './development/comics.json';
 import mangas from './development/mangas.json';
+import books from './development/books.json';
 import { groupByToMap } from "../utils/utils";
 
 export interface IMidia {
@@ -164,6 +165,7 @@ const load = async (envURL?: any) => {
         case TAB_ANIMES_KEY: data = animes; break;
         case TAB_COMICS_KEY: data = comics; break;
         case TAB_MANGAS_KEY: data = mangas; break;
+        case TAB_BOOKS_KEY: data = books; break;
     }
 
     return data;

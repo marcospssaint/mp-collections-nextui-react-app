@@ -1,3 +1,17 @@
 [
-    
+    {
+        "id": 1,
+        "title": "A Floresta das Árvores Retorcidas",
+        "year": 2019,
+        "language": "Portugues",
+        "publisher": "Pipoca & Nanquim",
+        "genre": "Horror",
+        "authors": "<>Alexandre Callari",
+        "synopsis": "Nesta obra de horror cósmico, Alexandre Callari se apropria dos mitos de Cthulhu, do cultuado H.P. Lovecraft, e os introduz em um contexto brasileiro na década de 1990, para criar um universo de ambientes híbridos, com espíritos, evocações, rituais místicos, raças perdidas e seres inimagináveis. Repleto de referências à cultura pop e ao mundo do terror em particular, o livro presta homenagem aos antigos pulps e ao maior expoente de terror que eles produziram. Após um conturbado divórcio, Adam decide tirar um período sabático e se afastar de tudo e de todos que conhece, buscando refúgio em uma pitoresca cidade do interior paulista, onde a estranheza parece ser a norma vigente. Lá, ele logo é jogado em uma trama de bizarros acontecimentos que envolvem não só toda a população, como também criaturas apocalípticas de outra dimensão. Esta edição inaugura o selo Original Pipoca & Nanquim, que se propõe a lançar o melhor da literatura e dos quadrinhos de autores nacionais, sempre com a qualidade editorial e o acabamento gráfico à altura das obras e do desejo dos fãs. Com 420 páginas em papel pólen soft, a aterradora história ganha contornos ainda mais macabros com as ilustrações de Doug Firmino. A capa dura com verniz e corte trilateral vermelho foi criada pela artista Giovanna Cianelli, inspirada nas clássicas revistas pulpsda década de 1930 e nos filmes de terror dos anos 1970, influências nas quais o autor também bebeu para desenvolver sua trama.",
+        "volume": 1,
+        "countries": "Brazil",
+        "read": "NOTR",
+        "owned": true,
+        "collection": false
+    }
 ]

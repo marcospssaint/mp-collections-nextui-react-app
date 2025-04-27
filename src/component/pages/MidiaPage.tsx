@@ -1,6 +1,6 @@
 import { Button, Chip, Navbar, NavbarBrand, NavbarContent, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect, useRef } from "react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_OWNED, TYPE_F_STATUS } from "../../utils/constantes";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, TAB_ANIMES_KEY, TAB_BOOKS_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_OWNED, TYPE_F_STATUS } from "../../utils/constantes";
 import { createByType, isFilterMultipleSelect, isFilterSearch, isFilterSingleSelect, isNotNullSelectionArray, isNotNullStr } from "../../utils/utils";
 import { AnimeIcon } from "../icons/AnimeIcon";
 import { ComicIcon } from "../icons/ComicIcon";
@@ -56,6 +56,7 @@ export const MidiaPage = ({
     const [animesLoaded, setAnimesLoaded] = React.useState<any[]>([]);
     const [comicsLoaded, setComicsLoaded] = React.useState<any[]>([]);
     const [mangasLoaded, setMangasLoaded] = React.useState<any[]>([]);
+    const [booksLoaded, setBooksLoaded] = React.useState<any[]>([]);
 
     const handleLoad = useCallback(async () => {
         setMoviesLoaded(await loadMidia(TAB_MOVIES_KEY, username));
@@ -64,6 +65,7 @@ export const MidiaPage = ({
         setAnimesLoaded(await loadMidia(TAB_ANIMES_KEY, username));
         setComicsLoaded(await loadMidia(TAB_COMICS_KEY, username));
         setMangasLoaded(await loadMidia(TAB_MANGAS_KEY, username));
+        setBooksLoaded(await loadMidia(TAB_BOOKS_KEY, username));
     }, [username]);
 
     useEffect(() => {
@@ -86,10 +88,12 @@ export const MidiaPage = ({
             midiaLoaded = comicsLoaded;
         } else if (selected === TAB_MANGAS_KEY) {
             midiaLoaded = mangasLoaded;
+        } else if (selected === TAB_BOOKS_KEY) {
+            midiaLoaded = booksLoaded;
         }
 
         return midiaLoaded;
-    }, [selected, moviesLoaded, tvShowLoaded, tvTokuLoaded, animesLoaded, comicsLoaded, mangasLoaded]);
+    }, [selected, moviesLoaded, tvShowLoaded, tvTokuLoaded, animesLoaded, comicsLoaded, mangasLoaded, booksLoaded]);
 
     const genres = React.useMemo(() => {
         return createByType(data, TYPE_F_GENRE);
@@ -185,6 +189,12 @@ export const MidiaPage = ({
             icon: <MangaIcon />,
             title: 'Mangas',
             length: mangasLoaded.length
+        },
+        {
+            id: TAB_COMICS_KEY,
+            icon: <MangaIcon />,
+            title: 'Books',
+            length: booksLoaded.length
         }
     ]
 
@@ -250,8 +260,6 @@ export const MidiaPage = ({
                     selectedStatus={selectedStatus}
                     setSelectedStatus={setSelectedStatus} />
 
-                
-
                 <div className="flex w-full flex-col" ref={pageTopRef}>
                     <Tabs
                         aria-label="Options"
@@ -265,7 +273,7 @@ export const MidiaPage = ({
                         }}
                         selectedKey={selected}
                         onSelectionChange={(e) => {
-                            if (e === TAB_COMICS_KEY || e === TAB_MANGAS_KEY) {
+                            if (e === TAB_COMICS_KEY || e === TAB_MANGAS_KEY || e === TAB_BOOKS_KEY) {
                                 setSelectedSortByKeys(new Set([DROPD_SORTBY_TL_AZ_KEY]))
                             } else {
                                 setSelectedSortByKeys(new Set([DROPD_SORTBY_DT_DESC_KEY]))

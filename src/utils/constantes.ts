@@ -22,6 +22,7 @@ export const TAB_TV_TOKU_KEY = "TV_TOKUSATSU";
 export const TAB_ANIMES_KEY = "ANIMES";
 export const TAB_COMICS_KEY = "COMICS";
 export const TAB_MANGAS_KEY = "MANGAS";
+export const TAB_BOOKS_KEY = "BOOKS";
 
 export const M_VIDEO = "VIDEO";
 export const M_READING = "READING";

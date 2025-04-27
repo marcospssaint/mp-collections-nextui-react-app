@@ -1,5 +1,5 @@
 import { ChipProps } from "@nextui-org/react";
-import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, M_READING, M_VIDEO, TAB_ANIMES_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_STATUS, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
+import { DROPD_SORTBY_DT_ASC_KEY, DROPD_SORTBY_DT_DESC_KEY, DROPD_SORTBY_TL_AZ_KEY, DROPD_SORTBY_TL_ZA_KEY, M_READING, M_VIDEO, TAB_ANIMES_KEY, TAB_BOOKS_KEY, TAB_COMICS_KEY, TAB_MANGAS_KEY, TAB_MOVIES_KEY, TAB_TV_KEY, TAB_TV_TOKU_KEY, TYPE_F_AUTHOR, TYPE_F_CAST, TYPE_F_COUNTRIES, TYPE_F_GENRE, TYPE_F_LANGUAGE, TYPE_F_ORIGINAL_TITLE, TYPE_F_OWNED, TYPE_F_PUBLICATION_TITLE, TYPE_F_PUBLISHER, TYPE_F_STATUS, TYPE_F_SUBTITLE, TYPE_F_TITLE, TYPES_FIELD } from "./constantes";
 
 export const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -96,7 +96,7 @@ export const isFilterByType = (value: any | any[], midia: any, type: string) => 
         countries = midia?.countries?.split(', ');
         return countries?.some((country: string) => country === value);
     } else if (type === TYPE_F_LANGUAGE) {
-        if (midia?.type === TAB_COMICS_KEY || midia?.type === TAB_MANGAS_KEY) {
+        if (midia?.type === TAB_COMICS_KEY || midia?.type === TAB_MANGAS_KEY || midia?.type === TAB_BOOKS_KEY) {
             return midia?.language === value;
         }
         return true;
