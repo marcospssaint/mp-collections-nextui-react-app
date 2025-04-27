@@ -19,6 +19,7 @@ import { TableIcon } from "../icons/TableIcon";
 import { ComponentMidia } from "./ComponentMidia";
 import { FilterMidia } from "./FilterMidia";
 import { ModalMidia } from "./ModalMidia";
+import { BooksIcon } from "../icons/BooksIcon";
 
 interface MidiaPageProps {
 }
@@ -192,7 +193,7 @@ export const MidiaPage = ({
         },
         {
             id: TAB_BOOKS_KEY,
-            icon: <ComicIcon />,
+            icon: <BooksIcon />,
             title: 'Books',
             length: booksLoaded.length
         }
